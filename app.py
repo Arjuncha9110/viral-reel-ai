@@ -213,6 +213,23 @@ with left:
 
         style = selected_template
 
+    # ---------- GENERATE BUTTON ----------
+
+    generate = st.button(
+        "🚀 Generate Cinematic Reel"
+    )
+    # ---------- TEMPLATE AUTO APPLY ----------
+
+    if "template" in st.session_state:
+
+        selected_template = st.session_state["template"]
+
+        st.success(
+            f"Selected Template: {selected_template}"
+        )
+
+        style = selected_template
+
     generate = st.button(
         "🚀 Generate Cinematic Reel"
     )
