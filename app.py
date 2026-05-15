@@ -49,13 +49,6 @@ st.markdown(
         margin-bottom: 30px;
     }
 
-    .template-card {
-        background: #111827;
-        padding: 15px;
-        border-radius: 20px;
-        margin-bottom: 20px;
-    }
-
     .stButton button {
         width: 100%;
         height: 55px;
@@ -121,7 +114,6 @@ col1, col2 = st.columns(2)
 with col1:
 
     if st.button("🔥 Luxury Travel"):
-
         st.session_state["template"] = "Luxury Travel"
 
     st.image(
@@ -132,7 +124,6 @@ with col1:
 with col2:
 
     if st.button("💸 Finance Motivation"):
-
         st.session_state["template"] = "Finance"
 
     st.image(
@@ -145,7 +136,6 @@ col3, col4 = st.columns(2)
 with col3:
 
     if st.button("🌌 Dark Cinematic"):
-
         st.session_state["template"] = "Dark Cinematic"
 
     st.image(
@@ -156,7 +146,6 @@ with col3:
 with col4:
 
     if st.button("❤️ Emotional Storytelling"):
-
         st.session_state["template"] = "Emotional"
 
     st.image(
@@ -301,17 +290,9 @@ if generate:
 
         progress.progress(20)
 
-        result = subprocess.run(
-    ["python", "video_editor.py"],
-    capture_output=True,
-    text=True
-)
-
-st.text("STDOUT:")
-st.text(result.stdout)
-
-st.text("STDERR:")
-st.text(result.stderr)
+        subprocess.run(
+            ["python", "voice_generator.py"]
+        )
 
         time.sleep(1)
 
@@ -337,9 +318,19 @@ st.text(result.stderr)
 
         progress.progress(80)
 
-        subprocess.run(
-            ["python", "video_editor.py"]
+        result = subprocess.run(
+            ["python", "video_editor.py"],
+            capture_output=True,
+            text=True
         )
+
+        st.text("STDOUT:")
+        st.text(result.stdout)
+
+        st.text("STDERR:")
+        st.text(result.stderr)
+
+        time.sleep(1)
 
         progress.progress(100)
 
