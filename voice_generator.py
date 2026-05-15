@@ -6,82 +6,31 @@ VOICE_ID = "EXAVITQu4vr4xnSDxMaL"
 
 # ---------- READ TOPIC ----------
 
-with open("topic.txt", "r", encoding="utf-8") as f:
+with open(
+    "topic.txt",
+    "r",
+    encoding="utf-8"
+) as f:
+
     topic = f.read().strip()
 
-# ---------- DYNAMIC VOICE SCRIPT ----------
+print("TOPIC:", topic)
 
-if "turkey" in topic.lower():
+# ---------- DYNAMIC SCRIPT ----------
 
-    text = """
-    Welcome to Turkey.
+text = f"""
+Welcome to {topic}.
 
-    Beautiful mosques.
-    Luxury resorts.
-    Stunning sunsets.
+Luxury experiences.
+Beautiful destinations.
+Cinematic views.
 
-    Explore Istanbul like never before.
+This place feels unreal.
 
-    DM us now for Turkey travel packages.
-    """
+DM now for exclusive travel packages.
+"""
 
-elif "bali" in topic.lower():
-
-    text = """
-    Welcome to Bali.
-
-    Infinity pools.
-    Luxury villas.
-    Tropical paradise.
-
-    This escape feels unreal.
-
-    DM us now for Bali packages.
-    """
-
-elif "dubai" in topic.lower():
-
-    text = """
-    Welcome to luxury Dubai.
-
-    Sky-high views.
-    Luxury experiences.
-    Unforgettable nightlife.
-
-    This city feels unreal.
-
-    DM us now for Dubai packages.
-    """
-
-elif "tokyo" in topic.lower():
-
-    text = """
-    Tokyo nights hit different.
-
-    Neon streets.
-    Luxury experiences.
-    Endless energy.
-
-    Experience Japan like never before.
-
-    DM us now for Tokyo itineraries.
-    """
-
-else:
-
-    text = f"""
-    Welcome to {topic}.
-
-    Beautiful destinations.
-    Luxury experiences.
-    Unforgettable memories.
-
-    Your dream trip starts here.
-
-    DM us now for details.
-    """
-
-# ---------- ELEVENLABS API ----------
+# ---------- API ----------
 
 url = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
 
@@ -96,18 +45,19 @@ data = {
     "model_id": "eleven_multilingual_v2"
 }
 
-response = requests.post(url, json=data, headers=headers)
+response = requests.post(
+    url,
+    json=data,
+    headers=headers
+)
 
-# ---------- ERROR CHECK ----------
+# ---------- SAVE ----------
 
-if response.status_code != 200:
-    print("ERROR:")
-    print(response.text)
-    exit()
+with open(
+    "assets/voice.mp3",
+    "wb"
+) as f:
 
-# ---------- SAVE AUDIO ----------
-
-with open("assets/voice.mp3", "wb") as f:
     f.write(response.content)
 
-print("✅ Dynamic voice generated successfully.")
+print("✅ Voice generated")
