@@ -1,0 +1,10 @@
+streamlit
+moviepy==1.0.3
+requests
+imageio
+imageio-ffmpeg
+numpy
+pillow
+proglog
+decorator
+python-dotenv
