@@ -1,5 +1,5 @@
 from datetime import datetime
-from moviepy import *
+from moviepy.editor import *
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.VideoClip import TextClip
