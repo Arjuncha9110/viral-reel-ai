@@ -18,41 +18,49 @@ st.markdown(
     <style>
 
     .stApp {
-        background-color: #070b14;
+        background-color: #050816;
         color: white;
     }
 
-    .main-title {
-        font-size: 64px;
-        font-weight: 800;
-        text-align: center;
-        color: white;
-        margin-bottom: 10px;
+    section[data-testid="stSidebar"] {
+        background-color: #0b1120;
     }
 
-    .subtitle {
-        text-align: center;
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .template-card {
+        background: #111827;
+        border-radius: 20px;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #1f2937;
+        transition: 0.3s;
+    }
+
+    .template-card:hover {
+        transform: scale(1.02);
+        border: 1px solid #7c3aed;
+    }
+
+    .section-title {
+        font-size: 34px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    .sub-title {
         color: #9ca3af;
-        font-size: 20px;
-        margin-bottom: 30px;
-    }
-
-    .hero-box {
-        padding: 50px;
-        border-radius: 25px;
-        background: linear-gradient(
-            135deg,
-            #111827,
-            #0f172a
-        );
-        box-shadow: 0 0 40px rgba(0,0,0,0.4);
         margin-bottom: 30px;
     }
 
     .stButton button {
         width: 100%;
-        height: 55px;
-        border-radius: 15px;
+        height: 52px;
+        border-radius: 14px;
         border: none;
         background: linear-gradient(
             90deg,
@@ -60,7 +68,7 @@ st.markdown(
             #06b6d4
         );
         color: white;
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 700;
     }
 
@@ -68,7 +76,7 @@ st.markdown(
         background-color: #111827;
         color: white;
         border-radius: 12px;
-        border: 1px solid #333;
+        border: 1px solid #374151;
     }
 
     .stSelectbox div {
@@ -90,15 +98,33 @@ st.markdown(
 
 st.markdown(
     """
-    <div class="hero-box">
+    <div style="
+        padding:60px;
+        border-radius:25px;
+        background:linear-gradient(
+            135deg,
+            #111827,
+            #0f172a
+        );
+        text-align:center;
+        margin-bottom:40px;
+    ">
 
-        <div class="main-title">
+        <h1 style="
+            color:white;
+            font-size:64px;
+            font-weight:800;
+            margin-bottom:10px;
+        ">
         🎬 AI Viral Reel Generator
-        </div>
+        </h1>
 
-        <div class="subtitle">
+        <p style="
+            color:#9ca3af;
+            font-size:22px;
+        ">
         Create cinematic viral reels automatically using AI
-        </div>
+        </p>
 
     </div>
     """,
@@ -107,63 +133,97 @@ st.markdown(
 
 # ---------- TEMPLATE SECTION ----------
 
-st.markdown("## 🔥 Viral Reel Templates")
+st.markdown(
+    "<div class='section-title'>🔥 Viral Reel Templates</div>",
+    unsafe_allow_html=True
+)
 
 col1, col2 = st.columns(2)
 
 with col1:
 
-    if st.button("🔥 Luxury Travel"):
-        st.session_state["template"] = "Luxury Travel"
+    st.markdown("<div class='template-card'>", unsafe_allow_html=True)
 
     st.image(
         "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
         use_container_width=True
     )
 
+    if st.button(
+        "🔥 Luxury Travel",
+        key="luxury"
+    ):
+        st.session_state["template"] = "Luxury Travel"
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
 with col2:
 
-    if st.button("💸 Finance Motivation"):
-        st.session_state["template"] = "Finance"
+    st.markdown("<div class='template-card'>", unsafe_allow_html=True)
 
     st.image(
         "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a",
         use_container_width=True
     )
 
+    if st.button(
+        "💸 Finance Motivation",
+        key="finance"
+    ):
+        st.session_state["template"] = "Finance"
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
 col3, col4 = st.columns(2)
 
 with col3:
 
-    if st.button("🌌 Dark Cinematic"):
-        st.session_state["template"] = "Dark Cinematic"
+    st.markdown("<div class='template-card'>", unsafe_allow_html=True)
 
     st.image(
         "https://images.unsplash.com/photo-1493246507139-91e8fad9978e",
         use_container_width=True
     )
 
+    if st.button(
+        "🌌 Dark Cinematic",
+        key="dark"
+    ):
+        st.session_state["template"] = "Dark Cinematic"
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
 with col4:
 
-    if st.button("❤️ Emotional Storytelling"):
-        st.session_state["template"] = "Emotional"
+    st.markdown("<div class='template-card'>", unsafe_allow_html=True)
 
     st.image(
         "https://images.unsplash.com/photo-1517841905240-472988babdf9",
         use_container_width=True
     )
 
-st.markdown("---")
+    if st.button(
+        "❤️ Emotional Storytelling",
+        key="emotional"
+    ):
+        st.session_state["template"] = "Emotional Storytelling"
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 # ---------- MAIN LAYOUT ----------
 
-left, right = st.columns([1, 1.2])
+left, right = st.columns([1, 1])
 
 # ---------- LEFT PANEL ----------
 
 with left:
 
-    st.markdown("## 🎯 Reel Settings")
+    st.markdown(
+        "<div class='section-title'>🎯 Reel Settings</div>",
+        unsafe_allow_html=True
+    )
 
     topic = st.text_input(
         "Enter Reel Topic",
@@ -218,27 +278,15 @@ with left:
     generate = st.button(
         "🚀 Generate Cinematic Reel"
     )
-    # ---------- TEMPLATE AUTO APPLY ----------
-
-    if "template" in st.session_state:
-
-        selected_template = st.session_state["template"]
-
-        st.success(
-            f"Selected Template: {selected_template}"
-        )
-
-        style = selected_template
-
-    generate = st.button(
-        "🚀 Generate Cinematic Reel"
-    )
 
 # ---------- RIGHT PANEL ----------
 
 with right:
 
-    st.markdown("## 🎞️ Reel Preview")
+    st.markdown(
+        "<div class='section-title'>🎞️ Reel Preview</div>",
+        unsafe_allow_html=True
+    )
 
     preview_box = st.container()
 
@@ -251,33 +299,6 @@ if generate:
         st.error("Please enter a topic.")
 
     else:
-
-        # ---------- CLEAN OLD FILES ----------
-
-        if os.path.exists("topic.txt"):
-            os.remove("topic.txt")
-
-        if os.path.exists("assets"):
-
-            for file in os.listdir("assets"):
-
-                try:
-                    os.remove(
-                        os.path.join("assets", file)
-                    )
-                except:
-                    pass
-
-        if os.path.exists("output"):
-
-            for file in os.listdir("output"):
-
-                try:
-                    os.remove(
-                        os.path.join("output", file)
-                    )
-                except:
-                    pass
 
         # ---------- SAVE TOPIC ----------
 
@@ -355,48 +376,27 @@ if generate:
             "✅ Reel generated successfully!"
         )
 
-        # ---------- FIND LATEST VIDEO ----------
+        # ---------- VIDEO ----------
 
-        videos = [
-            os.path.join("output", f)
-            for f in os.listdir("output")
-            if f.endswith(".mp4")
-        ]
+        video_path = "output/final_reel.mp4"
 
-        if len(videos) == 0:
-
-            st.error(
-                "Video generation failed."
-            )
-
-        else:
-
-            videos.sort(
-                key=os.path.getmtime,
-                reverse=True
-            )
-
-            video_path = videos[0]
-
-            # ---------- SHOW VIDEO ----------
+        if os.path.exists(video_path):
 
             with preview_box:
 
                 st.video(video_path)
-
-                st.markdown(
-                    "### ✅ Reel Ready"
-                )
-
-                # ---------- DOWNLOAD ----------
 
                 with open(video_path, "rb") as file:
 
                     st.download_button(
                         label="⬇️ Download Reel",
                         data=file,
-                        file_name=os.path.basename(
-                            video_path
-                        ),
+                        file_name="viral_reel.mp4",
                         mime="video/mp4"
                     )
+
+        else:
+
+            st.error(
+                "Video generation failed."
+            )
