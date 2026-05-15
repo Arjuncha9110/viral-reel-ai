@@ -96,38 +96,36 @@ st.markdown(
 
 # ---------- HERO SECTION ----------
 
+hero_html = """
+<div style="
+padding:60px;
+border-radius:25px;
+background:linear-gradient(135deg,#111827,#0f172a);
+text-align:center;
+margin-bottom:40px;
+">
+
+<h1 style="
+color:white;
+font-size:64px;
+font-weight:800;
+margin-bottom:10px;
+">
+🎬 AI Viral Reel Generator
+</h1>
+
+<p style="
+color:#9ca3af;
+font-size:22px;
+">
+Create cinematic viral reels automatically using AI
+</p>
+
+</div>
+"""
+
 st.markdown(
-    """
-    <div style="
-        padding:60px;
-        border-radius:25px;
-        background:linear-gradient(
-            135deg,
-            #111827,
-            #0f172a
-        );
-        text-align:center;
-        margin-bottom:40px;
-    ">
-
-        <h1 style="
-            color:white;
-            font-size:64px;
-            font-weight:800;
-            margin-bottom:10px;
-        ">
-        🎬 AI Viral Reel Generator
-        </h1>
-
-        <p style="
-            color:#9ca3af;
-            font-size:22px;
-        ">
-        Create cinematic viral reels automatically using AI
-        </p>
-
-    </div>
-    """,
+    hero_html,
     unsafe_allow_html=True
 )
 
