@@ -50,10 +50,48 @@ if st.button("🚀 Generate Reel"):
 
     else:
 
+        # ---------- CLEAN OLD FILES ----------
+
+        if os.path.exists("topic.txt"):
+            os.remove("topic.txt")
+
+        if os.path.exists("assets"):
+
+            for file in os.listdir("assets"):
+
+                try:
+                    os.remove(
+                        os.path.join("assets", file)
+                    )
+                except:
+                    pass
+
+        if os.path.exists("output"):
+
+            for file in os.listdir("output"):
+
+                try:
+                    os.remove(
+                        os.path.join("output", file)
+                    )
+                except:
+                    pass
+
         # ---------- SAVE TOPIC ----------
 
-        with open("topic.txt", "w", encoding="utf-8") as f:
+        with open(
+            "topic.txt",
+            "w",
+            encoding="utf-8"
+        ) as f:
+
             f.write(topic)
+
+        # ---------- DEBUG ----------
+
+        st.success(
+            f"Current topic: {topic}"
+        )
 
         # ---------- PROGRESS ----------
 
@@ -63,7 +101,10 @@ if st.button("🚀 Generate Reel"):
 
         # ---------- VOICE ----------
 
-        status.text("🎤 Generating AI voice...")
+        status.text(
+            "🎤 Generating AI voice..."
+        )
+
         progress.progress(20)
 
         subprocess.run(
@@ -74,7 +115,10 @@ if st.button("🚀 Generate Reel"):
 
         # ---------- CLIPS ----------
 
-        status.text("🎬 Downloading cinematic clips...")
+        status.text(
+            "🎬 Downloading cinematic clips..."
+        )
+
         progress.progress(50)
 
         subprocess.run(
@@ -85,7 +129,10 @@ if st.button("🚀 Generate Reel"):
 
         # ---------- VIDEO ----------
 
-        status.text("🎞️ Rendering cinematic reel...")
+        status.text(
+            "🎞️ Rendering cinematic reel..."
+        )
+
         progress.progress(80)
 
         subprocess.run(
@@ -94,25 +141,46 @@ if st.button("🚀 Generate Reel"):
 
         progress.progress(100)
 
-        status.text("✅ Reel generated successfully!")
+        status.text(
+            "✅ Reel generated successfully!"
+        )
 
-        # ---------- SHOW VIDEO ----------
+        # ---------- FIND LATEST VIDEO ----------
 
-        video_path = "output/final_reel.mp4"
+        videos = [
+            os.path.join("output", f)
+            for f in os.listdir("output")
+            if f.endswith(".mp4")
+        ]
 
-        if os.path.exists(video_path):
+        if len(videos) == 0:
+
+            st.error(
+                "Video generation failed."
+            )
+
+        else:
+
+            videos.sort(
+                key=os.path.getmtime,
+                reverse=True
+            )
+
+            video_path = videos[0]
+
+            # ---------- SHOW VIDEO ----------
 
             st.video(video_path)
+
+            # ---------- DOWNLOAD ----------
 
             with open(video_path, "rb") as file:
 
                 st.download_button(
                     label="⬇️ Download Reel",
                     data=file,
-                    file_name="viral_reel.mp4",
+                    file_name=os.path.basename(
+                        video_path
+                    ),
                     mime="video/mp4"
                 )
-
-        else:
-
-            st.error("Video generation failed.")
