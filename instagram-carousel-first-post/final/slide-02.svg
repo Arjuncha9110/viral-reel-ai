@@ -1,0 +1,59 @@
+﻿<svg xmlns='http://www.w3.org/2000/svg' width='1080' height='1350' viewBox='0 0 1080 1350'>
+  <defs>
+    <linearGradient id='bgGrad' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='0%' stop-color='#fffaf4'/>
+      <stop offset='100%' stop-color='#f7efe4'/>
+    </linearGradient>
+    <linearGradient id='navyGrad' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#102143'/>
+      <stop offset='100%' stop-color='#0c1730'/>
+    </linearGradient>
+    <linearGradient id='saffronGrad' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#ff8c1a'/>
+      <stop offset='100%' stop-color='#ffb248'/>
+    </linearGradient>
+    <filter id='softShadow' x='-20%' y='-20%' width='140%' height='140%'>
+      <feDropShadow dx='0' dy='18' stdDeviation='20' flood-color='#0f1f3d' flood-opacity='0.10'/>
+    </filter>
+  </defs>
+
+  <rect width='1080' height='1350' fill='url(#bgGrad)'/>
+  <circle cx='930' cy='210' r='220' fill='#ffb044' fill-opacity='0.10'/>
+  <circle cx='130' cy='1120' r='220' fill='#0f1f3d' fill-opacity='0.06'/>
+
+  <!-- subtle pattern -->
+  <g fill='#d8bc7a' fill-opacity='0.12'>
+    <circle cx='80' cy='90' r='3'/><circle cx='140' cy='90' r='3'/><circle cx='200' cy='90' r='3'/><circle cx='260' cy='90' r='3'/>
+    <circle cx='80' cy='150' r='3'/><circle cx='140' cy='150' r='3'/><circle cx='200' cy='150' r='3'/><circle cx='260' cy='150' r='3'/>
+    <circle cx='820' cy='1180' r='3'/><circle cx='880' cy='1180' r='3'/><circle cx='940' cy='1180' r='3'/><circle cx='1000' cy='1180' r='3'/>
+    <circle cx='820' cy='1240' r='3'/><circle cx='880' cy='1240' r='3'/><circle cx='940' cy='1240' r='3'/><circle cx='1000' cy='1240' r='3'/>
+  </g>
+
+  <!-- header -->
+  <g>
+    <rect x='68' y='68' width='76' height='76' rx='22' fill='#0f1f3d' stroke='#d8bc7a' stroke-opacity='0.45' stroke-width='3'/>
+    <circle cx='106' cy='106' r='21' fill='none' stroke='#ff8c1a' stroke-width='4'/>
+    <circle cx='106' cy='106' r='10' fill='#d8bc7a'/>
+    <text x='170' y='106' fill='#0f1f3d' font-family='Georgia' font-size='30' font-weight='700'>Divine Panchang</text>
+    <text x='170' y='135' fill='#6b5d55' font-family='Segoe UI' font-size='18'>Daily Guidance &amp; Numerology</text>
+    <rect x='850' y='76' width='162' height='42' rx='21' fill='#ff8c1a' fill-opacity='0.10'/>
+    <text x='885' y='103' fill='#ff8c1a' font-family='Segoe UI' font-size='18' font-weight='700'>Slide 2 of 7</text>
+  </g>
+
+    <text x='68' y='260' fill='#ff8c1a' font-family='Segoe UI' font-size='19' font-weight='700' letter-spacing='3'>WHY FOLLOW DIVINE PANCHANG?</text>
+  <text x='68' y='372' fill='#0f1f3d' font-family='Georgia' font-size='76' font-weight='700'>For daily clarity,</text>
+  <text x='68' y='452' fill='#ff8c1a' font-family='Georgia' font-size='76' font-weight='700'>better timing,</text>
+  <text x='68' y='532' fill='#0f1f3d' font-family='Georgia' font-size='76' font-weight='700'>and grounded guidance.</text>
+  <rect x='68' y='620' width='944' height='470' rx='34' fill='white' fill-opacity='0.82' stroke='#d8bc7a' stroke-opacity='0.35' filter='url(#softShadow)'/>
+  <circle cx='118' cy='712' r='7' fill='#ff8c1a'/>
+<text x='142' y='720' fill='#2c221e' font-family='Segoe UI' font-size='30' font-weight='500'>Know the dayâ€™s spiritual rhythm before major actions or decisions.</text>
+  <circle cx='118' cy='812' r='7' fill='#ff8c1a'/>
+<text x='142' y='820' fill='#2c221e' font-family='Segoe UI' font-size='30' font-weight='500'>Understand Kundali, Dasha, and Sade Sati with calmer explanations.</text>
+  <circle cx='118' cy='912' r='7' fill='#ff8c1a'/>
+<text x='142' y='920' fill='#2c221e' font-family='Segoe UI' font-size='30' font-weight='500'>Build a repeatable daily ritual around awareness, remedies, and timing.</text>
+
+  <!-- footer -->
+  <text x='68' y='1298' fill='#0f1f3d' font-family='Segoe UI' font-size='22' font-weight='700'>@divinepanchang.space</text>
+  <rect x='878' y='1258' width='134' height='48' rx='24' fill='#0f1f3d' fill-opacity='0.08'/>
+  <text x='914' y='1291' fill='#0f1f3d' font-family='Segoe UI' font-size='22' font-weight='700'>Swipe â†’</text>
+</svg>

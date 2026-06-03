@@ -1,0 +1,85 @@
+{
+    "charts": [
+        {
+            "id": "D1",
+            "name": "Lagna (Rasi)",
+            "shortName": "Lagna",
+            "description": "Birth Chart - Overall Life Path",
+            "category": "primary",
+            "division": 1,
+            "lifeArea": "Complete life overview, personality, health, general fortune"
+        },
+        {
+            "id": "D2",
+            "name": "Hora",
+            "shortName": "D2",
+            "description": "Wealth & Family",
+            "category": "advanced",
+            "division": 2,
+            "lifeArea": "Wealth, family, speech, liquid assets"
+        },
+        {
+            "id": "D7",
+            "name": "Saptamsa",
+            "shortName": "D7",
+            "description": "Children & Progeny",
+            "category": "secondary",
+            "division": 7,
+            "lifeArea": "Children, creativity, grandchildren, progeny matters"
+        },
+        {
+            "id": "D9",
+            "name": "Navamsa",
+            "shortName": "D9",
+            "description": "Marriage & Dharma",
+            "category": "secondary",
+            "division": 9,
+            "lifeArea": "Spouse, marriage, dharma, spiritual path, inner strength"
+        },
+        {
+            "id": "D10",
+            "name": "Dasamsa",
+            "shortName": "D10",
+            "description": "Career & Status",
+            "category": "secondary",
+            "division": 10,
+            "lifeArea": "Career, profession, status, achievements, public life"
+        },
+        {
+            "id": "D12",
+            "name": "Dwadashamsa",
+            "shortName": "D12",
+            "description": "Parents & Ancestors",
+            "category": "advanced",
+            "division": 12,
+            "lifeArea": "Parents, ancestors, lineage, inherited karma"
+        },
+        {
+            "id": "D24",
+            "name": "Chaturvimshamsa",
+            "shortName": "D24",
+            "description": "Education & Learning",
+            "category": "advanced",
+            "division": 24,
+            "lifeArea": "Education, knowledge, learning, academic success"
+        },
+        {
+            "id": "D27",
+            "name": "Bhamsha",
+            "shortName": "D27",
+            "description": "Strength & Weakness",
+            "category": "advanced",
+            "division": 27,
+            "lifeArea": "Physical and mental strength, weaknesses, vitality"
+        },
+        {
+            "id": "D60",
+            "name": "Shashtiamsha",
+            "shortName": "D60",
+            "description": "Past-Life Karma",
+            "category": "advanced",
+            "division": 60,
+            "lifeArea": "Past life karma, subtle influences, karmic debts"
+        }
+    ]
+}

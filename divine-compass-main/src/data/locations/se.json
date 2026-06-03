@@ -1,0 +1,42 @@
+{
+  "country": "Sweden",
+  "code": "SE",
+  "states": [
+    {
+      "name": "Stockholm County",
+      "code": "AB",
+      "cities": [
+        {
+          "name": "Stockholm",
+          "lat": 59.3293,
+          "lon": 18.0686,
+          "timezone": "Europe/Stockholm"
+        }
+      ]
+    },
+    {
+      "name": "V\u00e4stra G\u00f6taland",
+      "code": "O",
+      "cities": [
+        {
+          "name": "Gothenburg",
+          "lat": 57.7089,
+          "lon": 11.9746,
+          "timezone": "Europe/Stockholm"
+        }
+      ]
+    },
+    {
+      "name": "Sk\u00e5ne",
+      "code": "M",
+      "cities": [
+        {
+          "name": "Malm\u00f6",
+          "lat": 55.605,
+          "lon": 13.0038,
+          "timezone": "Europe/Stockholm"
+        }
+      ]
+    }
+  ]
+}

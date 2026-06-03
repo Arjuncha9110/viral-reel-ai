@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Divine Panchang | Daily Guidance</title>
+  <meta
+    name="description"
+    content="Daily Panchang, numerology, and practical spiritual guidance with links to YouTube and Instagram."
+  >
+  <style>
+    :root {
+      --bg: #fffaf4;
+      --panel: rgba(255, 255, 255, 0.82);
+      --text: #352117;
+      --muted: #7d6556;
+      --brand: #f58a1f;
+      --brand-dark: #b85d10;
+      --line: rgba(53, 33, 23, 0.08);
+      --shadow: 0 22px 70px rgba(74, 41, 13, 0.08);
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(245, 138, 31, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(244, 189, 117, 0.2), transparent 24%),
+        var(--bg);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 250, 244, 0.9);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 78px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #ff9f3d, #ef7d00);
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 18px 34px rgba(245, 138, 31, 0.28);
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .brand-copy span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    .nav-links a.primary {
+      background: rgba(245, 138, 31, 0.12);
+      color: var(--brand-dark);
+      font-weight: 700;
+    }
+
+    .hero {
+      padding: 74px 0 44px;
+    }
+
+    .hero-card {
+      border: 1px solid rgba(245, 138, 31, 0.12);
+      border-radius: 32px;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(255, 245, 233, 0.95), rgba(255, 255, 255, 0.88)),
+        var(--panel);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 34%, rgba(245, 138, 31, 0.16), transparent 18%),
+        radial-gradient(circle at 82% 26%, rgba(235, 193, 107, 0.24), transparent 18%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 36px;
+      padding: 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(245, 138, 31, 0.09);
+      color: var(--brand-dark);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    h1 {
+      margin: 24px 0 18px;
+      font-size: clamp(48px, 7vw, 86px);
+      line-height: 0.96;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    h1 .accent {
+      color: var(--brand);
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 680px;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 22px;
+      line-height: 1.55;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 34px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 0 24px;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, #ff9d35, #f57900);
+      color: white;
+      box-shadow: 0 22px 34px rgba(245, 121, 0, 0.24);
+    }
+
+    .button.secondary {
+      background: white;
+      border-color: rgba(245, 138, 31, 0.24);
+      color: var(--text);
+    }
+
+    .sri-panel {
+      min-height: 420px;
+      border-radius: 28px;
+      border: 1px solid rgba(53, 33, 23, 0.08);
+      background:
+        radial-gradient(circle at center, rgba(255, 197, 124, 0.3), transparent 28%),
+        linear-gradient(180deg, #fff7ea 0%, #fffefb 100%);
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .sri-panel::before,
+    .sri-panel::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(245, 138, 31, 0.16);
+      border-radius: 24px;
+    }
+
+    .yantra {
+      width: min(84%, 380px);
+      opacity: 0.92;
+      filter: drop-shadow(0 24px 42px rgba(112, 64, 9, 0.12));
+    }
+
+    section {
+      padding: 28px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      margin: 0 auto 30px;
+      max-width: 820px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 10px;
+      font-size: clamp(34px, 4vw, 54px);
+      font-weight: 600;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .guidance {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .checklist {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .tool {
+      min-height: 168px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .tool strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .tool p {
+      margin: 0;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .social-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .social-card {
+      padding: 26px;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,248,241,0.85));
+      box-shadow: var(--shadow);
+    }
+
+    .social-card h3 {
+      margin: 0 0 10px;
+      font-size: 28px;
+    }
+
+    .social-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .footer {
+      padding: 36px 0 64px;
+    }
+
+    .disclaimer {
+      padding: 20px 24px;
+      border: 1px solid rgba(245, 138, 31, 0.14);
+      border-radius: 22px;
+      background: rgba(255, 249, 241, 0.9);
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-inner,
+      .guidance,
+      .social-wrap,
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-inner {
+        padding: 42px 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        align-items: flex-start;
+        padding: 14px 0;
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 46px;
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <div class="brand">
+        <div class="brand-mark">ॐ</div>
+        <div class="brand-copy">
+          <strong>Divine Panchang</strong>
+          <span>Daily Guidance & Numerology</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a class="primary" href="#guidance">Today's Guidance</a>
+        <a href="#tools">Panchang</a>
+        <a href="#tools">Numerology</a>
+        <a href="#social">Watch Daily</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-card">
+        <div class="hero-inner">
+          <div>
+            <div class="eyebrow">Ancient Wisdom, Daily Clarity</div>
+            <h1>Daily Panchang, <span class="accent">Numerology</span>, and Cosmic Guidance</h1>
+            <p>
+              Check today’s panchang, explore numerology insights, and follow practical spiritual guidance
+              designed for daily clarity, reflection, and calm decision-making.
+            </p>
+            <div class="cta-row">
+              <a class="button primary" href="#guidance">Get Today’s Guidance</a>
+              <a class="button secondary" href="#social">Watch Daily Shorts</a>
+            </div>
+          </div>
+
+          <aside class="sri-panel" aria-label="Sri Chakra inspired visual">
+            <svg class="yantra" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="200" r="188" stroke="#D98A28" stroke-opacity="0.24" stroke-width="2"/>
+              <circle cx="200" cy="200" r="162" stroke="#D98A28" stroke-opacity="0.24" stroke-width="2"/>
+              <circle cx="200" cy="200" r="136" stroke="#D98A28" stroke-opacity="0.24" stroke-width="2"/>
+              <polygon points="200,34 343,298 57,298" stroke="#C97A1C" stroke-width="3" fill="none"/>
+              <polygon points="200,366 57,102 343,102" stroke="#C97A1C" stroke-width="3" fill="none"/>
+              <polygon points="200,70 315,286 85,286" stroke="#E3A14D" stroke-width="2.5" fill="none"/>
+              <polygon points="200,330 85,114 315,114" stroke="#E3A14D" stroke-width="2.5" fill="none"/>
+              <polygon points="200,104 289,274 111,274" stroke="#F2B86F" stroke-width="2.2" fill="none"/>
+              <polygon points="200,296 111,126 289,126" stroke="#F2B86F" stroke-width="2.2" fill="none"/>
+              <polygon points="200,138 261,258 139,258" stroke="#F7CC93" stroke-width="2" fill="none"/>
+              <polygon points="200,262 139,142 261,142" stroke="#F7CC93" stroke-width="2" fill="none"/>
+              <circle cx="200" cy="200" r="14" fill="#F58A1F"/>
+            </svg>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="guidance">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Today’s Guidance</h2>
+          <p>
+            Start your day with a quick spiritual check-in. Explore today’s panchang, one practical insight,
+            and one simple remedy to move with more clarity and intention.
+          </p>
+        </div>
+
+        <div class="guidance">
+          <article class="card">
+            <h3>Daily Spiritual Check-In</h3>
+            <p>
+              Before you make a big decision today, check your panchang timing, emotional rhythm, and one
+              small action that helps you stay grounded.
+            </p>
+            <ul class="checklist">
+              <li>Today’s Panchang and timing signal</li>
+              <li>One practical action for the day</li>
+              <li>One calm remedy or ritual habit</li>
+              <li>One thing to avoid when emotions are high</li>
+            </ul>
+            <div class="cta-row">
+              <a class="button primary" href="#">View Today’s Panchang</a>
+              <a class="button secondary" href="#social">Watch Today’s Short</a>
+            </div>
+          </article>
+
+          <aside class="card">
+            <h3>Built for Daily Use</h3>
+            <p>
+              This page is intentionally separate from the travel reel workflow so the Divine Panchang brand
+              can grow as its own habit-driven destination.
+            </p>
+            <p>
+              The goal is simple: daily clarity, repeat visits, and clean pathways to YouTube, Instagram,
+              tools, and future premium guidance.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="tools">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Sacred Tools for Your Journey</h2>
+          <p>
+            Explore Vedic tools designed to help you understand timing, numerology, and spiritual rhythms in everyday life.
+          </p>
+        </div>
+
+        <div class="mini-grid">
+          <div class="tool">
+            <strong>Daily Panchang</strong>
+            <p>Check auspicious timing, daily spiritual rhythm, and fast-reference guidance.</p>
+          </div>
+          <div class="tool">
+            <strong>Numerology</strong>
+            <p>Understand your numbers and use them as a reflection tool for daily awareness.</p>
+          </div>
+          <div class="tool">
+            <strong>Festivals & Vrat</strong>
+            <p>Learn the meaning, timing, and simple observances for major spiritual dates.</p>
+          </div>
+          <div class="tool">
+            <strong>Dasha Calculator</strong>
+            <p>Explore timing cycles with context and clarity, without fear-driven framing.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="social">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Follow Divine Panchang Daily</h2>
+          <p>
+            Get daily shorts on panchang, horoscope-style guidance, festivals, remedies, and numerology on YouTube and Instagram.
+          </p>
+        </div>
+
+        <div class="social-wrap">
+          <div class="social-card">
+            <h3>YouTube</h3>
+            <p>
+              Watch daily shorts with panchang guidance, simple remedies, and practical spiritual content
+              designed for repeat viewing and sharing.
+            </p>
+            <a class="button primary" href="https://www.youtube.com" target="_blank" rel="noreferrer">Watch Daily on YouTube</a>
+          </div>
+
+          <div class="social-card">
+            <h3>Instagram</h3>
+            <p>
+              Follow short daily reels built for saves, shares, and habit-forming guidance around energy,
+              timing, and spiritual reflection.
+            </p>
+            <a class="button secondary" href="https://www.instagram.com" target="_blank" rel="noreferrer">Follow on Instagram</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="about" class="footer">
+    <div class="shell">
+      <div class="disclaimer">
+        Divine Panchang offers spiritual and reflective guidance for personal use. It does not replace
+        medical, legal, financial, or mental health advice.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

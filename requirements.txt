@@ -4,7 +4,8 @@ requests
 imageio
 imageio-ffmpeg
 numpy
-pillow
+pillow>=10.4.0
 proglog
 decorator
-python-dotenv
+openai
+edge-tts

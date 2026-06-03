@@ -1,0 +1,27 @@
+.env
+api_keys.txt
+instagram_env_template.txt
+youtube_client_secret.json
+youtube_token.json
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Generated media
+assets/
+output/
+ai_images/
+inputs/
+effects/
+*.zip
+_pod_xlsx_inspect/
+avatar--*.mp4
+
+# Local model/tool folders
+LivePortrait/
+ffmpeg/
+
+# Local backups and temporary renders
+*.bak
+*TEMP*

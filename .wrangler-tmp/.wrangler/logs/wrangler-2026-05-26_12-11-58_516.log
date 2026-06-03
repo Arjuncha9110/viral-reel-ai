@@ -1,0 +1,91 @@
+
+--- 2026-05-26T12:11:58.820Z debug
+🪵  Writing logs to "D:\Ai reel Agent\.wrangler-tmp\.wrangler\logs\wrangler-2026-05-26_12-11-58_516.log"
+---
+
+--- 2026-05-26T12:11:58.820Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-main\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-26T12:11:58.821Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-main\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-26T12:11:58.833Z log
+
+ ⛅️ wrangler 4.92.0 (update available 4.94.0)
+─────────────────────────────────────────────
+---
+
+--- 2026-05-26T12:11:58.837Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command started","timestamp":1779797518837,"properties":{"amplitude_session_id":1779797518834,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":["projectName"],"argsCombination":"projectName","sanitizedCommand":"pages deploy","sanitizedArgs":{}}}
+---
+
+--- 2026-05-26T12:11:58.871Z debug
+Retrieving cached values for account_id and project_name from node_modules\.cache\wrangler
+---
+
+--- 2026-05-26T12:11:58.887Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects/divine-compass
+---
+
+--- 2026-05-26T12:11:58.887Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T12:11:58.889Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T12:11:58.889Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T12:11:58.889Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-26T12:12:13.921Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command errored","timestamp":1779797533921,"properties":{"amplitude_session_id":1779797518834,"amplitude_event_id":1,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":["projectName"],"argsCombination":"projectName","sanitizedCommand":"pages deploy","sanitizedArgs":{},"durationMs":15096,"errorType":"TypeError"}}
+---
+
+--- 2026-05-26T12:12:13.923Z log
+
+---
+
+--- 2026-05-26T12:12:14.098Z warn
+▲ [WARNING] A fetch request failed, likely due to a connectivity issue.
+
+  
+  Common causes:
+    - No internet connection or network connectivity problems
+    - Firewall or VPN blocking the request
+    - Network proxy configuration issues
+  
+  Please check your network connection and try again.
+
+
+---
+
+--- 2026-05-26T12:12:14.100Z error
+X [ERROR] fetch failed
+
+
+---
+
+--- 2026-05-26T12:12:14.101Z debug
+TypeError: fetch failed
+    at Object.processResponse (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\wrangler-dist\cli.js:24204:21)
+    at C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\wrangler-dist\cli.js:24590:23
+    at node:internal/process/task_queues:150:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:227:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:147:8)
+---
+
+--- 2026-05-26T12:12:14.101Z log
+If you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose
+---
+
+--- 2026-05-26T12:12:14.104Z log
+Note that there is a newer version of Wrangler available (4.94.0). Consider checking whether upgrading resolves this error.
+---

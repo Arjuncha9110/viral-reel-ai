@@ -1,0 +1,132 @@
+{
+  "country": "UAE",
+  "code": "AE",
+  "states": [
+    {
+      "name": "Dubai",
+      "code": "DU",
+      "cities": [
+        {
+          "name": "Dubai",
+          "lat": 25.2048,
+          "lon": 55.2708,
+          "timezone": "Asia/Dubai"
+        },
+        {
+          "name": "Deira",
+          "lat": 25.2697,
+          "lon": 55.3095,
+          "timezone": "Asia/Dubai"
+        },
+        {
+          "name": "Bur Dubai",
+          "lat": 25.2582,
+          "lon": 55.299,
+          "timezone": "Asia/Dubai"
+        },
+        {
+          "name": "Jumeirah",
+          "lat": 25.2285,
+          "lon": 55.2425,
+          "timezone": "Asia/Dubai"
+        },
+        {
+          "name": "Al Quoz",
+          "lat": 25.1591,
+          "lon": 55.2288,
+          "timezone": "Asia/Dubai"
+        }
+      ]
+    },
+    {
+      "name": "Abu Dhabi",
+      "code": "AZ",
+      "cities": [
+        {
+          "name": "Abu Dhabi",
+          "lat": 24.4539,
+          "lon": 54.3773,
+          "timezone": "Asia/Dubai"
+        },
+        {
+          "name": "Al Ain",
+          "lat": 24.2075,
+          "lon": 55.7447,
+          "timezone": "Asia/Dubai"
+        },
+        {
+          "name": "Khalifa City",
+          "lat": 24.4167,
+          "lon": 54.6,
+          "timezone": "Asia/Dubai"
+        }
+      ]
+    },
+    {
+      "name": "Sharjah",
+      "code": "SH",
+      "cities": [
+        {
+          "name": "Sharjah",
+          "lat": 25.3462,
+          "lon": 55.4272,
+          "timezone": "Asia/Dubai"
+        },
+        {
+          "name": "Khor Fakkan",
+          "lat": 25.339,
+          "lon": 56.3573,
+          "timezone": "Asia/Dubai"
+        }
+      ]
+    },
+    {
+      "name": "Ajman",
+      "code": "AJ",
+      "cities": [
+        {
+          "name": "Ajman",
+          "lat": 25.4052,
+          "lon": 55.5136,
+          "timezone": "Asia/Dubai"
+        }
+      ]
+    },
+    {
+      "name": "Ras Al Khaimah",
+      "code": "RK",
+      "cities": [
+        {
+          "name": "Ras Al Khaimah",
+          "lat": 25.7895,
+          "lon": 55.9432,
+          "timezone": "Asia/Dubai"
+        }
+      ]
+    },
+    {
+      "name": "Fujairah",
+      "code": "FU",
+      "cities": [
+        {
+          "name": "Fujairah",
+          "lat": 25.1288,
+          "lon": 56.3265,
+          "timezone": "Asia/Dubai"
+        }
+      ]
+    },
+    {
+      "name": "Umm Al Quwain",
+      "code": "UQ",
+      "cities": [
+        {
+          "name": "Umm Al Quwain",
+          "lat": 25.5647,
+          "lon": 55.5533,
+          "timezone": "Asia/Dubai"
+        }
+      ]
+    }
+  ]
+}

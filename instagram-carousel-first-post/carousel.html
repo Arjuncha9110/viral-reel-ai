@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Divine Panchang Instagram Carousel</title>
+  <style>
+    :root {
+      --cream: #f8f1e6;
+      --paper: #fffaf2;
+      --navy: #0f1f3d;
+      --navy-soft: #162a52;
+      --saffron: #ff8c1a;
+      --gold: #d8bc7a;
+      --text: #2c221e;
+      --muted: #6b5d55;
+      --line: rgba(15, 31, 61, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1080px;
+      height: 1350px;
+      overflow: hidden;
+      background: var(--cream);
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+    }
+
+    body {
+      position: relative;
+      background:
+        radial-gradient(circle at top right, rgba(255, 176, 68, 0.16), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(15, 31, 61, 0.08), transparent 26%),
+        linear-gradient(180deg, #fffaf4 0%, #f7efe4 100%);
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(216, 188, 122, 0.16) 1px, transparent 0);
+      background-size: 48px 48px;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 34px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand img {
+      width: 76px;
+      height: 76px;
+      border-radius: 22px;
+      border: 3px solid rgba(216, 188, 122, 0.4);
+      background: var(--navy);
+      box-shadow: 0 18px 36px rgba(15, 31, 61, 0.18);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-text h1,
+    .brand-text p {
+      margin: 0;
+    }
+
+    .brand-text h1 {
+      font-size: 28px;
+      line-height: 1.1;
+      color: var(--navy);
+    }
+
+    .brand-text p {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 15px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .badge {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255, 140, 26, 0.1);
+      color: var(--saffron);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      gap: 26px;
+      padding: 8px 0;
+    }
+
+    .eyebrow {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--saffron);
+    }
+
+    .title {
+      margin: 0;
+      max-width: 860px;
+      font-size: 76px;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      color: var(--navy);
+    }
+
+    .title .accent {
+      color: var(--saffron);
+    }
+
+    .subtitle {
+      margin: 0;
+      max-width: 760px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 28px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .panel {
+      position: relative;
+      z-index: 2;
+      padding: 34px 36px;
+      border-radius: 32px;
+      border: 1px solid rgba(216, 188, 122, 0.32);
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 24px 54px rgba(15, 31, 61, 0.08);
+      backdrop-filter: blur(8px);
+    }
+
+    .panel.dark {
+      background: linear-gradient(180deg, #102143 0%, #0c1730 100%);
+      color: #fff8eb;
+      border-color: rgba(216, 188, 122, 0.24);
+    }
+
+    .panel.dark .list-item,
+    .panel.dark .mini-copy,
+    .panel.dark .quote {
+      color: rgba(255, 248, 235, 0.88);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .list-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 24px;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    .bullet {
+      width: 16px;
+      height: 16px;
+      margin-top: 8px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--saffron) 0%, #ffb255 100%);
+      box-shadow: 0 0 0 6px rgba(255, 140, 26, 0.09);
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-card {
+      padding: 18px 20px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .mini-label {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--saffron);
+    }
+
+    .mini-copy {
+      margin-top: 8px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 20px;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    .quote {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 24px;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .steps {
+      display: grid;
+      gap: 18px;
+      margin-top: 4px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 18px;
+      align-items: center;
+      padding: 18px 22px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.84);
+      border: 1px solid rgba(216, 188, 122, 0.3);
+    }
+
+    .step-number {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy-soft) 100%);
+      color: #fff7eb;
+      font-size: 30px;
+      font-weight: 700;
+    }
+
+    .step-copy {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 24px;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .footer {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .handle {
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .swipe {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(15, 31, 61, 0.08);
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .cta-band {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 28px 32px;
+      border-radius: 30px;
+      background: linear-gradient(90deg, var(--navy) 0%, #1a2f5e 100%);
+      color: #fff8eb;
+      box-shadow: 0 24px 48px rgba(15, 31, 61, 0.18);
+    }
+
+    .cta-title {
+      margin: 0;
+      font-size: 50px;
+      line-height: 1;
+      color: #fff8eb;
+    }
+
+    .cta-copy {
+      margin-top: 10px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 23px;
+      line-height: 1.45;
+      color: rgba(255, 248, 235, 0.86);
+    }
+
+    .cta-chip {
+      flex: 0 0 auto;
+      padding: 18px 22px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, var(--saffron) 0%, #ffb248 100%);
+      color: white;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      text-align: center;
+      min-width: 240px;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="topbar">
+      <div class="brand">
+        <img src="../divine-compass-antigravity-recovered/public/logo-srichakra.png" alt="Divine Panchang logo" />
+        <div class="brand-text">
+          <h1>Divine Panchang</h1>
+          <p>Daily Guidance &amp; Numerology</p>
+        </div>
+      </div>
+      <div class="badge" id="badge">Slide 1 of 7</div>
+    </div>
+
+    <div class="hero" id="hero"></div>
+
+    <div class="footer">
+      <div class="handle">@divinepanchang.space</div>
+      <div class="swipe" id="swipe">Swipe →</div>
+    </div>
+  </div>
+
+  <script>
+    const slides = [
+      {
+        badge: "Slide 1 of 7",
+        swipe: "Swipe →",
+        html: `
+          <div class="eyebrow">Welcome to the page</div>
+          <h2 class="title">Daily Panchang, Kundali <span class="accent">&amp; Numerology</span></h2>
+          <p class="subtitle">A calm, premium space for practical Vedic guidance you can actually use every day.</p>
+          <div class="panel dark">
+            <div class="quote">Not fear-based astrology. Not clutter. Just clear spiritual timing, chart insight, and daily reflection.</div>
+          </div>
+        `
+      },
+      {
+        badge: "Slide 2 of 7",
+        swipe: "Keep going →",
+        html: `
+          <div class="eyebrow">Why follow Divine Panchang?</div>
+          <h2 class="title">For <span class="accent">daily clarity</span>, better timing, and grounded spiritual guidance.</h2>
+          <div class="two-col">
+            <div class="panel">
+              <div class="list">
+                <div class="list-item"><span class="bullet"></span><span>Know the day’s spiritual rhythm before major actions.</span></div>
+                <div class="list-item"><span class="bullet"></span><span>Understand chart timing without getting overwhelmed.</span></div>
+                <div class="list-item"><span class="bullet"></span><span>Build a repeatable daily ritual around guidance and reflection.</span></div>
+              </div>
+            </div>
+            <div class="stack">
+              <div class="mini-card"><div class="mini-label">Tone</div><div class="mini-copy">calm, practical, devotional</div></div>
+              <div class="mini-card"><div class="mini-label">Focus</div><div class="mini-copy">timing, remedies, awareness</div></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        badge: "Slide 3 of 7",
+        swipe: "Next →",
+        html: `
+          <div class="eyebrow">What is Panchang?</div>
+          <h2 class="title">Your daily <span class="accent">cosmic calendar</span></h2>
+          <p class="subtitle">Panchang helps you understand the day through five key layers of Vedic timing.</p>
+          <div class="panel">
+            <div class="list">
+              <div class="list-item"><span class="bullet"></span><span><strong>Tithi</strong> — the lunar day and emotional tone</span></div>
+              <div class="list-item"><span class="bullet"></span><span><strong>Nakshatra</strong> — the star-field influence</span></div>
+              <div class="list-item"><span class="bullet"></span><span><strong>Yoga</strong> — the day’s combined energetic pattern</span></div>
+              <div class="list-item"><span class="bullet"></span><span><strong>Karana</strong> — the action quality of the moment</span></div>
+              <div class="list-item"><span class="bullet"></span><span><strong>Muhurat context</strong> — when to move carefully or confidently</span></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        badge: "Slide 4 of 7",
+        swipe: "More value →",
+        html: `
+          <div class="eyebrow">What you’ll get here</div>
+          <h2 class="title">One page for your <span class="accent">daily Vedic toolkit</span></h2>
+          <div class="two-col">
+            <div class="panel">
+              <div class="list">
+                <div class="list-item"><span class="bullet"></span><span>Daily Panchang guidance</span></div>
+                <div class="list-item"><span class="bullet"></span><span>Janam Kundali chart insights</span></div>
+                <div class="list-item"><span class="bullet"></span><span>Sade Sati timing awareness</span></div>
+                <div class="list-item"><span class="bullet"></span><span>Dasha cycle understanding</span></div>
+                <div class="list-item"><span class="bullet"></span><span>Name and birth numerology</span></div>
+              </div>
+            </div>
+            <div class="panel dark">
+              <div class="mini-label">Built for repeat visits</div>
+              <div class="cta-copy">The goal is not one-time curiosity. It’s a daily relationship with timing, pattern, and reflection.</div>
+            </div>
+          </div>
+        `
+      },
+      {
+        badge: "Slide 5 of 7",
+        swipe: "Almost there →",
+        html: `
+          <div class="eyebrow">Who this is for</div>
+          <h2 class="title">People who want <span class="accent">practical Vedic guidance</span> without the noise.</h2>
+          <div class="panel">
+            <div class="steps">
+              <div class="step"><div class="step-number">1</div><div class="step-copy">You want timing guidance before important actions, travel, rituals, or decisions.</div></div>
+              <div class="step"><div class="step-number">2</div><div class="step-copy">You want spiritual structure, not manipulative fear-based predictions.</div></div>
+              <div class="step"><div class="step-number">3</div><div class="step-copy">You want a page you can return to daily for clarity, pattern, and perspective.</div></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        badge: "Slide 6 of 7",
+        swipe: "Final slide →",
+        html: `
+          <div class="eyebrow">How to use this page daily</div>
+          <h2 class="title">A simple <span class="accent">3-minute ritual</span></h2>
+          <div class="panel">
+            <div class="steps">
+              <div class="step"><div class="step-number">1</div><div class="step-copy">Check the day’s Panchang before your schedule gets busy.</div></div>
+              <div class="step"><div class="step-number">2</div><div class="step-copy">Notice one caution and one favorable direction for the day.</div></div>
+              <div class="step"><div class="step-number">3</div><div class="step-copy">Follow one simple remedy: prayer, silence, journaling, or lighting a diya.</div></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        badge: "Slide 7 of 7",
+        swipe: "Save & follow",
+        html: `
+          <div class="eyebrow">Start here</div>
+          <div class="cta-band">
+            <div>
+              <h2 class="cta-title">Follow Divine Panchang</h2>
+              <div class="cta-copy">Save this post, share it with someone spiritual in your family, and come back daily for Panchang, Kundali, Dasha, Sade Sati, and numerology guidance.</div>
+            </div>
+            <div class="cta-chip">Save • Share • Follow</div>
+          </div>
+          <div class="panel" style="margin-top: 22px;">
+            <div class="quote">Daily spiritual guidance for modern life — calm, clear, and rooted.</div>
+          </div>
+        `
+      }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const rawSlide = Number(params.get("slide") || "1");
+    const slideIndex = Math.min(Math.max(rawSlide, 1), slides.length) - 1;
+    const slide = slides[slideIndex];
+
+    document.getElementById("badge").textContent = slide.badge;
+    document.getElementById("swipe").textContent = slide.swipe;
+    document.getElementById("hero").innerHTML = slide.html;
+  </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+
+--- 2026-05-25T13:01:27.106Z debug
+🪵  Writing logs to "D:\Ai reel Agent\.wrangler-tmp\.wrangler\logs\wrangler-2026-05-25_13-01-26_864.log"
+---
+
+--- 2026-05-25T13:01:27.105Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-pages-test\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T13:01:27.106Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-pages-test\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T13:01:27.119Z log
+
+ ⛅️ wrangler 4.92.0 (update available 4.94.0)
+─────────────────────────────────────────────
+---
+
+--- 2026-05-25T13:01:27.122Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command started","timestamp":1779714087122,"properties":{"amplitude_session_id":1779714087120,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":[],"argsCombination":"","sanitizedCommand":"pages project create","sanitizedArgs":{}}}
+---
+
+--- 2026-05-25T13:01:27.157Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts
+---
+
+--- 2026-05-25T13:01:27.157Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:27.158Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:27.158Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:27.158Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T13:01:27.160Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/memberships
+---
+
+--- 2026-05-25T13:01:27.160Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:27.160Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:27.160Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:27.160Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T13:01:27.871Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T13:01:27.872Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:27.872Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:27.872Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T13:01:29.229Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T13:01:29.229Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:29.230Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:29.230Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T13:01:29.232Z debug
+Saving to cache: {"account":{"id":"8a97ba904bc5bcdb34042cf2f5443825","name":"Arjunchandru9110@gmail.com's Account"}}
+---
+
+--- 2026-05-25T13:01:29.234Z debug
+pages project create: Detecting git repository for production branch suggestion...
+---
+
+--- 2026-05-25T13:01:29.286Z debug
+pages project create: Git repository detected
+---
+
+--- 2026-05-25T13:01:29.333Z debug
+pages project create: Detected branch for suggestion: "main"
+---
+
+--- 2026-05-25T13:01:34.203Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects
+---
+
+--- 2026-05-25T13:01:34.203Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:34.204Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:34.204Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:34.204Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T13:01:38.103Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T13:01:38.104Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:38.104Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T13:01:38.104Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T13:01:38.106Z debug
+Saving to cache: {"account_id":"8a97ba904bc5bcdb34042cf2f5443825","project_name":"divine-compass-staging"}
+---
+
+--- 2026-05-25T13:01:38.107Z log
+✨ Successfully created the 'divine-compass-staging' project. It will be available at https://divine-compass-staging.pages.dev/ once you create your first deployment.
+---
+
+--- 2026-05-25T13:01:38.109Z log
+To deploy a folder of assets, run 'wrangler pages deploy [directory]'.
+---
+
+--- 2026-05-25T13:01:38.111Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"create pages project","timestamp":1779714098111,"properties":{"amplitude_session_id":1779714098109,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"category":"Workers","os":"win32:x64"}}
+---
+
+--- 2026-05-25T13:01:38.115Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command completed","timestamp":1779714098114,"properties":{"amplitude_session_id":1779714087120,"amplitude_event_id":1,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":[],"argsCombination":"","sanitizedCommand":"pages project create","sanitizedArgs":{},"durationMs":11005}}
+---

@@ -1,0 +1,120 @@
+[
+    {
+        "duration": 3.19,
+        "beat": "hook",
+        "voice": "Japan is the kind of trip where every small moment feels like a scene you want to replay.",
+        "visual": "tokyo neon street",
+        "visual_queries": [
+            "tokyo neon street",
+            "shibuya crossing",
+            "tokyo city lights"
+        ],
+        "caption": "JAPAN FEELS UNREAL",
+        "destination": "Japan"
+    },
+    {
+        "duration": 3.99,
+        "beat": "detail",
+        "voice": "Tokyo hits first with neon streets, late-night energy, and corners that feel alive.",
+        "visual": "tokyo neon street",
+        "visual_queries": [
+            "tokyo neon street",
+            "shibuya crossing",
+            "tokyo city lights"
+        ],
+        "caption": "TOKYO AFTER DARK",
+        "destination": "Japan"
+    },
+    {
+        "duration": 3.99,
+        "beat": "detail",
+        "voice": "Then Mount Fuji slows everything down with a view that feels almost unreal.",
+        "visual": "mount fuji view",
+        "visual_queries": [
+            "mount fuji view",
+            "fuji sunrise",
+            "japan mountain landscape"
+        ],
+        "caption": "FUJI FEELS QUIET",
+        "destination": "Japan"
+    },
+    {
+        "duration": 3.99,
+        "beat": "detail",
+        "voice": "The bullet train turns the journey itself into part of the experience.",
+        "visual": "japan bullet train",
+        "visual_queries": [
+            "japan bullet train",
+            "shinkansen train",
+            "train station japan"
+        ],
+        "caption": "RIDE THE FUTURE",
+        "destination": "Japan"
+    },
+    {
+        "duration": 3.99,
+        "beat": "detail",
+        "voice": "Kyoto brings the quiet side of the trip, temples, old streets, and a slower kind of beauty.",
+        "visual": "kyoto temple",
+        "visual_queries": [
+            "kyoto temple",
+            "japan shrine",
+            "kyoto old street"
+        ],
+        "caption": "KYOTO SLOWS TIME",
+        "destination": "Japan"
+    },
+    {
+        "duration": 3.99,
+        "beat": "detail",
+        "voice": "From local food spots to night markets, the flavors make every hour feel memorable.",
+        "visual": "japan food night market",
+        "visual_queries": [
+            "japan food night market",
+            "japan food",
+            "japan night market",
+            "japan restaurant"
+        ],
+        "caption": "EVERY BITE HITS",
+        "destination": "Japan"
+    },
+    {
+        "duration": 3.99,
+        "beat": "detail",
+        "voice": "And the best stays make the whole trip feel premium without losing the emotion.",
+        "visual": "japan luxury hotel",
+        "visual_queries": [
+            "japan luxury hotel",
+            "japan hotel pool",
+            "luxury hotel room"
+        ],
+        "caption": "PREMIUM BUT REAL",
+        "destination": "Japan"
+    },
+    {
+        "duration": 3.99,
+        "beat": "payoff",
+        "voice": "Tokyo hits first with neon streets, late-night energy, and corners that feel alive.",
+        "visual": "japan tokyo neon street",
+        "visual_queries": [
+            "japan tokyo neon street",
+            "japan tokyo neon street travel",
+            "japan tokyo neon street cinematic"
+        ],
+        "caption": "TOKYO AFTER DARK",
+        "destination": "Japan"
+    },
+    {
+        "duration": 3.88,
+        "beat": "cta",
+        "voice": "Save this Japan itinerary before you book",
+        "visual": "japan tokyo neon street",
+        "visual_queries": [
+            "japan tokyo neon street",
+            "japan tokyo neon street travel",
+            "japan tokyo neon street cinematic"
+        ],
+        "caption": "SAVE THIS ITINERARY",
+        "destination": "Japan"
+    }
+]

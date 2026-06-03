@@ -1,0 +1,36 @@
+{
+  "country": "Fiji",
+  "code": "FJ",
+  "states": [
+    {
+      "name": "Central Division",
+      "code": "C",
+      "cities": [
+        {
+          "name": "Suva",
+          "lat": -18.1416,
+          "lon": 178.4419,
+          "timezone": "Pacific/Fiji"
+        }
+      ]
+    },
+    {
+      "name": "Western Division",
+      "code": "W",
+      "cities": [
+        {
+          "name": "Nadi",
+          "lat": -17.8,
+          "lon": 177.4167,
+          "timezone": "Pacific/Fiji"
+        },
+        {
+          "name": "Lautoka",
+          "lat": -17.6167,
+          "lon": 177.45,
+          "timezone": "Pacific/Fiji"
+        }
+      ]
+    }
+  ]
+}

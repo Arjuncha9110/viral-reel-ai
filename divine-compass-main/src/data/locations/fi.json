@@ -1,0 +1,36 @@
+{
+  "country": "Finland",
+  "code": "FI",
+  "states": [
+    {
+      "name": "Uusimaa",
+      "code": "18",
+      "cities": [
+        {
+          "name": "Helsinki",
+          "lat": 60.1699,
+          "lon": 24.9384,
+          "timezone": "Europe/Helsinki"
+        },
+        {
+          "name": "Espoo",
+          "lat": 60.2052,
+          "lon": 24.6522,
+          "timezone": "Europe/Helsinki"
+        }
+      ]
+    },
+    {
+      "name": "Pirkanmaa",
+      "code": "11",
+      "cities": [
+        {
+          "name": "Tampere",
+          "lat": 61.4978,
+          "lon": 23.761,
+          "timezone": "Europe/Helsinki"
+        }
+      ]
+    }
+  ]
+}

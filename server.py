@@ -1,36 +1,115 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 import subprocess
+import uuid
 import os
+import shutil
 
 app = FastAPI()
 
+# ---------- CORS ----------
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ---------- ROOT ----------
+
 @app.get("/")
 def home():
+
     return {
-        "message": "AI Reel Generator API Running"
+        "status": "running",
+        "message": "AI Reel Generator API"
     }
+
+# ---------- GENERATE ----------
 
 @app.get("/generate")
 def generate_reel(topic: str):
 
-    # SAVE TOPIC
-    with open("topic.txt", "w", encoding="utf-8") as f:
-        f.write(topic)
+    try:
 
-    # RUN AI PIPELINE
-    subprocess.run(["python", "create_reel.py"])
+        # ---------- UNIQUE ID ----------
 
-    video_path = "output/final_reel.mp4"
+        reel_id = str(uuid.uuid4())[:8]
 
-    # CHECK OUTPUT
-    if os.path.exists(video_path):
-        return FileResponse(
-            video_path,
-            media_type="video/mp4",
-            filename="final_reel.mp4"
+        print(f"\n🔥 Generating reel for: {topic}")
+
+        # ---------- SAVE TOPIC ----------
+
+        with open(
+            "topic.txt",
+            "w",
+            encoding="utf-8"
+        ) as f:
+
+            f.write(topic)
+
+        # ---------- RUN PIPELINE ----------
+
+        result = subprocess.run(
+            ["py", "-3.14", "create_reel.py"],
+            capture_output=True,
+            text=True
         )
 
-    return {
-        "error": "Video generation failed"
-    }
+        print(result.stdout)
+        print(result.stderr)
+
+        # ---------- FIND OUTPUT ----------
+
+        output_folder = "output"
+
+        files = [
+
+            os.path.join(output_folder, f)
+
+            for f in os.listdir(output_folder)
+
+            if f.endswith(".mp4")
+
+        ]
+
+        if len(files) == 0:
+
+            return {
+                "error": "No video generated"
+            }
+
+        latest_video = max(
+            files,
+            key=os.path.getctime
+        )
+
+        # ---------- UNIQUE OUTPUT ----------
+
+        final_output = (
+            f"output/{topic}_{reel_id}.mp4"
+        )
+
+        shutil.copy(
+            latest_video,
+            final_output
+        )
+
+        print(f"✅ Saved: {final_output}")
+
+        # ---------- RETURN VIDEO ----------
+
+        return FileResponse(
+            final_output,
+            media_type="video/mp4",
+            filename=f"{topic}.mp4"
+        )
+
+    except Exception as e:
+
+        return {
+            "error": str(e)
+        }

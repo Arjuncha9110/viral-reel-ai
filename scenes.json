@@ -1,0 +1,111 @@
+[
+    {
+        "query": "tokyo neon street",
+        "queries": [
+            "tokyo neon street",
+            "shibuya crossing",
+            "tokyo city lights"
+        ],
+        "duration": 3.19,
+        "beat": "hook",
+        "caption": "JAPAN FEELS UNREAL",
+        "destination": "Japan"
+    },
+    {
+        "query": "tokyo neon street",
+        "queries": [
+            "tokyo neon street",
+            "shibuya crossing",
+            "tokyo city lights"
+        ],
+        "duration": 3.99,
+        "beat": "detail",
+        "caption": "TOKYO AFTER DARK",
+        "destination": "Japan"
+    },
+    {
+        "query": "mount fuji view",
+        "queries": [
+            "mount fuji view",
+            "fuji sunrise",
+            "japan mountain landscape"
+        ],
+        "duration": 3.99,
+        "beat": "detail",
+        "caption": "FUJI FEELS QUIET",
+        "destination": "Japan"
+    },
+    {
+        "query": "japan bullet train",
+        "queries": [
+            "japan bullet train",
+            "shinkansen train",
+            "train station japan"
+        ],
+        "duration": 3.99,
+        "beat": "detail",
+        "caption": "RIDE THE FUTURE",
+        "destination": "Japan"
+    },
+    {
+        "query": "kyoto temple",
+        "queries": [
+            "kyoto temple",
+            "japan shrine",
+            "kyoto old street"
+        ],
+        "duration": 3.99,
+        "beat": "detail",
+        "caption": "KYOTO SLOWS TIME",
+        "destination": "Japan"
+    },
+    {
+        "query": "japan food night market",
+        "queries": [
+            "japan food night market",
+            "japan food",
+            "japan night market",
+            "japan restaurant"
+        ],
+        "duration": 3.99,
+        "beat": "detail",
+        "caption": "EVERY BITE HITS",
+        "destination": "Japan"
+    },
+    {
+        "query": "japan luxury hotel",
+        "queries": [
+            "japan luxury hotel",
+            "japan hotel pool",
+            "luxury hotel room"
+        ],
+        "duration": 3.99,
+        "beat": "detail",
+        "caption": "PREMIUM BUT REAL",
+        "destination": "Japan"
+    },
+    {
+        "query": "japan tokyo neon street",
+        "queries": [
+            "japan tokyo neon street",
+            "japan tokyo neon street travel",
+            "japan tokyo neon street cinematic"
+        ],
+        "duration": 3.99,
+        "beat": "payoff",
+        "caption": "TOKYO AFTER DARK",
+        "destination": "Japan"
+    },
+    {
+        "query": "japan tokyo neon street",
+        "queries": [
+            "japan tokyo neon street",
+            "japan tokyo neon street travel",
+            "japan tokyo neon street cinematic"
+        ],
+        "duration": 3.88,
+        "beat": "cta",
+        "caption": "SAVE THIS ITINERARY",
+        "destination": "Japan"
+    }
+]

@@ -1,0 +1,30 @@
+{
+  "country": "Trinidad and Tobago",
+  "code": "TT",
+  "states": [
+    {
+      "name": "Port of Spain",
+      "code": "POS",
+      "cities": [
+        {
+          "name": "Port of Spain",
+          "lat": 10.6596,
+          "lon": -61.5086,
+          "timezone": "America/Port_of_Spain"
+        }
+      ]
+    },
+    {
+      "name": "San Fernando",
+      "code": "SFO",
+      "cities": [
+        {
+          "name": "San Fernando",
+          "lat": 10.2796,
+          "lon": -61.4678,
+          "timezone": "America/Port_of_Spain"
+        }
+      ]
+    }
+  ]
+}

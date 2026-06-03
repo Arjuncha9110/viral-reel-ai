@@ -1,0 +1,72 @@
+{
+  "country": "New Zealand",
+  "code": "NZ",
+  "states": [
+    {
+      "name": "Auckland",
+      "code": "AUK",
+      "cities": [
+        {
+          "name": "Auckland",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "timezone": "Pacific/Auckland"
+        },
+        {
+          "name": "Manukau",
+          "lat": -36.9935,
+          "lon": 174.8794,
+          "timezone": "Pacific/Auckland"
+        },
+        {
+          "name": "North Shore",
+          "lat": -36.7954,
+          "lon": 174.7282,
+          "timezone": "Pacific/Auckland"
+        }
+      ]
+    },
+    {
+      "name": "Wellington",
+      "code": "WGN",
+      "cities": [
+        {
+          "name": "Wellington",
+          "lat": -41.2865,
+          "lon": 174.7762,
+          "timezone": "Pacific/Auckland"
+        },
+        {
+          "name": "Lower Hutt",
+          "lat": -41.2119,
+          "lon": 174.8998,
+          "timezone": "Pacific/Auckland"
+        }
+      ]
+    },
+    {
+      "name": "Canterbury",
+      "code": "CAN",
+      "cities": [
+        {
+          "name": "Christchurch",
+          "lat": -43.5321,
+          "lon": 172.6362,
+          "timezone": "Pacific/Auckland"
+        }
+      ]
+    },
+    {
+      "name": "Waikato",
+      "code": "WKO",
+      "cities": [
+        {
+          "name": "Hamilton",
+          "lat": -37.787,
+          "lon": 175.2793,
+          "timezone": "Pacific/Auckland"
+        }
+      ]
+    }
+  ]
+}

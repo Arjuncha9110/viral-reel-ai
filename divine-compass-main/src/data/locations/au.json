@@ -1,0 +1,198 @@
+{
+  "country": "Australia",
+  "code": "AU",
+  "states": [
+    {
+      "name": "New South Wales",
+      "code": "NSW",
+      "cities": [
+        {
+          "name": "Sydney",
+          "lat": -33.8688,
+          "lon": 151.2093,
+          "timezone": "Australia/Sydney"
+        },
+        {
+          "name": "Newcastle",
+          "lat": -32.9267,
+          "lon": 151.7789,
+          "timezone": "Australia/Sydney"
+        },
+        {
+          "name": "Wollongong",
+          "lat": -34.4278,
+          "lon": 150.8931,
+          "timezone": "Australia/Sydney"
+        },
+        {
+          "name": "Parramatta",
+          "lat": -33.815,
+          "lon": 151.0011,
+          "timezone": "Australia/Sydney"
+        },
+        {
+          "name": "Penrith",
+          "lat": -33.7511,
+          "lon": 150.6942,
+          "timezone": "Australia/Sydney"
+        }
+      ]
+    },
+    {
+      "name": "Victoria",
+      "code": "VIC",
+      "cities": [
+        {
+          "name": "Melbourne",
+          "lat": -37.8136,
+          "lon": 144.9631,
+          "timezone": "Australia/Melbourne"
+        },
+        {
+          "name": "Geelong",
+          "lat": -38.1499,
+          "lon": 144.3617,
+          "timezone": "Australia/Melbourne"
+        },
+        {
+          "name": "Ballarat",
+          "lat": -37.5622,
+          "lon": 143.8503,
+          "timezone": "Australia/Melbourne"
+        },
+        {
+          "name": "Bendigo",
+          "lat": -36.757,
+          "lon": 144.2794,
+          "timezone": "Australia/Melbourne"
+        }
+      ]
+    },
+    {
+      "name": "Queensland",
+      "code": "QLD",
+      "cities": [
+        {
+          "name": "Brisbane",
+          "lat": -27.4698,
+          "lon": 153.0251,
+          "timezone": "Australia/Brisbane"
+        },
+        {
+          "name": "Gold Coast",
+          "lat": -28.0167,
+          "lon": 153.4,
+          "timezone": "Australia/Brisbane"
+        },
+        {
+          "name": "Cairns",
+          "lat": -16.9186,
+          "lon": 145.7781,
+          "timezone": "Australia/Brisbane"
+        },
+        {
+          "name": "Townsville",
+          "lat": -19.259,
+          "lon": 146.8169,
+          "timezone": "Australia/Brisbane"
+        },
+        {
+          "name": "Sunshine Coast",
+          "lat": -26.65,
+          "lon": 153.0667,
+          "timezone": "Australia/Brisbane"
+        }
+      ]
+    },
+    {
+      "name": "Western Australia",
+      "code": "WA",
+      "cities": [
+        {
+          "name": "Perth",
+          "lat": -31.9505,
+          "lon": 115.8605,
+          "timezone": "Australia/Perth"
+        },
+        {
+          "name": "Fremantle",
+          "lat": -32.0569,
+          "lon": 115.7439,
+          "timezone": "Australia/Perth"
+        },
+        {
+          "name": "Bunbury",
+          "lat": -33.3271,
+          "lon": 115.6414,
+          "timezone": "Australia/Perth"
+        }
+      ]
+    },
+    {
+      "name": "South Australia",
+      "code": "SA",
+      "cities": [
+        {
+          "name": "Adelaide",
+          "lat": -34.9285,
+          "lon": 138.6007,
+          "timezone": "Australia/Adelaide"
+        },
+        {
+          "name": "Mount Gambier",
+          "lat": -37.8295,
+          "lon": 140.783,
+          "timezone": "Australia/Adelaide"
+        }
+      ]
+    },
+    {
+      "name": "Australian Capital Territory",
+      "code": "ACT",
+      "cities": [
+        {
+          "name": "Canberra",
+          "lat": -35.2809,
+          "lon": 149.13,
+          "timezone": "Australia/Sydney"
+        }
+      ]
+    },
+    {
+      "name": "Tasmania",
+      "code": "TAS",
+      "cities": [
+        {
+          "name": "Hobart",
+          "lat": -42.8821,
+          "lon": 147.3272,
+          "timezone": "Australia/Hobart"
+        },
+        {
+          "name": "Launceston",
+          "lat": -41.4332,
+          "lon": 147.1441,
+          "timezone": "Australia/Hobart"
+        }
+      ]
+    },
+    {
+      "name": "Northern Territory",
+      "code": "NT",
+      "cities": [
+        {
+          "name": "Darwin",
+          "lat": -12.4634,
+          "lon": 130.8456,
+          "timezone": "Australia/Darwin"
+        },
+        {
+          "name": "Alice Springs",
+          "lat": -23.698,
+          "lon": 133.8807,
+          "timezone": "Australia/Darwin"
+        }
+      ]
+    }
+  ]
+}

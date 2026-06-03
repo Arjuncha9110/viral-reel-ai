@@ -1,0 +1,54 @@
+{
+  "country": "Netherlands",
+  "code": "NL",
+  "states": [
+    {
+      "name": "North Holland",
+      "code": "NH",
+      "cities": [
+        {
+          "name": "Amsterdam",
+          "lat": 52.3676,
+          "lon": 4.9041,
+          "timezone": "Europe/Amsterdam"
+        },
+        {
+          "name": "Haarlem",
+          "lat": 52.3874,
+          "lon": 4.6462,
+          "timezone": "Europe/Amsterdam"
+        }
+      ]
+    },
+    {
+      "name": "South Holland",
+      "code": "ZH",
+      "cities": [
+        {
+          "name": "Rotterdam",
+          "lat": 51.9225,
+          "lon": 4.4792,
+          "timezone": "Europe/Amsterdam"
+        },
+        {
+          "name": "The Hague",
+          "lat": 52.0705,
+          "lon": 4.3007,
+          "timezone": "Europe/Amsterdam"
+        }
+      ]
+    },
+    {
+      "name": "Utrecht",
+      "code": "UT",
+      "cities": [
+        {
+          "name": "Utrecht",
+          "lat": 52.0907,
+          "lon": 5.1214,
+          "timezone": "Europe/Amsterdam"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+
+--- 2026-05-25T13:03:39.026Z debug
+🪵  Writing logs to "D:\Ai reel Agent\.wrangler-tmp\.wrangler\logs\wrangler-2026-05-25_13-03-38_751.log"
+---
+
+--- 2026-05-25T13:03:39.025Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-pages-test\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T13:03:39.027Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-pages-test\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T13:03:39.039Z log
+
+ ⛅️ wrangler 4.92.0 (update available 4.94.0)
+─────────────────────────────────────────────
+---
+
+--- 2026-05-25T13:03:39.045Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command started","timestamp":1779714219045,"properties":{"amplitude_session_id":1779714219042,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":["port"],"argsCombination":"port","sanitizedCommand":"pages dev","sanitizedArgs":{}}}
+---
+
+--- 2026-05-25T13:03:39.084Z debug
+Compiling worker to "D:\Ai reel Agent\divine-compass-pages-test\.wrangler\tmp\pages-QTGo8h\functionsWorker-0.9541916605162393.mjs"...
+---
+
+--- 2026-05-25T13:03:39.294Z log
+✨ Compiled Worker successfully
+---
+
+--- 2026-05-25T13:03:39.297Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"build pages functions","timestamp":1779714219297,"properties":{"amplitude_session_id":1779714219296,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"category":"Workers","os":"win32:x64"}}
+---
+
+--- 2026-05-25T13:03:39.300Z debug
+Retrieving cached values for account_id and project_name from node_modules\.cache\wrangler
+---
+
+--- 2026-05-25T13:03:39.532Z debug
+setting config
+---
+
+--- 2026-05-25T13:03:39.532Z debug
+Updating config... undefined undefined
+---
+
+--- 2026-05-25T13:03:39.548Z debug
+local dev variables file not found at ".dev.vars". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T13:03:39.549Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-pages-test\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T13:03:39.549Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-pages-test\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T13:03:39.551Z log
+Your Worker has access to the following bindings:
+---
+
+--- 2026-05-25T13:03:39.552Z log
+Binding                                                                   Resource                  Mode
+---
+
+--- 2026-05-25T13:03:39.553Z log
+env.CF_PAGES ("1")                                                        Environment Variable      local
+---
+
+--- 2026-05-25T13:03:39.554Z log
+env.CF_PAGES_BRANCH ("main")                                              Environment Variable      local
+---
+
+--- 2026-05-25T13:03:39.554Z log
+env.CF_PAGES_COMMIT_SHA ("d8d3f7ebc71d2e2641914c21ceb8504588455...")      Environment Variable      local
+---
+
+--- 2026-05-25T13:03:39.555Z log
+env.CF_PAGES_URL ("https://d8d3f7e.divine-compass-stagin...")             Environment Variable      local
+---
+
+--- 2026-05-25T13:03:39.555Z log
+
+---
+
+--- 2026-05-25T13:03:39.594Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"run pages dev","timestamp":1779714219594,"properties":{"amplitude_session_id":1779714219593,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"category":"Workers","os":"win32:x64"}}
+---
+
+--- 2026-05-25T13:03:40.578Z debug
+RemoteRuntimeController teardown beginning...
+---
+
+--- 2026-05-25T13:03:40.578Z debug
+RemoteRuntimeController teardown complete
+---
+
+--- 2026-05-25T13:03:40.587Z log
+⎔ Starting local server...
+---
+
+--- 2026-05-25T13:03:41.056Z error
+X [ERROR] service core:user:903d3cf7-ecb1-4432-b3a8-5f4a3de33b8c: This Worker requires compatibility date "2026-05-25", but the newest date supported by this server binary is "2026-05-22".
+
+
+---
+
+--- 2026-05-25T13:03:41.059Z debug
+Error in LocalRuntimeController: Error reloading local server
+ MiniflareCoreError [ERR_RUNTIME_FAILURE]: The Workers runtime failed to start. There is likely additional logging output above.
+    at #assembleAndUpdateConfig (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\node_modules\miniflare\dist\src\index.js:89177:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Mutex.runWith (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\node_modules\miniflare\dist\src\index.js:58160:48)
+    at async #waitForReady (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\node_modules\miniflare\dist\src\index.js:89290:5)
+    at async #onBundleComplete (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\wrangler-dist\cli.js:313300:33)
+    at async Mutex.runWith (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\node_modules\miniflare\dist\src\index.js:58160:48) {
+  code: 'ERR_RUNTIME_FAILURE',
+  cause: undefined
+}
+---
+
+--- 2026-05-25T13:03:41.059Z debug
+=> Error contextual data: undefined
+---
+
+--- 2026-05-25T13:03:41.060Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command errored","timestamp":1779714221060,"properties":{"amplitude_session_id":1779714219042,"amplitude_event_id":1,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":["port"],"argsCombination":"port","sanitizedCommand":"pages dev","sanitizedArgs":{},"durationMs":2031}}
+---
+
+--- 2026-05-25T13:03:41.062Z log
+
+---
+
+--- 2026-05-25T13:03:41.064Z error
+X [ERROR] The Workers runtime failed to start. There is likely additional logging output above.
+
+
+---
+
+--- 2026-05-25T13:03:41.064Z debug
+MiniflareCoreError [ERR_RUNTIME_FAILURE]: The Workers runtime failed to start. There is likely additional logging output above.
+    at #assembleAndUpdateConfig (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\node_modules\miniflare\dist\src\index.js:89177:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async Mutex.runWith (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\node_modules\miniflare\dist\src\index.js:58160:48)
+    at async #waitForReady (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\node_modules\miniflare\dist\src\index.js:89290:5)
+    at async #onBundleComplete (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\wrangler-dist\cli.js:313300:33)
+    at async Mutex.runWith (C:\Users\win\AppData\Roaming\npm\node_modules\wrangler\node_modules\miniflare\dist\src\index.js:58160:48)
+---
+
+--- 2026-05-25T13:03:41.064Z log
+If you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose
+---
+
+--- 2026-05-25T13:03:41.066Z log
+Note that there is a newer version of Wrangler available (4.94.0). Consider checking whether upgrading resolves this error.
+---
+
+--- 2026-05-25T13:03:41.840Z debug
+[InspectorProxyWorker] handleProxyControllerIncomingMessage {"type":"reloadStart"}
+---

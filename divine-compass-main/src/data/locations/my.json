@@ -1,0 +1,90 @@
+{
+  "country": "Malaysia",
+  "code": "MY",
+  "states": [
+    {
+      "name": "Kuala Lumpur",
+      "code": "KL",
+      "cities": [
+        {
+          "name": "Kuala Lumpur",
+          "lat": 3.139,
+          "lon": 101.6869,
+          "timezone": "Asia/Kuala_Lumpur"
+        },
+        {
+          "name": "Petaling Jaya",
+          "lat": 3.1073,
+          "lon": 101.6067,
+          "timezone": "Asia/Kuala_Lumpur"
+        },
+        {
+          "name": "Cheras",
+          "lat": 3.0891,
+          "lon": 101.7338,
+          "timezone": "Asia/Kuala_Lumpur"
+        }
+      ]
+    },
+    {
+      "name": "Selangor",
+      "code": "SGR",
+      "cities": [
+        {
+          "name": "Shah Alam",
+          "lat": 3.0733,
+          "lon": 101.5185,
+          "timezone": "Asia/Kuala_Lumpur"
+        },
+        {
+          "name": "Subang Jaya",
+          "lat": 3.056,
+          "lon": 101.5801,
+          "timezone": "Asia/Kuala_Lumpur"
+        },
+        {
+          "name": "Klang",
+          "lat": 3.0449,
+          "lon": 101.4488,
+          "timezone": "Asia/Kuala_Lumpur"
+        }
+      ]
+    },
+    {
+      "name": "Penang",
+      "code": "PNG",
+      "cities": [
+        {
+          "name": "George Town",
+          "lat": 5.4141,
+          "lon": 100.3288,
+          "timezone": "Asia/Kuala_Lumpur"
+        },
+        {
+          "name": "Butterworth",
+          "lat": 5.399,
+          "lon": 100.3639,
+          "timezone": "Asia/Kuala_Lumpur"
+        }
+      ]
+    },
+    {
+      "name": "Johor",
+      "code": "JHR",
+      "cities": [
+        {
+          "name": "Johor Bahru",
+          "lat": 1.4927,
+          "lon": 103.7414,
+          "timezone": "Asia/Kuala_Lumpur"
+        },
+        {
+          "name": "Skudai",
+          "lat": 1.5333,
+          "lon": 103.6833,
+          "timezone": "Asia/Kuala_Lumpur"
+        }
+      ]
+    }
+  ]
+}

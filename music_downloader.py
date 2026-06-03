@@ -1,41 +1,98 @@
 import requests
 import os
+import urllib.parse
 
-# Pixabay API Key
-API_KEY = "55861194-e269cf7308c9c39ca1d9481e8"
+# ---------- PIXABAY API ----------
 
-# READ TOPIC
-with open("topic.txt", "r", encoding="utf-8") as f:
+API_KEY = "YOUR_PIXABAY_API_KEY"
+
+# ---------- READ TOPIC ----------
+
+with open(
+    "topic.txt",
+    "r",
+    encoding="utf-8"
+) as f:
+
     topic = f.read().strip()
 
-# SMART MUSIC SEARCH
-if "dubai" in topic.lower():
-    music_query = "luxury cinematic"
-elif "tokyo" in topic.lower():
-    music_query = "cyberpunk electronic"
-elif "beach" in topic.lower() or "bali" in topic.lower():
-    music_query = "tropical chill"
-else:
-    music_query = "cinematic travel"
+# ---------- SMART MUSIC SEARCH ----------
 
-url = f"https://pixabay.com/api/audio/?key={API_KEY}&q={music_query}"
+topic_lower = topic.lower()
+
+if "dubai" in topic_lower:
+    music_query = "luxury cinematic"
+
+elif "tokyo" in topic_lower:
+    music_query = "cyberpunk"
+
+elif "bali" in topic_lower or "beach" in topic_lower:
+    music_query = "tropical chill"
+
+elif "finance" in topic_lower or "stock" in topic_lower:
+    music_query = "dark phonk"
+
+else:
+    music_query = "cinematic"
+
+print(f"\nSearching music: {music_query}")
+
+# ---------- URL ENCODE ----------
+
+encoded_query = urllib.parse.quote(
+    music_query
+)
+
+# ---------- API URL ----------
+
+url = (
+    f"https://pixabay.com/api/audio/"
+    f"?key={API_KEY}"
+    f"&q={encoded_query}"
+    f"&per_page=3"
+)
+
+# ---------- REQUEST ----------
 
 response = requests.get(url)
+
 data = response.json()
 
-if len(data["hits"]) == 0:
-    print("No music found")
+# ---------- CHECK ----------
+
+if "hits" not in data or len(data["hits"]) == 0:
+
+    print("No music found.")
     exit()
 
-music_url = data["hits"][0]["audio"]
+# ---------- GET AUDIO URL ----------
 
-print(f"Downloading music: {music_query}")
+music_url = (
+    data["hits"][0]
+    ["audio_files"]
+    ["mp3"]["high"]
+)
 
-music_data = requests.get(music_url).content
+print("\nDownloading background music...")
 
-os.makedirs("assets", exist_ok=True)
+# ---------- DOWNLOAD ----------
 
-with open("assets/music.mp3", "wb") as f:
+music_data = requests.get(
+    music_url
+).content
+
+# ---------- SAVE ----------
+
+os.makedirs(
+    "assets",
+    exist_ok=True
+)
+
+with open(
+    "assets/music.mp3",
+    "wb"
+) as f:
+
     f.write(music_data)
 
-print("Music downloaded successfully.")
+print("\nMusic downloaded successfully.")

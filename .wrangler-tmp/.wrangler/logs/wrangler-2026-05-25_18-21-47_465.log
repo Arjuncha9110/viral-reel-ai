@@ -1,0 +1,532 @@
+
+--- 2026-05-25T18:21:47.698Z debug
+🪵  Writing logs to "D:\Ai reel Agent\.wrangler-tmp\.wrangler\logs\wrangler-2026-05-25_18-21-47_465.log"
+---
+
+--- 2026-05-25T18:21:47.698Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-antigravity-recovered\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T18:21:47.699Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-antigravity-recovered\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-25T18:21:47.802Z log
+
+ ⛅️ wrangler 4.92.0
+───────────────────
+---
+
+--- 2026-05-25T18:21:47.805Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command started","timestamp":1779733307805,"properties":{"amplitude_session_id":1779733307803,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":["projectName"],"argsCombination":"projectName","sanitizedCommand":"pages deploy","sanitizedArgs":{}}}
+---
+
+--- 2026-05-25T18:21:47.849Z debug
+Retrieving cached values for account_id and project_name from node_modules\.cache\wrangler
+---
+
+--- 2026-05-25T18:21:47.850Z debug
+fetching auth token grant_type=refresh_token&refresh_token=WRXoUbAlilZyD-RyEHljRHCppfR9o4lMNetMnIVTgl0.T7JZtMlPOgQes7pxICvNkaxm5fQXOSd59XMFAGy5qLM&client_id=54d11594-84e4-41aa-b438-e81b8fa78ee7
+---
+
+--- 2026-05-25T18:21:47.851Z debug
+Checking if domain has Access enabled: dash.cloudflare.com
+---
+
+--- 2026-05-25T18:21:47.851Z debug
+Access switch not cached for: dash.cloudflare.com
+---
+
+--- 2026-05-25T18:21:47.964Z debug
+Caching access switch for: dash.cloudflare.com
+---
+
+--- 2026-05-25T18:21:47.965Z debug
+Fetching auth token from https://dash.cloudflare.com/oauth2/token
+---
+
+--- 2026-05-25T18:21:49.289Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects/divine-compass
+---
+
+--- 2026-05-25T18:21:49.289Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:49.290Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:49.290Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:49.290Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:21:51.231Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:21:51.231Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:51.231Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:51.231Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:21:51.234Z debug
+pages deploy: Detecting git repository information...
+---
+
+--- 2026-05-25T18:21:51.280Z debug
+pages deploy: Git repository detected
+---
+
+--- 2026-05-25T18:21:51.331Z debug
+pages deploy: Working directory dirty status: true
+---
+
+--- 2026-05-25T18:21:51.375Z debug
+pages deploy: Detected branch: "main"
+---
+
+--- 2026-05-25T18:21:51.418Z debug
+pages deploy: Detected commit hash: "d8d3f7ebc71d2e2641914c21ceb8504588455a8d"
+---
+
+--- 2026-05-25T18:21:51.451Z debug
+pages deploy: Detected commit message: "Updated premium AI reel app"
+---
+
+--- 2026-05-25T18:21:51.451Z debug
+pages deploy: Git information summary - branch: main, commitHash: d8d3f7ebc71d2e2641914c21ceb8504588455a8d, commitDirty: true
+---
+
+--- 2026-05-25T18:21:51.452Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects/divine-compass
+---
+
+--- 2026-05-25T18:21:51.452Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:51.452Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:51.452Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:51.452Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:21:53.419Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:21:53.419Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:53.419Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:53.419Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:21:53.423Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects/divine-compass/upload-token
+---
+
+--- 2026-05-25T18:21:53.423Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:53.424Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:53.424Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:53.424Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:21:55.317Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:21:55.317Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:55.318Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:55.318Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:21:55.356Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects/divine-compass/upload-token
+---
+
+--- 2026-05-25T18:21:55.356Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:55.356Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:55.356Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:55.356Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:21:57.286Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:21:57.286Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.286Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.286Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:21:57.287Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/pages/assets/check-missing
+---
+
+--- 2026-05-25T18:21:57.287Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.287Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.287Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.287Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:21:57.864Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:21:57.864Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.864Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.864Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:21:57.869Z debug
+POST /pages/assets/upload
+---
+
+--- 2026-05-25T18:21:57.870Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/pages/assets/upload
+---
+
+--- 2026-05-25T18:21:57.870Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.870Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.871Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.871Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:21:57.877Z debug
+POST /pages/assets/upload
+---
+
+--- 2026-05-25T18:21:57.878Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/pages/assets/upload
+---
+
+--- 2026-05-25T18:21:57.878Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.879Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.880Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.880Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:21:57.885Z debug
+POST /pages/assets/upload
+---
+
+--- 2026-05-25T18:21:57.889Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/pages/assets/upload
+---
+
+--- 2026-05-25T18:21:57.889Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.889Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.892Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:57.892Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:21:59.208Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:21:59.208Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:59.208Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:59.208Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:21:59.209Z debug
+result: { successful_key_count: 4, unsuccessful_keys: [] }
+---
+
+--- 2026-05-25T18:21:59.632Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:21:59.632Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:59.633Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:21:59.633Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:21:59.633Z debug
+result: { successful_key_count: 4, unsuccessful_keys: [] }
+---
+
+--- 2026-05-25T18:22:00.691Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:22:00.691Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.691Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.691Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:22:00.692Z debug
+result: { successful_key_count: 4, unsuccessful_keys: [] }
+---
+
+--- 2026-05-25T18:22:00.692Z log
+✨ Success! Uploaded 12 files (3.41 sec)
+
+---
+
+--- 2026-05-25T18:22:00.693Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/pages/assets/upsert-hashes
+---
+
+--- 2026-05-25T18:22:00.693Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.693Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.693Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.693Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:22:00.940Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:22:00.940Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.940Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.940Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:22:00.941Z log
+✨ Uploading _redirects
+---
+
+--- 2026-05-25T18:22:00.941Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects/divine-compass/deployments
+---
+
+--- 2026-05-25T18:22:00.941Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.941Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.941Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.943Z debug
+BODY: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:00.943Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:22:04.010Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:22:04.010Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:04.010Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:04.010Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:22:04.011Z debug
+Saving to cache: {"account_id":"8a97ba904bc5bcdb34042cf2f5443825","project_name":"divine-compass"}
+---
+
+--- 2026-05-25T18:22:04.012Z log
+🌎 Deploying...
+---
+
+--- 2026-05-25T18:22:05.015Z debug
+attempt #1: Attempting to fetch status for deployment with id "e8a58783-dd4d-4ab7-8926-140c18fe2e88" ...
+---
+
+--- 2026-05-25T18:22:05.015Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects/divine-compass/deployments/e8a58783-dd4d-4ab7-8926-140c18fe2e88
+---
+
+--- 2026-05-25T18:22:05.015Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:05.016Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:05.016Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:05.016Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-25T18:22:06.939Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-25T18:22:06.939Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:06.939Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-25T18:22:06.939Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-25T18:22:06.940Z log
+✨ Deployment complete! Take a peek over at https://e8a58783.divine-compass.pages.dev
+✨ Deployment alias URL: https://main.divine-compass.pages.dev
+---
+
+--- 2026-05-25T18:22:06.941Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"create pages deployment","timestamp":1779733326941,"properties":{"amplitude_session_id":1779733326941,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"category":"Workers","os":"win32:x64"}}
+---
+
+--- 2026-05-25T18:22:06.944Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command completed","timestamp":1779733326943,"properties":{"amplitude_session_id":1779733307803,"amplitude_event_id":1,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":["projectName"],"argsCombination":"projectName","sanitizedCommand":"pages deploy","sanitizedArgs":{},"durationMs":19243}}
+---

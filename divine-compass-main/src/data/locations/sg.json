@@ -1,0 +1,138 @@
+{
+  "country": "Singapore",
+  "code": "SG",
+  "states": [
+    {
+      "name": "Central Region",
+      "code": "CR",
+      "cities": [
+        {
+          "name": "Singapore (City Centre)",
+          "lat": 1.3521,
+          "lon": 103.8198,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Orchard",
+          "lat": 1.3048,
+          "lon": 103.8318,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Marina Bay",
+          "lat": 1.2789,
+          "lon": 103.8536,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Chinatown",
+          "lat": 1.2814,
+          "lon": 103.8443,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Little India",
+          "lat": 1.3066,
+          "lon": 103.8518,
+          "timezone": "Asia/Singapore"
+        }
+      ]
+    },
+    {
+      "name": "North Region",
+      "code": "NR",
+      "cities": [
+        {
+          "name": "Woodlands",
+          "lat": 1.4382,
+          "lon": 103.789,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Yishun",
+          "lat": 1.4304,
+          "lon": 103.8354,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Sembawang",
+          "lat": 1.4491,
+          "lon": 103.8185,
+          "timezone": "Asia/Singapore"
+        }
+      ]
+    },
+    {
+      "name": "East Region",
+      "code": "ER",
+      "cities": [
+        {
+          "name": "Tampines",
+          "lat": 1.3496,
+          "lon": 103.9568,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Bedok",
+          "lat": 1.3236,
+          "lon": 103.9273,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Pasir Ris",
+          "lat": 1.3721,
+          "lon": 103.9493,
+          "timezone": "Asia/Singapore"
+        }
+      ]
+    },
+    {
+      "name": "West Region",
+      "code": "WR",
+      "cities": [
+        {
+          "name": "Jurong East",
+          "lat": 1.3329,
+          "lon": 103.7436,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Jurong West",
+          "lat": 1.3404,
+          "lon": 103.709,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Clementi",
+          "lat": 1.3162,
+          "lon": 103.7649,
+          "timezone": "Asia/Singapore"
+        }
+      ]
+    },
+    {
+      "name": "North-East Region",
+      "code": "NER",
+      "cities": [
+        {
+          "name": "Hougang",
+          "lat": 1.3612,
+          "lon": 103.8863,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Punggol",
+          "lat": 1.3984,
+          "lon": 103.9072,
+          "timezone": "Asia/Singapore"
+        },
+        {
+          "name": "Serangoon",
+          "lat": 1.3554,
+          "lon": 103.8679,
+          "timezone": "Asia/Singapore"
+        }
+      ]
+    }
+  ]
+}

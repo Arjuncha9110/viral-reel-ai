@@ -1,0 +1,154 @@
+
+--- 2026-05-26T11:54:41.289Z debug
+🪵  Writing logs to "D:\Ai reel Agent\.wrangler-tmp\.wrangler\logs\wrangler-2026-05-26_11-54-41_020.log"
+---
+
+--- 2026-05-26T11:54:41.289Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-antigravity-recovered\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-26T11:54:41.290Z debug
+.env file not found at "D:\Ai reel Agent\divine-compass-antigravity-recovered\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-05-26T11:54:41.393Z log
+
+ ⛅️ wrangler 4.92.0
+───────────────────
+---
+
+--- 2026-05-26T11:54:41.396Z debug
+Metrics dispatcher: Posting data {"deviceId":"db2a9084-803f-4f5f-a7bf-10025247991f","event":"wrangler command started","timestamp":1779796481396,"properties":{"amplitude_session_id":1779796481394,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 10 Home Single Language","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":true,"hasAssets":false,"agent":null,"argsUsed":["projectName"],"argsCombination":"projectName","sanitizedCommand":"pages deploy","sanitizedArgs":{}}}
+---
+
+--- 2026-05-26T11:54:41.422Z debug
+fetching auth token grant_type=refresh_token&refresh_token=2XbaZGpa48mRhYbdBmie1uySS8FbrMis_rttBZKkiAc._6c3PZuonN3eBouasOk0UpzQuSJ-wdc5B1pNWxZ7Jbk&client_id=54d11594-84e4-41aa-b438-e81b8fa78ee7
+---
+
+--- 2026-05-26T11:54:41.422Z debug
+Checking if domain has Access enabled: dash.cloudflare.com
+---
+
+--- 2026-05-26T11:54:41.423Z debug
+Access switch not cached for: dash.cloudflare.com
+---
+
+--- 2026-05-26T11:54:41.500Z debug
+Caching access switch for: dash.cloudflare.com
+---
+
+--- 2026-05-26T11:54:41.500Z debug
+Fetching auth token from https://dash.cloudflare.com/oauth2/token
+---
+
+--- 2026-05-26T11:54:42.929Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts
+---
+
+--- 2026-05-26T11:54:42.929Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:42.930Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:42.930Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:42.931Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-26T11:54:42.934Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/memberships
+---
+
+--- 2026-05-26T11:54:42.934Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:42.934Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:42.934Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:42.935Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-26T11:54:43.507Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-26T11:54:43.508Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:43.508Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:43.508Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-26T11:54:44.876Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-05-26T11:54:44.876Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:44.877Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:44.877Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-05-26T11:54:44.878Z debug
+Saving to cache: {"account":{"id":"8a97ba904bc5bcdb34042cf2f5443825","name":"Arjunchandru9110@gmail.com's Account"}}
+---
+
+--- 2026-05-26T11:54:44.880Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/8a97ba904bc5bcdb34042cf2f5443825/pages/projects/divine-panchang
+---
+
+--- 2026-05-26T11:54:44.880Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:44.880Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:44.880Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:44.880Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-05-26T11:54:46.708Z debug
+-- START CF API RESPONSE: Not Found 404
+---
+
+--- 2026-05-26T11:54:46.708Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:46.708Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-05-26T11:54:46.708Z debug
+-- END CF API RESPONSE
+---

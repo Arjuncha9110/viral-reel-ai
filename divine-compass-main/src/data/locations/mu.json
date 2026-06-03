@@ -1,0 +1,36 @@
+{
+  "country": "Mauritius",
+  "code": "MU",
+  "states": [
+    {
+      "name": "Port Louis District",
+      "code": "PL",
+      "cities": [
+        {
+          "name": "Port Louis",
+          "lat": -20.1609,
+          "lon": 57.4989,
+          "timezone": "Indian/Mauritius"
+        }
+      ]
+    },
+    {
+      "name": "Plaines Wilhems",
+      "code": "PW",
+      "cities": [
+        {
+          "name": "Beau Bassin-Rose Hill",
+          "lat": -20.233,
+          "lon": 57.467,
+          "timezone": "Indian/Mauritius"
+        },
+        {
+          "name": "Quatre Bornes",
+          "lat": -20.2668,
+          "lon": 57.4768,
+          "timezone": "Indian/Mauritius"
+        }
+      ]
+    }
+  ]
+}
