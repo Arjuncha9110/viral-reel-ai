@@ -65,6 +65,7 @@ const SadeSatiReportPreview: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<SadeSatiReportBirthData | null>(null);
   const [isDemo, setIsDemo] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(true);
 
   // Force dark body background so no cream bleed-through in preview workspace
   useEffect(() => {
@@ -88,8 +89,26 @@ const SadeSatiReportPreview: React.FC = () => {
     const latParam = searchParams.get("lat");
     const lonParam = searchParams.get("lon");
     const tzParam = searchParams.get("tz") || "Asia/Kolkata";
+    const tokenParam = searchParams.get("token");
+    const sessionIdParam = searchParams.get("session_id");
+
+    const isValidToken = (token: string | null | undefined): boolean => {
+      if (!token) return false;
+      const t = token.trim();
+      return (
+        t.startsWith("pay_verified_") ||
+        t.startsWith("paypal_verified_") ||
+        t.startsWith("paddle_verified_") ||
+        t.startsWith("dev_") ||
+        t === "local-test-bypass"
+      );
+    };
 
     if (nameParam && dobParam && tobParam) {
+      const urlHasPayment = isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
+      if (!urlHasPayment && import.meta.env.VITE_ENABLE_PAYMENT_BYPASS !== "true") {
+        setIsAuthorized(false);
+      }
       setData({
         name: nameParam,
         email: emailParam || "customer@divinepanchang.space",
@@ -111,6 +130,10 @@ const SadeSatiReportPreview: React.FC = () => {
       try {
         const parsed = JSON.parse(saved);
         if (parsed && parsed.name && parsed.dob && parsed.tob) {
+          const localHasPayment = isValidToken(parsed.token) || isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
+          if (!localHasPayment && import.meta.env.VITE_ENABLE_PAYMENT_BYPASS !== "true") {
+            setIsAuthorized(false);
+          }
           setData(parsed);
           setIsDemo(false);
           return;
@@ -193,6 +216,28 @@ const SadeSatiReportPreview: React.FC = () => {
   const handlePrint = () => {
     window.print();
   };
+
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen bg-[#070e1b] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[#0b1730] border border-[#b59449]/40 rounded-3xl p-8 text-center shadow-2xl text-[#fdfbf7]">
+          <div className="w-16 h-16 bg-[#b59449]/10 border border-[#b59449]/30 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="text-2xl text-[#b59449]">🔒</span>
+          </div>
+          <h2 className="font-serif text-2xl font-bold text-[#fdfbf7] mb-3">Payment Verification Required</h2>
+          <p className="text-sm text-[#fdfbf7]/70 leading-relaxed mb-6">
+            To view and download your custom personalized Sade Sati transit guide, please complete your payment. If you have already paid, check your email for the secure link.
+          </p>
+          <Button
+            onClick={() => navigate("/sade-sati")}
+            className="w-full bg-gradient-to-r from-[#b59449] to-[#722f37] border border-[#b59449]/40 text-white font-bold py-3 rounded-xl shadow-lg hover:brightness-110 transition animate-pulse"
+          >
+            Go to Payment Page
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (!data) {
     return (

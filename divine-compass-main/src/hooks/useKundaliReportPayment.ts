@@ -72,45 +72,81 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
     localStorage.setItem("kundali_report_lang", language);
   };
 
-  // Paddle Payment
-  const handlePayPaddle = async () => {
-    setError(null);
-    setStep("processing");
-    try {
-      const res = await fetch("/api/payment/paddle-checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          plan: selectedPlan,
-          email,
-          name,
-          dob,
-          tob,
-          gender,
-          city: location.name,
-          lat: location.lat,
-          lon: location.lon,
-          timezone: location.timezone,
-          chartStyle,
-          language,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok && data.status === "success") {
-        if (data.url) {
-          window.location.href = data.url;
-        } else {
-          saveReportDetails(data.token);
-          navigate(buildPreviewUrl(data.token));
+  // PayPal Effect
+  useEffect(() => {
+    if (step !== "form" || paymentRegion !== "international" || !canProceed) return;
+    if (paypalRenderedRef.current) return;
+
+    const renderPayPalButtons = async () => {
+      try {
+        if (!window.paypal) {
+          await new Promise<void>((resolve, reject) => {
+            if (document.querySelector(`script[data-paypal-sdk]`)) { resolve(); return; }
+            const script = document.createElement("script");
+            script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture&disable-funding=credit,card`;
+            script.setAttribute("data-paypal-sdk", "true");
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error("Failed to load PayPal SDK."));
+            document.body.appendChild(script);
+          });
         }
-      } else {
-        throw new Error(data.message || "Paddle checkout failed.");
-      }
-    } catch (e: any) {
-      setError(e.message || "Paddle processing failed.");
-      setStep("form");
-    }
-  };
+
+        await new Promise(r => setTimeout(r, 300));
+        if (!paypalContainerRef.current || !window.paypal) return;
+        paypalContainerRef.current.innerHTML = "";
+
+        window.paypal.Buttons({
+          style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 44 },
+          createOrder: (_data: any, actions: any) => {
+            return actions.order.create({
+              purchase_units: [{
+                description: `Divine Panchang ${selectedPlan === "basic" ? "Basic" : "Detailed"} Kundali Report`,
+                amount: { currency_code: "USD", value: priceUSD.toFixed(2) },
+              }],
+              application_context: { brand_name: "Divine Panchang", shipping_preference: "NO_SHIPPING", user_action: "PAY_NOW" },
+            });
+          },
+          onApprove: async (data: any, actions: any) => {
+            setStep("processing");
+            try {
+              await actions.order.capture();
+              const verifyRes = await fetch("/api/payment/paypal-capture", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  orderID: data.orderID,
+                  email, name, dob, tob, gender,
+                  city: location.name, lat: location.lat, lon: location.lon, timezone: location.timezone,
+                  plan: selectedPlan, chartStyle,
+                }),
+              });
+              const verifyData = await verifyRes.json();
+              if (verifyRes.ok && verifyData.status === "success") {
+                saveReportDetails(verifyData.token);
+                navigate(buildPreviewUrl(verifyData.token));
+              } else {
+                throw new Error(verifyData.message || "PayPal verification failed.");
+              }
+            } catch (e: any) {
+              setError(e.message || "PayPal processing failed.");
+              setStep("form");
+            }
+          },
+          onError: () => { setError("PayPal error. Please try again."); setStep("form"), paypalRenderedRef.current = false; },
+          onCancel: () => { setStep("form"); paypalRenderedRef.current = false; },
+        }).render(paypalContainerRef.current);
+
+        paypalRenderedRef.current = true;
+      } catch (e: any) { setError("PayPal load failed: " + e.message); }
+    };
+    renderPayPalButtons();
+  }, [step, paymentRegion, canProceed, selectedPlan, priceUSD]);
+
+  // Reset PayPal
+  useEffect(() => {
+    paypalRenderedRef.current = false;
+    if (paypalContainerRef.current) paypalContainerRef.current.innerHTML = "";
+  }, [selectedPlan, paymentRegion]);
 
   // Razorpay
   const handlePayRazorpay = async () => {
@@ -192,8 +228,8 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
     chartStyle, setChartStyle,
     language, setLanguage,
     error, setError,
+    paypalContainerRef,
     handlePayRazorpay,
-    handlePayPaddle,
     handleTestBypass,
     canProceed,
     priceINR, priceUSD

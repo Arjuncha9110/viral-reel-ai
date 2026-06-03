@@ -25,8 +25,8 @@ export const KundaliReportPage = () => {
     chartStyle, setChartStyle,
     language, setLanguage,
     error,
+    paypalContainerRef,
     handlePayRazorpay,
-    handlePayPaddle,
     handleTestBypass,
     canProceed,
     priceINR, priceUSD
@@ -140,7 +140,7 @@ export const KundaliReportPage = () => {
               priceINR={priceINR}
               priceUSD={priceUSD}
               handlePayRazorpay={handlePayRazorpay}
-              handlePayPaddle={handlePayPaddle}
+              paypalContainerRef={paypalContainerRef}
               handleTestBypass={handleTestBypass}
               canProceed={canProceed}
               testBypassEnabled={testBypassEnabled}

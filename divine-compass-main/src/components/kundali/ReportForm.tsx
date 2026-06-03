@@ -23,9 +23,9 @@ interface ReportFormProps {
   priceINR: number;
   priceUSD: number;
   handlePayRazorpay: () => void;
-  handlePayPaddle: () => void;
   handleTestBypass: () => void;
   canProceed: boolean;
+  paypalContainerRef: RefObject<HTMLDivElement>;
   testBypassEnabled: boolean;
 }
 
@@ -34,8 +34,8 @@ export const ReportForm = ({
   location, setLocation, email, setEmail, chartStyle, setChartStyle,
   language, setLanguage,
   paymentRegion, selectedPlan, priceINR, priceUSD,
-  handlePayRazorpay, handlePayPaddle, handleTestBypass, canProceed,
-  testBypassEnabled
+  handlePayRazorpay, handleTestBypass, canProceed,
+  paypalContainerRef, testBypassEnabled
 }: ReportFormProps) => {
   return (
     <div className="grid lg:grid-cols-[1fr_320px] gap-8">
@@ -171,13 +171,7 @@ export const ReportForm = ({
                   Pay ₹{priceINR} with Razorpay
                 </button>
               ) : (
-                <button
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#d4651a] via-[#c25510] to-[#a84410] px-5 py-3.5 text-[14.5px] font-bold text-white shadow-[0_4px_18px_rgba(212,101,26,0.38)] transition-all hover:brightness-110 hover:shadow-[0_6px_24px_rgba(212,101,26,0.52)]"
-                  onClick={handlePayPaddle}
-                >
-                  <Globe className="h-4 w-4" />
-                  Pay ${priceUSD} with Paddle
-                </button>
+                <div id="paypal-button-container" ref={paypalContainerRef} className="min-h-[44px]" />
               )}
 
               {testBypassEnabled && (

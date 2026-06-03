@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PAYPAL_CLIENT_ID } from "@/data/reportData";
 import {
     Popover,
     PopoverContent,
@@ -70,6 +71,8 @@ const SadeSatiPage = () => {
     } | null>(null);
 
     const [stripeLoading, setStripeLoading] = useState(false);
+    const paypalContainerRef = useRef<HTMLDivElement>(null);
+    const paypalRenderedRef = useRef(false);
 
     const REPORT_PRICE = 399; // Premium Sade Sati report price
 
@@ -291,10 +294,93 @@ const SadeSatiPage = () => {
         }
     };
 
-    // Legacy PayPal block removed — replaced by Stripe
+    // PayPal SDK Integration
     useEffect(() => {
-        // No-op: PayPal removed
-    }, []);
+        if (purchaseStep !== "form" || paymentRegion !== "international" || !name.trim() || !email.includes("@") || !birthDate) {
+            return;
+        }
+        if (paypalRenderedRef.current) return;
+
+        const renderPayPalButtons = async () => {
+            try {
+                if (!window.paypal) {
+                    await new Promise<void>((resolve, reject) => {
+                        if (document.querySelector(`script[data-paypal-sdk]`)) { resolve(); return; }
+                        const script = document.createElement("script");
+                        script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture&disable-funding=credit,card`;
+                        script.setAttribute("data-paypal-sdk", "true");
+                        script.onload = () => resolve();
+                        script.onerror = () => reject(new Error("Failed to load PayPal SDK."));
+                        document.body.appendChild(script);
+                    });
+                }
+
+                await new Promise(r => setTimeout(r, 300));
+                if (!paypalContainerRef.current || !window.paypal) return;
+                paypalContainerRef.current.innerHTML = "";
+
+                window.paypal.Buttons({
+                    style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 40 },
+                    createOrder: (_data: any, actions: any) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                description: "Divine Panchang Premium Sade Sati Report",
+                                amount: { currency_code: "USD", value: "4.99" },
+                            }],
+                            application_context: { brand_name: "Divine Panchang", shipping_preference: "NO_SHIPPING", user_action: "PAY_NOW" },
+                        });
+                    },
+                    onApprove: async (data: any, actions: any) => {
+                        setPurchaseStep("processing");
+                        try {
+                            await actions.order.capture();
+                            const dobString = birthDate;
+                            const verifyRes = await fetch("/api/payment/paypal-capture", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    orderID: data.orderID,
+                                    email, name, dob: dobString, tob: birthTime, gender,
+                                    city: location.name, lat: location.lat, lon: location.lon, timezone: location.timezone,
+                                    plan: "sade-sati",
+                                }),
+                            });
+                            const verifyData = await verifyRes.json();
+                            if (verifyRes.ok && verifyData.status === "success") {
+                                const details = {
+                                    name, email, dob: dobString, tob: birthTime, gender,
+                                    city: location.name, lat: location.lat, lon: location.lon, timezone: location.timezone,
+                                    token: verifyData.token,
+                                };
+                                localStorage.setItem("sade_sati_report_details", JSON.stringify(details));
+                                navigate(
+                                    `/sade-sati-report-preview?name=${encodeURIComponent(name)}&dob=${dobString}&tob=${birthTime}&email=${encodeURIComponent(email)}&gender=${gender}&city=${encodeURIComponent(location.name)}&lat=${location.lat}&lon=${location.lon}&tz=${location.timezone}&token=${verifyData.token}`
+                                );
+                            } else {
+                                throw new Error(verifyData.message || "PayPal verification failed.");
+                            }
+                        } catch (e: any) {
+                            setPaymentError(e.message || "PayPal processing failed.");
+                            setPurchaseStep("form");
+                        }
+                    },
+                    onError: () => { setPaymentError("PayPal error. Please try again."); setPurchaseStep("form"); paypalRenderedRef.current = false; },
+                    onCancel: () => { setPurchaseStep("form"); paypalRenderedRef.current = false; },
+                }).render(paypalContainerRef.current);
+
+                paypalRenderedRef.current = true;
+            } catch (e: any) {
+                setPaymentError("PayPal load failed: " + e.message);
+            }
+        };
+
+        renderPayPalButtons();
+    }, [purchaseStep, paymentRegion, name, email, birthDate, birthTime, location, gender]);
+
+    useEffect(() => {
+        paypalRenderedRef.current = false;
+        if (paypalContainerRef.current) paypalContainerRef.current.innerHTML = "";
+    }, [purchaseStep, paymentRegion]);
 
 
     return (
@@ -705,17 +791,18 @@ const SadeSatiPage = () => {
                                                 </Button>
                                             ) : (
                                                 <div className="space-y-2 mt-2">
-                                                    <Button
-                                                        onClick={handleStripeCheckout}
-                                                        size="lg"
-                                                        className="w-full h-11 bg-[#635BFF] hover:bg-[#5046e4] text-white font-semibold"
-                                                        disabled={!name.trim() || !email.includes("@") || stripeLoading}
-                                                    >
-                                                        {stripeLoading ? "Redirecting to Stripe..." : "Pay $4.99 · Secure Checkout"}
-                                                    </Button>
-                                                    <p className="text-[10px] text-center text-muted-foreground font-serif">
-                                                        🔒 Secured by Stripe · Visa, Mastercard, Amex, Apple Pay, Google Pay
-                                                    </p>
+                                                    {!name.trim() || !email.includes("@") ? (
+                                                        <div className="rounded-xl border border-border bg-muted/20 px-4 py-3 text-xs text-muted-foreground text-center">
+                                                            Please fill in all required fields above to enable PayPal checkout.
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <div ref={paypalContainerRef} id="paypal-button-container" className="min-h-[40px] w-full" />
+                                                            <p className="text-[10px] text-center text-muted-foreground font-serif">
+                                                                🔒 Secured by PayPal · Visa, Mastercard, Amex, Discover, Debit Cards
+                                                            </p>
+                                                        </>
+                                                    )}
                                                 </div>
                                             )}
 

@@ -121,6 +121,7 @@ const KundaliReportPreview: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<KundaliBirthData | null>(null);
   const [isDemo, setIsDemo] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(true);
   const [language, setLanguage] = useState<"en" | "kn">("en");
   const [templateKey, setTemplateKey] = useState(0);
   const [isPdfExportMode, setIsPdfExportMode] = useState(true);
@@ -157,6 +158,20 @@ const KundaliReportPreview: React.FC = () => {
     const tzParam = searchParams.get("tz") || "Asia/Kolkata";
     const planParam = searchParams.get("plan") as "basic" | "detailed";
     const chartStyleParam = searchParams.get("chartStyle");
+    const tokenParam = searchParams.get("token");
+    const sessionIdParam = searchParams.get("session_id");
+
+    const isValidToken = (token: string | null | undefined): boolean => {
+      if (!token) return false;
+      const t = token.trim();
+      return (
+        t.startsWith("pay_verified_") ||
+        t.startsWith("paypal_verified_") ||
+        t.startsWith("paddle_verified_") ||
+        t.startsWith("dev_") ||
+        t === "local-test-bypass"
+      );
+    };
 
     const langParam = searchParams.get("lang");
     if (langParam === "en" || langParam === "kn") {
@@ -169,6 +184,10 @@ const KundaliReportPreview: React.FC = () => {
     }
 
     if (nameParam && dobParam && tobParam) {
+      const urlHasPayment = isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
+      if (!urlHasPayment && import.meta.env.VITE_ENABLE_PAYMENT_BYPASS !== "true") {
+        setIsAuthorized(false);
+      }
       setData({
         name: nameParam,
         email: emailParam || "customer@divinepanchang.space",
@@ -190,9 +209,15 @@ const KundaliReportPreview: React.FC = () => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setData(parsed);
-        setIsDemo(false);
-        return;
+        if (parsed && parsed.name) {
+          const localHasPayment = isValidToken(parsed.token) || isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
+          if (!localHasPayment && import.meta.env.VITE_ENABLE_PAYMENT_BYPASS !== "true") {
+            setIsAuthorized(false);
+          }
+          setData(parsed);
+          setIsDemo(false);
+          return;
+        }
       } catch (error) {
         console.error("Error parsing saved details", error);
       }
@@ -301,6 +326,28 @@ const KundaliReportPreview: React.FC = () => {
   const handlePrintPDF = () => {
     window.print();
   };
+
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen bg-[#0f0a14] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[#1c1424] border border-[#b59449]/40 rounded-3xl p-8 text-center shadow-2xl text-[#fdfbf7]">
+          <div className="w-16 h-16 bg-[#b59449]/10 border border-[#b59449]/30 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="text-2xl text-[#b59449]">🔒</span>
+          </div>
+          <h2 className="font-serif text-2xl font-bold text-[#fdfbf7] mb-3">Payment Verification Required</h2>
+          <p className="text-sm text-[#fdfbf7]/70 leading-relaxed mb-6">
+            To view and download your custom 14+ page personalized Kundali report, please complete your payment. If you have already paid, please check your email for the secure access link.
+          </p>
+          <Button
+            onClick={() => navigate("/kundali-report")}
+            className="w-full bg-gradient-to-r from-[#b59449] to-[#722f37] border border-[#b59449]/40 text-white font-bold py-3 rounded-xl shadow-lg hover:brightness-110 transition animate-pulse"
+          >
+            Go to Payment Page
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (!data) {
     return (
