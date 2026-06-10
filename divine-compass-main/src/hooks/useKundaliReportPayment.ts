@@ -210,11 +210,6 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
   };
 
 
-  const handleBypassPayment = () => {
-    const devToken = "dev_bypass_token";
-    saveReportDetails(devToken);
-    navigate(buildPreviewUrl(devToken));
-  };
 
   return {
     selectedPlan, setSelectedPlan,
@@ -231,7 +226,6 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
     error, setError,
     paypalContainerRef,
     handlePayRazorpay,
-    handleBypassPayment,
     canProceed,
     priceINR, priceUSD
   };

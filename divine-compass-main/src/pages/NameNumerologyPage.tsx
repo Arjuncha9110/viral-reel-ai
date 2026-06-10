@@ -20,6 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { detectNameSoundVibration } from "@/lib/sound/detectNameSound";
 import SoundVibrationPanel from "@/components/numerology/SoundVibrationPanel";
+import { VehicleNumerologySection } from "@/components/numerology/VehicleNumerologySection";
 
 const NameNumerologyPage = () => {
   const [name, setName] = useState("");
@@ -262,6 +263,8 @@ const NameNumerologyPage = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <VehicleNumerologySection />
       </div>
     </Layout>
   );

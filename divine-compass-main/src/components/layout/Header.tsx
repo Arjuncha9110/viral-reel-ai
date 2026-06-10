@@ -37,6 +37,7 @@ const secondaryLinks = [
   { name: "Ekadashi", path: "/ekadashi", icon: Calendar, desc: "Sacred fasting calendar" },
   { name: "Dasha", path: "/dasha", icon: Clock, desc: "Planetary period analysis" },
   { name: "Name Number", path: "/numerology/name", icon: Hash, desc: "Numerology by name" },
+  { name: "Vehicle Number", path: "/numerology/name#vehicle-numerology", icon: Hash, desc: "Lucky vehicle numerology" },
   { name: "Eclipse (Grahan)", path: "/eclipse", icon: Moon, desc: "Solar & Lunar Eclipses" },
   { name: "Divine Match", path: "/match", icon: Heart, desc: "Ashtakoot Kundali Milan" },
   { name: "Nadi Shodhana", path: "/nadi-shodhana", icon: Wind, desc: "Meditation Timer" },
@@ -57,7 +58,7 @@ export const Header = () => {
   useEffect(() => {
     setIsMenuOpen(false);
     setIsDropdownOpen(false);
-  }, [location.pathname]);
+  }, [location]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

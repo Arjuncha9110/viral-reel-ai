@@ -23,7 +23,6 @@ interface ReportFormProps {
   priceINR: number;
   priceUSD: number;
   handlePayRazorpay: () => void;
-  handleBypassPayment: () => void;
   canProceed: boolean;
   paypalContainerRef: RefObject<HTMLDivElement>;
 }
@@ -33,7 +32,7 @@ export const ReportForm = ({
   location, setLocation, email, setEmail, chartStyle, setChartStyle,
   language, setLanguage,
   paymentRegion, selectedPlan, priceINR, priceUSD,
-  handlePayRazorpay, handleBypassPayment, canProceed,
+  handlePayRazorpay, canProceed,
   paypalContainerRef
 }: ReportFormProps) => {
   return (
@@ -177,14 +176,6 @@ export const ReportForm = ({
             </div>
           )}
 
-          {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_PAYMENT_BYPASS === "true") && canProceed && (
-            <button
-              onClick={handleBypassPayment}
-              className="mt-3 w-full flex items-center justify-center gap-2 rounded-xl bg-transparent border border-green-500/50 px-5 py-3.5 text-[14.5px] font-bold text-green-500 shadow-sm hover:bg-green-500/10 transition-all"
-            >
-              [DEV ONLY] Bypass Payment
-            </button>
-          )}
 
           <div className="mt-5 flex items-center justify-center gap-1.5 text-[11px] text-white/28">
             <Shield className="h-3.5 w-3.5" />

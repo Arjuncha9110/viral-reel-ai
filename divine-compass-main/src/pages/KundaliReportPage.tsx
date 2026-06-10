@@ -27,7 +27,6 @@ export const KundaliReportPage = () => {
     error,
     paypalContainerRef,
     handlePayRazorpay,
-    handleBypassPayment,
     canProceed,
     priceINR, priceUSD
   } = useKundaliReportPayment({ defaultLocation });
@@ -139,7 +138,6 @@ export const KundaliReportPage = () => {
               priceINR={priceINR}
               priceUSD={priceUSD}
               handlePayRazorpay={handlePayRazorpay}
-              handleBypassPayment={handleBypassPayment}
               paypalContainerRef={paypalContainerRef}
               canProceed={canProceed}
             />
