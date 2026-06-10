@@ -437,6 +437,53 @@ const PanchangPage = () => {
 
           {/* Google AdSense Bottom Banner */}
           <AdSenseBanner adSlot="panchang_bottom_banner" adFormat="horizontal" />
+
+          {/* Content Section */}
+          <div className="max-w-3xl mx-auto mt-16">
+            {/* Decorative divider */}
+            <div className="flex items-center justify-center gap-3 mb-10">
+              <span className="h-px w-16 bg-gradient-to-r from-transparent to-primary/40 rounded-full" />
+              <span className="text-primary/60 text-lg">☀</span>
+              <span className="h-px w-16 bg-gradient-to-l from-transparent to-primary/40 rounded-full" />
+            </div>
+
+            <div className="rounded-2xl border border-[#d8bc7a]/30 bg-gradient-to-br from-primary/5 via-card to-accent/5 p-8 shadow-card space-y-8">
+              <div className="text-center">
+                <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
+                  What is a Daily Panchang?
+                </h2>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <span className="h-px w-8 bg-primary/40 rounded-full" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary/60" />
+                  <span className="h-px w-8 bg-primary/40 rounded-full" />
+                </div>
+                <p className="text-foreground/70 leading-relaxed max-w-xl mx-auto">
+                  The Panchang is a sacred Vedic almanac capturing five essential qualities of each day — helping you move in harmony with cosmic rhythms.
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                {[
+                  { icon: "🌙", title: "Five Sacred Elements", desc: "Tithi, Vara, Nakshatra, Yoga, and Karana — each element reveals a different quality of the day's energy." },
+                  { icon: "📍", title: "Truly Local", desc: "Timings for sunrise, Rahu Kaal, and Brahma Muhurta are calculated precisely for your city, not a generic average." },
+                  { icon: "⭐", title: "Plan Auspiciously", desc: "Choose the best times for ceremonies, travel, new ventures, and important decisions with confidence." },
+                ].map((item) => (
+                  <div key={item.title} className="rounded-xl border border-border/60 bg-card/80 p-5 text-center space-y-2">
+                    <div className="text-2xl">{item.icon}</div>
+                    <h3 className="font-serif text-base font-semibold text-foreground">{item.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-t border-border/40 pt-6 space-y-4">
+                <h3 className="font-serif text-lg font-semibold text-foreground">Understanding Rahu Kaal</h3>
+                <p className="text-sm text-foreground/70 leading-relaxed">
+                  Rahu Kaal is a daily period of approximately 90 minutes considered inauspicious for new beginnings. It is governed by Rahu (the north lunar node) and falls at different times each day of the week. Starting a journey, signing a contract, or launching a new project during Rahu Kaal is traditionally avoided in Vedic practice — however, continuing ongoing work during this window is perfectly fine.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>

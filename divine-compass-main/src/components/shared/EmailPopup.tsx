@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { X, Sparkles, Mail } from "lucide-react";
+import { Mail, Sparkles, X } from "lucide-react";
 
 const STORAGE_KEY = "dp_email_popup_dismissed_until";
 const SESSION_KEY = "dp_email_popup_closed_session";
@@ -38,6 +38,7 @@ export const EmailPopup = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const isClosedRef = useRef(false);
 
   const blocked = useMemo(
@@ -117,21 +118,36 @@ export const EmailPopup = () => {
     if (!email || loading) return;
 
     setLoading(true);
+    setError("");
 
     try {
-      // POST to our Cloudflare Function — calls Zoho Campaigns server-side (no CORS issues)
-      await fetch("/api/email/subscribe", {
+      const response = await fetch("/api/email/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-    } catch {
-      // Non-blocking — always show success to user
-    } finally {
-      setLoading(false);
+
+      const payload = (await response.json().catch(() => null)) as
+        | { status?: string; message?: string }
+        | null;
+
+      if (!response.ok || payload?.status !== "success") {
+        throw new Error(
+          payload?.message || "We could not send your forecast right now. Please try again."
+        );
+      }
+
       setSubmitted(true);
       setDismissedForSevenDays();
       window.setTimeout(() => setVisible(false), 1200);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "We could not send your forecast right now. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -175,12 +191,15 @@ export const EmailPopup = () => {
                 </div>
 
                 <h2 className="mb-2 font-display text-2xl font-bold leading-snug text-[#fff8e8] sm:text-3xl">
-                  Get Your Free<br />
+                  Get Your Free
+                  <br />
                   <span className="text-[#d8bc7a]">2026 Vedic Forecast</span>
                 </h2>
 
                 <p className="mb-6 text-sm leading-relaxed text-[#a8b3c8]">
-                  Enter your email and we will send you a personalized yearly panchang forecast with auspicious months, planetary transits, and lucky periods.
+                  Enter your email and we will send you a personalized yearly
+                  panchang forecast with auspicious months, planetary transits,
+                  and lucky periods.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-3">
@@ -200,9 +219,15 @@ export const EmailPopup = () => {
                     disabled={loading}
                     className="w-full rounded-xl bg-gradient-to-r from-[#d8bc7a] to-[#f8bb4a] py-3 text-sm font-semibold text-[#0b1730] shadow-lg transition hover:brightness-110 disabled:opacity-70"
                   >
-                    {loading ? "Sending…" : "Send My Free Forecast ✨"}
+                    {loading ? "Sending..." : "Send My Free Forecast ✨"}
                   </button>
                 </form>
+
+                {error ? (
+                  <p className="mt-3 rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-100">
+                    {error}
+                  </p>
+                ) : null}
 
                 <p className="mt-3 text-center text-xs text-white/25">
                   No spam. Unsubscribe anytime. 🙏
@@ -217,7 +242,8 @@ export const EmailPopup = () => {
                   Namaste! You're in.
                 </h3>
                 <p className="text-sm text-[#a8b3c8]">
-                  Your 2026 Vedic Forecast is on its way to your inbox. May the stars guide you well.
+                  Your 2026 Vedic Forecast is on its way to your inbox. May the
+                  stars guide you well.
                 </p>
               </div>
             )}
@@ -227,4 +253,3 @@ export const EmailPopup = () => {
     </>
   );
 };
-

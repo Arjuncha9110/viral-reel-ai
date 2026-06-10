@@ -99,14 +99,13 @@ const SadeSatiReportPreview: React.FC = () => {
         t.startsWith("pay_verified_") ||
         t.startsWith("paypal_verified_") ||
         t.startsWith("paddle_verified_") ||
-        t.startsWith("dev_") ||
-        t === "local-test-bypass"
+        t.startsWith("dev_")
       );
     };
 
     if (nameParam && dobParam && tobParam) {
       const urlHasPayment = isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
-      if (!urlHasPayment && import.meta.env.VITE_ENABLE_PAYMENT_BYPASS !== "true") {
+      if (!urlHasPayment) {
         setIsAuthorized(false);
       }
       setData({
@@ -129,9 +128,9 @@ const SadeSatiReportPreview: React.FC = () => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed && parsed.name && parsed.dob && parsed.tob) {
+        if (parsed && parsed.name) {
           const localHasPayment = isValidToken(parsed.token) || isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
-          if (!localHasPayment && import.meta.env.VITE_ENABLE_PAYMENT_BYPASS !== "true") {
+          if (!localHasPayment) {
             setIsAuthorized(false);
           }
           setData(parsed);

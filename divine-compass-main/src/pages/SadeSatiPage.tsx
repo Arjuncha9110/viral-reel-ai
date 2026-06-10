@@ -52,7 +52,6 @@ const defaultLocation: LocationData = {
 
 const SadeSatiPage = () => {
     const navigate = useNavigate();
-    const testBypassEnabled = import.meta.env.VITE_ENABLE_PAYMENT_BYPASS === "true"; // Configured via environment variables for dev/prod segregation
     const [birthDate, setBirthDate] = useState("");
     const [birthTime, setBirthTime] = useState("12:00");
     const [location, setLocation] = useState<LocationData>(defaultLocation);
@@ -85,32 +84,6 @@ const SadeSatiPage = () => {
             script.onerror = () => resolve(false);
             document.body.appendChild(script);
         });
-
-    const handleDirectGenerate = async () => {
-        setPaymentError(null);
-        setPurchaseStep("processing");
-        try {
-            const dobString = birthDate;
-            const details = {
-                name,
-                email,
-                dob: dobString,
-                tob: birthTime,
-                gender,
-                city: location.name,
-                lat: location.lat,
-                lon: location.lon,
-                timezone: location.timezone,
-            };
-            localStorage.setItem("sade_sati_report_details", JSON.stringify(details));
-            navigate(
-                `/sade-sati-report-preview?name=${encodeURIComponent(name)}&dob=${dobString}&tob=${birthTime}&email=${encodeURIComponent(email)}&gender=${gender}&city=${encodeURIComponent(location.name)}&lat=${location.lat}&lon=${location.lon}&tz=${location.timezone}`
-            );
-        } catch (e: any) {
-            setPaymentError("Report preview failed: " + (e.message || e));
-            setPurchaseStep("form");
-        }
-    };
 
     const handlePay = async () => {
         setPaymentError(null);
@@ -442,32 +415,46 @@ const SadeSatiPage = () => {
                             </div>
 
                             {/* Right Side: price, plan badge, CTA, small note */}
-                            <div className="md:col-span-5 flex flex-col justify-between items-center text-center p-5 bg-[#070e1b]/60 border border-[#b59449]/20 rounded-xl relative">
-                                <div className="space-y-1.5 w-full">
-                                    <span className="bg-[#b59449] text-white text-[9px] font-bold tracking-widest uppercase px-2 py-0.5 rounded">
+                            <div className="md:col-span-5 flex flex-col justify-end items-center text-center p-0 bg-[#070e1b] border border-[#b59449]/20 rounded-xl relative overflow-hidden min-h-[480px]">
+                                {/* Shani Dev Background Image */}
+                                <div className="absolute inset-0 z-0">
+                                    <img src="/shani-crow.jpg" alt="Lord Shani" className="w-full h-full object-cover object-center" />
+                                </div>
+                                {/* Soft ambient gradient */}
+                                <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#070e1b]/40 via-transparent to-[#070e1b]/60" />
+
+                                {/* Lifetime Guide Badge (Floating Top) */}
+                                <div className="absolute top-2 z-10">
+                                    <span className="bg-[#070e1b]/60 backdrop-blur-md text-white text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full shadow-lg border border-[#f0a500]/40">
                                         LIFETIME GUIDE
                                     </span>
-                                    <div className="pt-2">
-                                        <span className="text-xs text-[#fdfbf7]/50 line-through mr-2 font-mono">₹799</span>
-                                        <span className="text-3xl font-black text-white font-serif tracking-tight">₹399</span>
-                                    </div>
-                                    <p className="text-[10px] text-[#b59449] font-semibold">One-time payment • Lifetime access</p>
                                 </div>
 
-                                <div className="w-full space-y-2.5 mt-4">
-                                    <Button
-                                        onClick={handleGetPremiumCTA}
-                                        className="w-full bg-gradient-to-r from-[#b59449] to-[#8a6f35] hover:brightness-110 text-white font-bold rounded-xl py-2.5 shadow-lg border border-[#b59449]/60 transition transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-1.5 text-sm"
-                                    >
-                                        <Sparkles className="h-4 w-4 text-white" />
-                                        Get My Premium Report
-                                    </Button>
-                                    
-                                    <p className="text-[10px] text-[#fdfbf7]/50 italic">
-                                        {!birthDate 
-                                            ? "Calculation starts after your birth details are filled" 
-                                            : "Enter birth details below to continue"}
-                                    </p>
+                                {/* Floating Glassmorphic Text Container to reveal the crow */}
+                                <div className="relative z-10 w-[90%] mb-5 mt-auto p-5 bg-[#070e1b]/50 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl">
+                                    <div className="space-y-0.5">
+                                        <div>
+                                            <span className="text-[11px] text-[#fdfbf7]/80 line-through mr-2 font-mono">₹799</span>
+                                            <span className="text-3xl font-black text-white font-serif tracking-tight drop-shadow-md">₹399</span>
+                                        </div>
+                                        <p className="text-[10px] text-[#f0a500] font-bold tracking-wider">One-time payment • Lifetime access</p>
+                                    </div>
+
+                                    <div className="w-full space-y-2 mt-4">
+                                        <Button
+                                            onClick={handleGetPremiumCTA}
+                                            className="w-full bg-gradient-to-r from-[#b59449] to-[#8a6f35] hover:brightness-110 text-white font-bold rounded-xl py-2.5 shadow-lg border border-[#b59449]/60 transition transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-1.5 text-sm"
+                                        >
+                                            <Sparkles className="h-4 w-4 text-white" />
+                                            Get My Premium Report
+                                        </Button>
+                                        
+                                        <p className="text-[9px] text-[#fdfbf7]/80 italic font-medium leading-tight px-2">
+                                            {!birthDate 
+                                                ? "Calculation starts after your birth details are filled" 
+                                                : "Enter birth details below to continue"}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -805,17 +792,25 @@ const SadeSatiPage = () => {
                                                     )}
                                                 </div>
                                             )}
-
-                                            {testBypassEnabled && (
+                                            
+                                            {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_PAYMENT_BYPASS === "true") && (
                                                 <Button
-                                                    onClick={handleDirectGenerate}
+                                                    onClick={() => {
+                                                        const dobString = birthDate;
+                                                        const details = {
+                                                            name, email, dob: dobString, tob: birthTime, gender,
+                                                            city: location.name, lat: location.lat, lon: location.lon, timezone: location.timezone,
+                                                            token: "dev_bypass_token",
+                                                        };
+                                                        localStorage.setItem("sade_sati_report_details", JSON.stringify(details));
+                                                        navigate(
+                                                            `/sade-sati-report-preview?name=${encodeURIComponent(name)}&dob=${dobString}&tob=${birthTime}&email=${encodeURIComponent(email)}&gender=${gender}&city=${encodeURIComponent(location.name)}&lat=${location.lat}&lon=${location.lon}&tz=${location.timezone}&token=dev_bypass_token`
+                                                        );
+                                                    }}
                                                     variant="outline"
-                                                    size="lg"
-                                                    className="w-full border-sacred-amber/50 hover:bg-sacred-amber/5 text-sacred-amber h-11"
-                                                    disabled={!name.trim() || !email.includes("@")}
+                                                    className="w-full mt-2 border-green-500 text-green-600 hover:bg-green-50"
                                                 >
-                                                    <Sparkles className="mr-2 h-4 w-4 animate-pulse" />
-                                                    Bypass Payment (Test PDF Generation)
+                                                    [DEV ONLY] Bypass Payment
                                                 </Button>
                                             )}
                                         </div>
@@ -1063,6 +1058,52 @@ const SadeSatiPage = () => {
 
                 {/* Google AdSense Bottom Banner */}
                 <AdSenseBanner adSlot="sadesati_bottom_banner" adFormat="horizontal" />
+
+                {/* Content Section */}
+                <div className="max-w-3xl mx-auto mt-16">
+                  <div className="flex items-center justify-center gap-3 mb-10">
+                    <span className="h-px w-16 bg-gradient-to-r from-transparent to-primary/40 rounded-full" />
+                    <span className="text-primary/60 text-lg">🪐</span>
+                    <span className="h-px w-16 bg-gradient-to-l from-transparent to-primary/40 rounded-full" />
+                  </div>
+
+                  <div className="rounded-2xl border border-[#d8bc7a]/30 bg-gradient-to-br from-primary/5 via-card to-accent/5 p-8 shadow-card space-y-8">
+                    <div className="text-center">
+                      <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
+                        Understanding Sade Sati
+                      </h2>
+                      <div className="flex items-center justify-center gap-2 mb-4">
+                        <span className="h-px w-8 bg-primary/40 rounded-full" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary/60" />
+                        <span className="h-px w-8 bg-primary/40 rounded-full" />
+                      </div>
+                      <p className="text-foreground/70 leading-relaxed max-w-xl mx-auto">
+                        Saturn's 7.5-year journey — not a curse, but a period of deep karmic refinement and purposeful transformation.
+                      </p>
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      {[
+                        { icon: "🌒", title: "Phase 1 — Rising", desc: "Saturn enters the sign before your Moon sign. External changes, restlessness, and shifts in environment are common." },
+                        { icon: "🌕", title: "Phase 2 — Peak", desc: "Saturn sits directly on your natal Moon. The most emotionally intense phase — also the greatest opportunity for inner growth." },
+                        { icon: "🌘", title: "Phase 3 — Setting", desc: "Saturn moves past your Moon sign. Pressure lifts gradually. Consolidation, relief, and fresh direction emerge." },
+                      ].map((item) => (
+                        <div key={item.title} className="rounded-xl border border-border/60 bg-card/80 p-5 text-center space-y-2">
+                          <div className="text-2xl">{item.icon}</div>
+                          <h3 className="font-serif text-base font-semibold text-foreground">{item.title}</h3>
+                          <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="border-t border-border/40 pt-6 space-y-4">
+                      <h3 className="font-serif text-lg font-semibold text-foreground">Saturn — The Planet of Karma</h3>
+                      <p className="text-sm text-foreground/70 leading-relaxed">
+                        Sade Sati does not guarantee suffering — it delivers what karma demands. Those who live with integrity and work diligently often find that Saturn rewards rather than punishes. Enter your date, time, and place of birth above to discover your current Sade Sati phase, how long it lasts, and what remedies can ease the journey.
+                      </p>
+                    </div>
+                  </div>
+                </div>
             </div>
         </Layout>
     );

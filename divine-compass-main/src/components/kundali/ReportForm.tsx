@@ -23,10 +23,9 @@ interface ReportFormProps {
   priceINR: number;
   priceUSD: number;
   handlePayRazorpay: () => void;
-  handleTestBypass: () => void;
+  handleBypassPayment: () => void;
   canProceed: boolean;
   paypalContainerRef: RefObject<HTMLDivElement>;
-  testBypassEnabled: boolean;
 }
 
 export const ReportForm = ({
@@ -34,8 +33,8 @@ export const ReportForm = ({
   location, setLocation, email, setEmail, chartStyle, setChartStyle,
   language, setLanguage,
   paymentRegion, selectedPlan, priceINR, priceUSD,
-  handlePayRazorpay, handleTestBypass, canProceed,
-  paypalContainerRef, testBypassEnabled
+  handlePayRazorpay, handleBypassPayment, canProceed,
+  paypalContainerRef
 }: ReportFormProps) => {
   return (
     <div className="grid lg:grid-cols-[1fr_320px] gap-8">
@@ -174,17 +173,17 @@ export const ReportForm = ({
                 <div id="paypal-button-container" ref={paypalContainerRef} className="min-h-[44px]" />
               )}
 
-              {testBypassEnabled && (
-                <button
-                  type="button"
-                  onClick={handleTestBypass}
-                  className="w-full mt-2 flex items-center justify-center gap-2 rounded-xl border border-dashed border-[#f09050]/40 bg-[#f09050]/10 px-5 py-2.5 text-[13px] font-semibold text-[#f09050] hover:bg-[#f09050]/20 transition-all"
-                >
-                  <Zap className="h-3.5 w-3.5" />
-                  Bypass Payment (Test Mode)
-                </button>
-              )}
+
             </div>
+          )}
+
+          {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_PAYMENT_BYPASS === "true") && canProceed && (
+            <button
+              onClick={handleBypassPayment}
+              className="mt-3 w-full flex items-center justify-center gap-2 rounded-xl bg-transparent border border-green-500/50 px-5 py-3.5 text-[14.5px] font-bold text-green-500 shadow-sm hover:bg-green-500/10 transition-all"
+            >
+              [DEV ONLY] Bypass Payment
+            </button>
           )}
 
           <div className="mt-5 flex items-center justify-center gap-1.5 text-[11px] text-white/28">

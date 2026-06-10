@@ -82,7 +82,9 @@ export const Header = () => {
             <img
               src="/logo-srichakra.png"
               alt="Divine Panchang"
-              className="h-full w-full rounded-xl object-cover"
+              className="h-full w-full rounded-xl object-cover pointer-events-none select-none"
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
             />
           </div>
           <div>

@@ -209,10 +209,11 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
     setStep("form");
   };
 
-  const handleTestBypass = () => {
-    if (!canProceed) return;
-    saveReportDetails("local-test-bypass");
-    navigate(buildPreviewUrl("local-test-bypass"));
+
+  const handleBypassPayment = () => {
+    const devToken = "dev_bypass_token";
+    saveReportDetails(devToken);
+    navigate(buildPreviewUrl(devToken));
   };
 
   return {
@@ -230,7 +231,7 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
     error, setError,
     paypalContainerRef,
     handlePayRazorpay,
-    handleTestBypass,
+    handleBypassPayment,
     canProceed,
     priceINR, priceUSD
   };

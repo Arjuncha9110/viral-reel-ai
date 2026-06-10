@@ -29,7 +29,7 @@ export interface SendEmailPayload {
 export async function sendEmail(payload: SendEmailPayload, env: Env): Promise<boolean> {
   const apiKey   = env.RESEND_API_KEY;
   const fromName = env.RESEND_FROM_NAME  || "Divine Panchang";
-  const fromAddr = env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+  const fromAddr = env.RESEND_FROM_EMAIL || "noreply@divinepanchang.space";
   const from     = `${fromName} <${fromAddr}>`;
 
   if (!apiKey) {

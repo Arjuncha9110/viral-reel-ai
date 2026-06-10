@@ -27,12 +27,11 @@ export const KundaliReportPage = () => {
     error,
     paypalContainerRef,
     handlePayRazorpay,
-    handleTestBypass,
+    handleBypassPayment,
     canProceed,
     priceINR, priceUSD
   } = useKundaliReportPayment({ defaultLocation });
 
-  const testBypassEnabled = import.meta.env.VITE_ENABLE_PAYMENT_BYPASS === "true"; // Configured via environment variables for dev/prod segregation
 
   return (
     <Layout>
@@ -81,7 +80,7 @@ export const KundaliReportPage = () => {
               { icon: Star, text: "Vedic precision" },
               { icon: Zap, text: "Instant PDF" },
               { icon: Shield, text: "Secure payment" },
-              { icon: CheckCircle, text: "14+ page report" },
+              { icon: CheckCircle, text: "70–90 page report" },
             ].map(({ icon: Icon, text }) => (
               <span key={text} className="flex items-center gap-1.5 rounded-full border border-[#e4cfa0]/70 bg-[#fffdf8] px-3.5 py-1.5 text-[12px] font-medium text-[#6a4820]">
                 <Icon className="h-3.5 w-3.5 text-[#d4651a]" />
@@ -140,10 +139,9 @@ export const KundaliReportPage = () => {
               priceINR={priceINR}
               priceUSD={priceUSD}
               handlePayRazorpay={handlePayRazorpay}
+              handleBypassPayment={handleBypassPayment}
               paypalContainerRef={paypalContainerRef}
-              handleTestBypass={handleTestBypass}
               canProceed={canProceed}
-              testBypassEnabled={testBypassEnabled}
             />
           </motion.div>
         )}
@@ -170,7 +168,7 @@ export const KundaliReportPage = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
               {[
                 { icon: Download, title: "Instant Access", desc: "Download PDF immediately after payment" },
-                { icon: Clock, title: "14+ Pages", desc: "In-depth life analysis" },
+                { icon: Clock, title: "70–90 Pages", desc: "In-depth life analysis" },
                 { icon: CheckCircle, title: "Vedic Accuracy", desc: "Lahiri ayanamsha calculations" },
                 { icon: Sparkles, title: "Remedies Included", desc: "Mantras, gemstones & rituals" },
               ].map((item, i) => (

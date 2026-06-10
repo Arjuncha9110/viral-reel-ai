@@ -29,6 +29,11 @@ import MoonCyclePage from "./pages/MoonCyclePage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import RefundPage from "./pages/RefundPage";
+import ContactPage from "./pages/ContactPage";
+import BlogPage from "./pages/BlogPage";
+import WhatIsPanchang from "./pages/blog/WhatIsPanchang";
+import SadeSatiGuide from "./pages/blog/SadeSatiGuide";
+import HowToReadKundali from "./pages/blog/HowToReadKundali";
 import { OmChantProvider } from "./components/om/OmChantProvider";
 
 const queryClient = new QueryClient();
@@ -66,7 +71,13 @@ const App = () => (
             <Route path="/about" element={<AboutPage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
             <Route path="/refund" element={<RefundPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/what-is-panchang" element={<WhatIsPanchang />} />
+            <Route path="/blog/sade-sati-guide" element={<SadeSatiGuide />} />
+            <Route path="/blog/how-to-read-kundali" element={<HowToReadKundali />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </OmChantProvider>

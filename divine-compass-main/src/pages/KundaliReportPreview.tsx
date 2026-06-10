@@ -168,8 +168,7 @@ const KundaliReportPreview: React.FC = () => {
         t.startsWith("pay_verified_") ||
         t.startsWith("paypal_verified_") ||
         t.startsWith("paddle_verified_") ||
-        t.startsWith("dev_") ||
-        t === "local-test-bypass"
+        t.startsWith("dev_")
       );
     };
 
@@ -185,7 +184,7 @@ const KundaliReportPreview: React.FC = () => {
 
     if (nameParam && dobParam && tobParam) {
       const urlHasPayment = isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
-      if (!urlHasPayment && import.meta.env.VITE_ENABLE_PAYMENT_BYPASS !== "true") {
+      if (!urlHasPayment) {
         setIsAuthorized(false);
       }
       setData({
@@ -211,7 +210,7 @@ const KundaliReportPreview: React.FC = () => {
         const parsed = JSON.parse(saved);
         if (parsed && parsed.name) {
           const localHasPayment = isValidToken(parsed.token) || isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
-          if (!localHasPayment && import.meta.env.VITE_ENABLE_PAYMENT_BYPASS !== "true") {
+          if (!localHasPayment) {
             setIsAuthorized(false);
           }
           setData(parsed);
@@ -336,7 +335,7 @@ const KundaliReportPreview: React.FC = () => {
           </div>
           <h2 className="font-serif text-2xl font-bold text-[#fdfbf7] mb-3">Payment Verification Required</h2>
           <p className="text-sm text-[#fdfbf7]/70 leading-relaxed mb-6">
-            To view and download your custom 14+ page personalized Kundali report, please complete your payment. If you have already paid, please check your email for the secure access link.
+            To view and download your custom 70–90 page personalized Kundali report, please complete your payment. If you have already paid, please check your email for the secure access link.
           </p>
           <Button
             onClick={() => navigate("/kundali-report")}

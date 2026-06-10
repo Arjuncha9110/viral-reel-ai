@@ -794,6 +794,52 @@ const JanamKundliPage = () => {
         >
           <KundaliFAQ />
         </motion.div>
+
+        {/* Content Section */}
+        <div className="max-w-3xl mx-auto mt-16 mb-12">
+          <div className="flex items-center justify-center gap-3 mb-10">
+            <span className="h-px w-16 bg-gradient-to-r from-transparent to-primary/40 rounded-full" />
+            <span className="text-primary/60 text-lg">✦</span>
+            <span className="h-px w-16 bg-gradient-to-l from-transparent to-primary/40 rounded-full" />
+          </div>
+
+          <div className="rounded-2xl border border-[#d8bc7a]/30 bg-gradient-to-br from-primary/5 via-card to-accent/5 p-8 shadow-card space-y-8">
+            <div className="text-center">
+              <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
+                What Is a Janam Kundli?
+              </h2>
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <span className="h-px w-8 bg-primary/40 rounded-full" />
+                <span className="h-1.5 w-1.5 rounded-full bg-primary/60" />
+                <span className="h-px w-8 bg-primary/40 rounded-full" />
+              </div>
+              <p className="text-foreground/70 leading-relaxed max-w-xl mx-auto">
+                A precise map of the sky at your birth — revealing your soul's karmic blueprint, personality, strengths, and life's deepest themes.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                { icon: "🔯", title: "9 Planets", desc: "Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, and Ketu — each governing a distinct area of life." },
+                { icon: "🏛️", title: "12 Houses", desc: "From self and wealth to relationships, career, and liberation — the twelve houses cover every dimension of human experience." },
+                { icon: "♈", title: "Lagna First", desc: "Unlike Western astrology, Vedic Kundli gives primacy to the Ascendant and Moon sign — far more personal than just your Sun sign." },
+              ].map((item) => (
+                <div key={item.title} className="rounded-xl border border-border/60 bg-card/80 p-5 text-center space-y-2">
+                  <div className="text-2xl">{item.icon}</div>
+                  <h3 className="font-serif text-base font-semibold text-foreground">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="border-t border-border/40 pt-6 space-y-4">
+              <h3 className="font-serif text-lg font-semibold text-foreground">For the Most Accurate Chart</h3>
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                Enter your birth date, exact time (even a few minutes matter — the Ascendant changes every two hours), and place of birth. The calculator uses Swiss Ephemeris data for maximum precision, displaying your Lagna, Moon sign, all planetary positions, house lords, and complete Vimshottari Dasha periods. Use your birth certificate or family records for the most reliable time.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </Layout>
   );
