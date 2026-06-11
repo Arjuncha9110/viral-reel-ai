@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { detectNameSoundVibration } from "@/lib/sound/detectNameSound";
 import SoundVibrationPanel from "@/components/numerology/SoundVibrationPanel";
 import { VehicleNumerologySection } from "@/components/numerology/VehicleNumerologySection";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const NameNumerologyPage = () => {
   const [name, setName] = useState("");
@@ -56,6 +57,13 @@ const NameNumerologyPage = () => {
 
   return (
     <Layout>
+        <SeoHead
+            title="Name Numerology Calculator - Destiny & Soul Urge Numbers"
+            description="Decode the numerology of your name: destiny, soul urge, and personality numbers with clear, practical interpretations."
+            path="/numerology/name"
+            type="website"
+            keywords="name numerology calculator, destiny number, soul urge number, name number"
+        />
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Name Numerology"

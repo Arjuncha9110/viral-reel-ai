@@ -38,6 +38,7 @@ import {
   DashaPeriod
 } from "@/lib/data/dasha";
 import { LocationSelector, LocationData } from "@/components/LocationSelector";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 // Default location (Bengaluru)
 const defaultLocation: LocationData = {
@@ -96,6 +97,13 @@ const DashaPage = () => {
 
   return (
     <Layout>
+        <SeoHead
+            title="Vimshottari Dasha Calculator - Current Mahadasha & Antardasha"
+            description="Calculate your Vimshottari Dasha periods from your birth details. See your current Mahadasha, Antardasha, and Pratyantardasha with exact dates."
+            path="/dasha"
+            type="website"
+            keywords="dasha calculator, vimshottari dasha, current mahadasha, antardasha calculator"
+        />
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Dasha Calculator"

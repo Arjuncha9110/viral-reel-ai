@@ -28,6 +28,8 @@ import ChartInterpretation from "@/components/kundali/ChartInterpretation";
 import DivisionalChartsIntro from "@/components/kundali/DivisionalChartsIntro";
 import KundaliFAQ from "@/components/kundali/KundaliFAQ";
 import KundaliReviews from "@/components/kundali/KundaliReviews";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const SIGNS = [
     "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
@@ -101,6 +103,13 @@ const KundaliPage = () => {
 
     return (
         <Layout>
+            <SeoHead
+                title="Free Janam Kundali Online - Vedic Birth Chart Generator"
+                description="Generate your free Janam Kundali with accurate planetary positions, lagna, divisional charts, and dasha periods. North and South Indian chart styles."
+                path="/kundali"
+                type="website"
+                keywords="free kundali, janam kundali online, vedic birth chart, kundali generator, lagna chart"
+            />
             <div className="container mx-auto px-4 py-8">
                 <PageHeader
                     title="Janam Kundali"
@@ -323,6 +332,31 @@ const KundaliPage = () => {
                     <KundaliFAQ />
                 </motion.div>
             </div>
+
+            <RelatedLinks
+                links={[
+                    {
+                        to: "/blog/how-to-read-kundali",
+                        title: "How to Read Your Kundali",
+                        description: "Houses, planets, and signs decoded in plain language for beginners.",
+                    },
+                    {
+                        to: "/dasha",
+                        title: "Vimshottari Dasha Calculator",
+                        description: "See which planetary period governs this chapter of your life.",
+                    },
+                    {
+                        to: "/match",
+                        title: "Kundali Matching",
+                        description: "Check Vedic compatibility with Ashtakoota guna matching.",
+                    },
+                    {
+                        to: "/panchang",
+                        title: "Today's Panchang",
+                        description: "Tithi, nakshatra, rahu kaal, and auspicious timings for today.",
+                    },
+                ]}
+            />
         </Layout>
     );
 };

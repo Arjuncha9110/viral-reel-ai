@@ -1,4 +1,4 @@
-import { Calendar, Hash, Star, ScrollText, Orbit, Clock, Eye, Shield, Zap } from "lucide-react";
+import { Calendar, Hash, Star, ScrollText, Orbit, Clock, Eye, Shield, Zap, Timer } from "lucide-react";
 import { siteConfig } from "@/lib/siteConfig";
 
 export const features = [
@@ -9,6 +9,14 @@ export const features = [
     path: "/panchang",
     glyph: "☀",
     badge: "Today's Guide",
+  },
+  {
+    title: "Choghadiya",
+    description: "Find the most auspicious time windows throughout your day and night for new beginnings and important tasks.",
+    icon: Timer,
+    path: "/choghadiya",
+    glyph: "⌛",
+    badge: "Timing Guide",
   },
   {
     title: "Janam Kundali",

@@ -11,11 +11,11 @@ const Index = () => {
   return (
     <Layout>
       <SeoHead
-        title="Divine Panchang | Daily Panchang, Kundali & Numerology"
-        description="Check today's panchang, explore Janam Kundali and numerology, and follow practical spiritual guidance from Divine Panchang."
+        title="Daily Panchang & Vedic Guidance Online | Divine Panchang"
+        description="Free daily panchang with today's tithi, nakshatra, yoga, karana, rahu kaal, and sunrise, plus kundali, dasha, and numerology tools for clear Vedic guidance."
         path="/"
         type="website"
-        keywords="divine panchang, daily panchang, vedic astrology, janam kundali, numerology, rahu kaal, nakshatra"
+        keywords="daily panchang, today panchang, vedic panchang, panchang with daily guidance, rahu kaal today, tithi today, nakshatra today, janam kundali"
         structuredData={homeStructuredData}
       />
 

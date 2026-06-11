@@ -3,6 +3,7 @@ import { Clock, Tag, ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SeoHead } from "@/components/shared/SeoHead";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
 import { siteConfig } from "@/lib/siteConfig";
 
 const WhatIsPanchang = () => {
@@ -207,6 +208,32 @@ const WhatIsPanchang = () => {
         </div>
 
       </div>
+
+      <RelatedLinks
+        heading="Put this guide into practice"
+        links={[
+          {
+            to: "/panchang",
+            title: "Today's Panchang",
+            description: "See today's tithi, nakshatra, yoga, karana, and rahu kaal for your city.",
+          },
+          {
+            to: "/choghadiya",
+            title: "Today's Choghadiya",
+            description: "Auspicious day and night time windows for new beginnings.",
+          },
+          {
+            to: "/ekadashi",
+            title: "Ekadashi Calendar",
+            description: "Upcoming Ekadashi tithis with fasting and parana timings.",
+          },
+          {
+            to: "/panchang/new-delhi",
+            title: "New Delhi Panchang",
+            description: "Today's panchang calculated precisely for New Delhi.",
+          },
+        ]}
+      />
     </Layout>
   );
 };

@@ -19,6 +19,7 @@ import {
 import { cn } from "@/lib/utils";
 import { LocationSelector, LocationData } from "@/components/LocationSelector";
 import { AdSenseBanner } from "@/components/shared/AdSenseBanner";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
 import {
     getSadeSatiPhases,
     getCurrentSadeSatiStatus,
@@ -27,6 +28,7 @@ import {
     getSiderealSaturnLongitude
 } from "@/lib/calculators/astrology/sadeSati";
 import { generateSadeSatiPdf } from "@/lib/pdf/generateSadeSatiPdf";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 // Stripe replaces PayPal for international payments
 
@@ -49,6 +51,15 @@ const defaultLocation: LocationData = {
     lon: 77.5946,
     timezone: "Asia/Kolkata"
 };
+
+const premiumReportFeatures = [
+    "Complete Sade Sati timeline",
+    "Rising, peak, and setting phase analysis",
+    "Lagna, Moon, and Saturn transit charts",
+    "Saturn placement and karmic lessons",
+    "Remedies, mantras, charity, and lifestyle guidance",
+    "Instant PDF after birth details",
+];
 
 const SadeSatiPage = () => {
     const navigate = useNavigate();
@@ -358,6 +369,13 @@ const SadeSatiPage = () => {
 
     return (
         <Layout>
+            <SeoHead
+                title="Sade Sati Calculator - Check Your Saturn Transit Phase"
+                description="Find out if Sade Sati is active for your Moon sign. Accurate Saturn transit phases with dates, intensity, and traditional remedies."
+                path="/sade-sati"
+                type="website"
+                keywords="sade sati calculator, sade sati check, saturn transit moon sign, shani sade sati"
+            />
             <div className="container mx-auto px-4 py-8">
                 <PageHeader
                     title="Shani Sade Sati Calculator"
@@ -370,52 +388,46 @@ const SadeSatiPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="max-w-2xl mx-auto mb-8"
+                    className="max-w-4xl mx-auto mb-10"
                 >
-                    <div className="relative overflow-hidden rounded-2xl border-2 border-[#b59449]/40 bg-gradient-to-b from-[#0b1730] to-[#0e2145] shadow-xl p-6 md:p-8 text-[#fdfbf7]">
+                    <div className="relative overflow-hidden rounded-[28px] border-2 border-[#b59449]/40 bg-gradient-to-b from-[#0b1730] to-[#0e2145] shadow-xl p-5 md:p-8 lg:p-10 text-[#fdfbf7]">
                         {/* Subtle gold accent background pattern */}
                         <div className="absolute -right-4 -top-4 w-40 h-40 bg-[#b59449]/5 rounded-full blur-3xl pointer-events-none" />
                         <div className="absolute -left-4 -bottom-4 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
                         
-                        <div className="grid gap-6 md:grid-cols-12 items-stretch">
+                        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,340px)] items-stretch">
                             {/* Left Side: title, subtitle, feature list, trust note */}
-                            <div className="md:col-span-7 flex flex-col justify-between space-y-4">
-                                <div className="space-y-2">
-                                    <div className="inline-flex items-center gap-1 bg-[#b59449]/20 border border-[#b59449]/40 text-[#b59449] text-[10px] font-bold tracking-wider uppercase rounded-full px-2.5 py-0.5 font-serif">
-                                        🪐 Vedic Premium Guidance
+                            <div className="flex flex-col justify-between space-y-5 lg:pr-4">
+                                <div className="space-y-3">
+                                    <div className="inline-flex items-center gap-1.5 self-start bg-[#b59449]/20 border border-[#b59449]/40 text-[#b59449] text-[10px] font-bold tracking-wider uppercase rounded-full px-3 py-1 font-serif">
+                                        <Sparkles className="h-3.5 w-3.5" />
+                                        Vedic Premium Guidance
                                     </div>
-                                    <h3 className="font-serif text-xl md:text-2xl font-bold leading-tight text-white">
+                                    <h3 className="font-serif text-2xl md:text-[2rem] font-bold leading-tight text-white max-w-[16ch]">
                                         Personalized Sade Sati Premium Report
                                     </h3>
-                                    <p className="text-xs text-[#fdfbf7]/80 font-serif leading-relaxed">
+                                    <p className="max-w-[48ch] text-sm text-[#fdfbf7]/80 font-serif leading-relaxed">
                                         Understand your Saturn phase, timeline, remedies, and spiritual growth path.
                                     </p>
                                 </div>
 
                                 {/* Feature rows with icons */}
-                                <div className="space-y-2.5 pt-2">
-                                    {[
-                                        "Complete Sade Sati timeline",
-                                        "Rising, peak, and setting phase analysis",
-                                        "Lagna, Moon, and Saturn transit charts",
-                                        "Saturn placement and karmic lessons",
-                                        "Remedies, mantras, charity, and lifestyle guidance",
-                                        "Instant PDF after birth details"
-                                    ].map((feature, idx) => (
-                                        <div key={idx} className="flex items-start gap-2.5 text-xs text-[#fdfbf7]/90 leading-tight">
-                                            <span className="text-[#b59449] font-serif text-[11px] select-none mt-0.5">✦</span>
+                                <div className="grid gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-1">
+                                    {premiumReportFeatures.map((feature) => (
+                                        <div key={feature} className="flex items-start gap-2.5 text-sm text-[#fdfbf7]/90 leading-snug">
+                                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#b59449]" />
                                             <span>{feature}</span>
                                         </div>
                                     ))}
                                 </div>
 
-                                <div className="text-[10px] text-[#fdfbf7]/50 pt-2 border-t border-[#b59449]/15 italic font-serif">
+                                <div className="text-xs text-[#fdfbf7]/55 pt-3 border-t border-[#b59449]/15 italic font-serif">
                                     Includes practical Saturn guidance, phase timelines, chart insights, and grounded remedies for reflection and growth.
                                 </div>
                             </div>
 
                             {/* Right Side: price, plan badge, CTA, small note */}
-                            <div className="md:col-span-5 flex flex-col justify-end items-center text-center p-0 bg-[#070e1b] border border-[#b59449]/20 rounded-xl relative overflow-hidden min-h-[480px]">
+                            <div className="flex w-full max-w-[340px] mx-auto flex-col justify-end items-center text-center p-4 md:p-5 bg-[#070e1b] border border-[#b59449]/20 rounded-[24px] relative overflow-hidden min-h-[420px]">
                                 {/* Shani Dev Background Image */}
                                 <div className="absolute inset-0 z-0">
                                     <img src="/shani-crow.jpg" alt="Lord Shani" className="w-full h-full object-cover object-center" />
@@ -424,32 +436,32 @@ const SadeSatiPage = () => {
                                 <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#070e1b]/40 via-transparent to-[#070e1b]/60" />
 
                                 {/* Lifetime Guide Badge (Floating Top) */}
-                                <div className="absolute top-2 z-10">
+                                <div className="absolute top-4 z-10">
                                     <span className="bg-[#070e1b]/60 backdrop-blur-md text-white text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-full shadow-lg border border-[#f0a500]/40">
                                         LIFETIME GUIDE
                                     </span>
                                 </div>
 
                                 {/* Floating Glassmorphic Text Container to reveal the crow */}
-                                <div className="relative z-10 w-[90%] mb-5 mt-auto p-5 bg-[#070e1b]/50 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl">
+                                <div className="relative z-10 w-full max-w-[240px] mt-auto p-5 bg-[#070e1b]/70 backdrop-blur-md rounded-[22px] border border-white/10 shadow-2xl">
                                     <div className="space-y-0.5">
                                         <div>
-                                            <span className="text-[11px] text-[#fdfbf7]/80 line-through mr-2 font-mono">₹799</span>
-                                            <span className="text-3xl font-black text-white font-serif tracking-tight drop-shadow-md">₹399</span>
+                                            <span className="text-[11px] text-[#fdfbf7]/80 line-through mr-2 font-mono">Rs 799</span>
+                                            <span className="text-3xl font-black text-white font-serif tracking-tight drop-shadow-md">Rs 399</span>
                                         </div>
-                                        <p className="text-[10px] text-[#f0a500] font-bold tracking-wider">One-time payment • Lifetime access</p>
+                                        <p className="text-[10px] text-[#f0a500] font-bold tracking-wider">One-time payment - Lifetime access</p>
                                     </div>
 
                                     <div className="w-full space-y-2 mt-4">
                                         <Button
                                             onClick={handleGetPremiumCTA}
-                                            className="w-full bg-gradient-to-r from-[#b59449] to-[#8a6f35] hover:brightness-110 text-white font-bold rounded-xl py-2.5 shadow-lg border border-[#b59449]/60 transition transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-1.5 text-sm"
+                                            className="w-full h-auto min-h-11 bg-gradient-to-r from-[#b59449] to-[#8a6f35] hover:brightness-110 text-white font-bold rounded-xl px-4 py-3 shadow-lg border border-[#b59449]/60 transition transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-1.5 text-center leading-tight text-sm"
                                         >
                                             <Sparkles className="h-4 w-4 text-white" />
-                                            Get My Premium Report
+                                            Get Premium Report
                                         </Button>
                                         
-                                        <p className="text-[9px] text-[#fdfbf7]/80 italic font-medium leading-tight px-2">
+                                        <p className="text-[11px] text-[#fdfbf7]/80 italic font-medium leading-tight px-1 mt-3">
                                             {!birthDate 
                                                 ? "Calculation starts after your birth details are filled" 
                                                 : "Enter birth details below to continue"}
@@ -467,7 +479,7 @@ const SadeSatiPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="max-w-2xl mx-auto mb-12"
+                    className="max-w-3xl mx-auto mb-12"
                 >
                     <SpiritualCard hover={false} className="border-2 border-[#b59449]/30 bg-[#fffdf9] shadow-[0_10px_30px_rgba(181,148,73,0.08)] relative overflow-hidden p-6 md:p-8 rounded-2xl">
                         {/* Elegant background mandalas or glowing indicators */}
@@ -478,7 +490,8 @@ const SadeSatiPage = () => {
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label className="text-[#0b1730] font-serif font-semibold text-sm flex items-center gap-1.5">
-                                        📅 Date of Birth
+                                        <Calendar className="h-4 w-4 text-primary" />
+                                        Date of Birth
                                     </Label>
                                     <Input
                                         type="date"
@@ -491,7 +504,8 @@ const SadeSatiPage = () => {
 
                                 <div className="space-y-2">
                                     <Label className="text-[#0b1730] font-serif font-semibold text-sm flex items-center gap-1.5">
-                                        ⏰ Time of Birth
+                                        <Clock className="h-4 w-4 text-primary" />
+                                        Time of Birth
                                     </Label>
                                     <div className="relative">
                                         <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#b59449]" />
@@ -1105,6 +1119,31 @@ const SadeSatiPage = () => {
                   </div>
                 </div>
             </div>
+
+            <RelatedLinks
+                links={[
+                    {
+                        to: "/blog/sade-sati-guide",
+                        title: "Sade Sati: The Complete Guide",
+                        description: "Saturn's 7.5-year transit, its three phases, and traditional remedies explained.",
+                    },
+                    {
+                        to: "/dasha",
+                        title: "Vimshottari Dasha Calculator",
+                        description: "See how Saturn's transit interacts with your current planetary period.",
+                    },
+                    {
+                        to: "/kundali",
+                        title: "Free Janam Kundali",
+                        description: "Generate your birth chart to understand your Moon sign placement.",
+                    },
+                    {
+                        to: "/panchang",
+                        title: "Today's Panchang",
+                        description: "Tithi, nakshatra, rahu kaal, and auspicious timings for today.",
+                    },
+                ]}
+            />
         </Layout>
     );
 };

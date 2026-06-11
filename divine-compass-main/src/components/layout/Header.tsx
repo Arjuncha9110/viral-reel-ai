@@ -19,7 +19,8 @@ import {
   X,
   Grid3x3,
   Heart,
-  Wind
+  Wind,
+  Timer
 } from "lucide-react";
 
 const primaryLinks = [
@@ -33,6 +34,7 @@ const primaryLinks = [
 
 const secondaryLinks = [
   { name: "Daily Guidance", path: "/daily-guidance", icon: Sparkles, desc: "Vedic insights for today" },
+  { name: "Choghadiya", path: "/choghadiya", icon: Timer, desc: "Auspicious timing windows" },
   { name: "Weekly Zodiac", path: "/weekly-zodiac", icon: Sun, desc: "Rashi forecast this week" },
   { name: "Ekadashi", path: "/ekadashi", icon: Calendar, desc: "Sacred fasting calendar" },
   { name: "Dasha", path: "/dasha", icon: Clock, desc: "Planetary period analysis" },

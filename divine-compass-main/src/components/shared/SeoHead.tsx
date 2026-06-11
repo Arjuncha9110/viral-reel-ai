@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { siteConfig } from "@/lib/siteConfig";
+import { collectSeo, isServer } from "@/seo/seoCollector";
 
 type StructuredDataValue = Record<string, unknown> | Array<Record<string, unknown>>;
 
@@ -53,6 +54,12 @@ export const SeoHead = ({
   const pathname = path ?? location.pathname;
   const canonicalUrl = new URL(pathname, siteConfig.websiteUrl).toString();
   const imageUrl = new URL(image, siteConfig.websiteUrl).toString();
+
+  // During build-time prerendering there is no DOM; report SEO values to the
+  // collector so the prerender script can write them into the static <head>.
+  if (isServer) {
+    collectSeo({ title, description, canonicalUrl, imageUrl, type, keywords, structuredData });
+  }
 
   useEffect(() => {
     document.title = title;

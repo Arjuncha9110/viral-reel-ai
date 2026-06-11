@@ -3,6 +3,7 @@ import { Clock, Tag, ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SeoHead } from "@/components/shared/SeoHead";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
 import { siteConfig } from "@/lib/siteConfig";
 
 const HowToReadKundali = () => {
@@ -219,6 +220,32 @@ const HowToReadKundali = () => {
         </div>
 
       </div>
+
+      <RelatedLinks
+        heading="Put this guide into practice"
+        links={[
+          {
+            to: "/kundali",
+            title: "Free Janam Kundali",
+            description: "Generate your Vedic birth chart with accurate planetary positions.",
+          },
+          {
+            to: "/match",
+            title: "Kundali Matching",
+            description: "Check Vedic compatibility with Ashtakoota guna matching.",
+          },
+          {
+            to: "/dasha",
+            title: "Vimshottari Dasha Calculator",
+            description: "Explore the planetary periods shaping each chapter of life.",
+          },
+          {
+            to: "/blog/what-is-panchang",
+            title: "What is Panchang?",
+            description: "The five limbs of Vedic timekeeping, explained for beginners.",
+          },
+        ]}
+      />
     </Layout>
   );
 };

@@ -3,6 +3,7 @@ import { Clock, Tag, ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SeoHead } from "@/components/shared/SeoHead";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
 import { siteConfig } from "@/lib/siteConfig";
 
 const SadeSatiGuide = () => {
@@ -202,6 +203,32 @@ const SadeSatiGuide = () => {
         </div>
 
       </div>
+
+      <RelatedLinks
+        heading="Put this guide into practice"
+        links={[
+          {
+            to: "/sade-sati",
+            title: "Sade Sati Calculator",
+            description: "Check your current Sade Sati phase from your birth details.",
+          },
+          {
+            to: "/dasha",
+            title: "Vimshottari Dasha Calculator",
+            description: "See which planetary period governs this chapter of your life.",
+          },
+          {
+            to: "/kundali",
+            title: "Free Janam Kundali",
+            description: "Generate your birth chart and find your Moon sign placement.",
+          },
+          {
+            to: "/blog/how-to-read-kundali",
+            title: "How to Read Your Kundali",
+            description: "Houses, planets, and signs decoded in plain language.",
+          },
+        ]}
+      />
     </Layout>
   );
 };

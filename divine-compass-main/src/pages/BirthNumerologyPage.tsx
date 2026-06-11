@@ -33,6 +33,7 @@ import {
   NumerologyResult
 } from "@/lib/data/numerology";
 import { cn } from "@/lib/utils";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const BirthNumerologyPage = () => {
   const [birthDate, setBirthDate] = useState("");
@@ -76,6 +77,13 @@ const BirthNumerologyPage = () => {
 
   return (
     <Layout>
+        <SeoHead
+            title="Birth Date Numerology Calculator - Life Path Number"
+            description="Find your Life Path, Destiny, and Maturity numbers from your date of birth, with practical interpretations for everyday decisions."
+            path="/numerology/birth"
+            type="website"
+            keywords="birth numerology, life path number calculator, destiny number by date of birth"
+        />
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Birth Date Numerology"

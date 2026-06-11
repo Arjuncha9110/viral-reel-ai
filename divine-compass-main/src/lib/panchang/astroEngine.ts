@@ -2,6 +2,7 @@ import {
     getLahiriAyanamsha,
     getPlanetaryPositionsTropicalWithSpeed
 } from "../astro/ephemeris";
+import { SearchRiseSet, Observer, Body, MakeTime } from "../astro/astronomy-core";
 
 const normalizeAngle = (deg: number) => {
     let a = deg % 360;
@@ -13,6 +14,33 @@ export const getSiderealMoonLongitude = (date: Date): number => {
     const tropical = getPlanetaryPositionsTropicalWithSpeed(date)["Moon"].lon;
     const ayanamsha = getLahiriAyanamsha(date);
     return normalizeAngle(tropical - ayanamsha);
+};
+
+export const getSunriseSunset = (date: Date, lat: number, lon: number): { sunrise: Date, sunset: Date, nextSunrise: Date } => {
+    const observer = new Observer(lat, lon, 0);
+    
+    // Calculate the UTC time of Local Mean Midnight for the chosen calendar day
+    const utcMidnight = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+    const lmtMidnightMs = utcMidnight - (lon / 15) * 3600000;
+    
+    // Start searching 4 hours before LMT midnight to safely catch the local sunrise
+    const searchStart = new Date(lmtMidnightMs - 4 * 3600000);
+    const astroTime = MakeTime(searchStart);
+
+    const riseResult = SearchRiseSet(Body.Sun, observer, 1, astroTime, 2);
+    
+    // Search for sunset after sunrise
+    const sunsetSearchTime = riseResult ? riseResult.date : new Date(lmtMidnightMs + 6 * 3600000);
+    const setResult = SearchRiseSet(Body.Sun, observer, -1, MakeTime(sunsetSearchTime), 2);
+
+    const sunrise = riseResult ? riseResult.date : new Date(lmtMidnightMs + 6 * 3600000);
+    const sunset = setResult ? setResult.date : new Date(lmtMidnightMs + 18 * 3600000);
+
+    // Search for next day's sunrise for night segments
+    const nextRiseResult = SearchRiseSet(Body.Sun, observer, 1, MakeTime(sunset), 2);
+    const nextSunrise = nextRiseResult ? nextRiseResult.date : new Date(sunrise.getTime() + 24 * 3600000);
+
+    return { sunrise, sunset, nextSunrise };
 };
 
 export const getSunLongitude = (date: Date): number => {

@@ -1,3 +1,4 @@
+import { SearchAltitude, Body, Observer, AstroTime } from "astronomy-engine";
 import {
     PanchangData,
     PanchangSegment,
@@ -92,31 +93,42 @@ export const getSamplePanchangData = (
     timezone: string = "Asia/Kolkata"
 ): PanchangData => {
     // 1. Calculate boundaries in the target timezone
-    // Get year/month/day of selected date in target timezone
-    const dtFormatter = new Intl.DateTimeFormat("en-US", {
-        timeZone: timezone,
-        year: 'numeric', month: '2-digit', day: '2-digit'
-    });
-    const parts = dtFormatter.formatToParts(date);
-    const y = parts.find(p => p.type === 'year')!.value;
-    const m = parts.find(p => p.type === 'month')!.value;
-    const d = parts.find(p => p.type === 'day')!.value;
-
-    // Identifying the 06:00 AM local moment in UTC
-    let startOfPanchangDayUTC = date.getTime();
+    let localMidnightUTC = date.getTime();
     for (let i = -24; i < 24; i++) {
         const test = new Date(date.getTime() + i * 3600 * 1000);
         const lParts = new Intl.DateTimeFormat("en-US", { timeZone: timezone, hour: 'numeric', hour12: false }).formatToParts(test);
         const hour = lParts.find(p => p.type === 'hour')!.value;
-        if (hour === "6" || hour === "06") {
+        if (hour === "24" || hour === "00" || hour === "0") {
             test.setMinutes(0, 0, 0);
-            startOfPanchangDayUTC = test.getTime();
+            localMidnightUTC = test.getTime();
             break;
         }
     }
 
-    const startOfPanchangDay = new Date(startOfPanchangDayUTC);
-    const endOfPanchangDay = new Date(startOfPanchangDayUTC + 24 * 3600 * 1000);
+    const startOfDay = new Date(localMidnightUTC);
+    const observer = new Observer(lat, lon, 0);
+
+    let todaySunriseDate = SearchAltitude(Body.Sun, observer, +1, new AstroTime(startOfDay), 1, 0)?.date;
+    let todaySunsetDate = SearchAltitude(Body.Sun, observer, -1, new AstroTime(startOfDay), 1, 0)?.date;
+
+    if (!todaySunriseDate) todaySunriseDate = new Date(localMidnightUTC + 6 * 3600000);
+    if (!todaySunsetDate) todaySunsetDate = new Date(localMidnightUTC + 18 * 3600000);
+
+    const getLocalDecimalHours = (d: Date) => {
+        const parts = new Intl.DateTimeFormat("en-US", { timeZone: timezone, hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false }).formatToParts(d);
+        let h = parseInt(parts.find(p => p.type === 'hour')!.value);
+        if (h === 24) h = 0;
+        const m = parseInt(parts.find(p => p.type === 'minute')!.value);
+        const s = parseInt(parts.find(p => p.type === 'second')!.value);
+        return h + m/60 + s/3600;
+    };
+
+    const sunriseHoursRaw = getLocalDecimalHours(todaySunriseDate);
+    const sunsetHoursRaw = getLocalDecimalHours(todaySunsetDate);
+
+    // Provide the start of the panchang day approx. at sunrise
+    const startOfPanchangDay = todaySunriseDate;
+    const endOfPanchangDay = new Date(startOfPanchangDay.getTime() + 24 * 3600 * 1000);
 
     const timeFormatter = new Intl.DateTimeFormat("en-IN", {
         timeZone: timezone,
@@ -197,44 +209,35 @@ export const getSamplePanchangData = (
     const dayIndex = startOfPanchangDay.getDay();
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    const sunriseHours = 6.0;
-    const sunsetHours = 18.2;
-
-    // Formatting helpers for sub-components using the local start date as baseline
-    const formatH = (h: number) => {
-        const d = new Date(startOfPanchangDayUTC);
-        const hoursToAdd = h - 6;
-        const result = new Date(d.getTime() + hoursToAdd * 3600 * 1000);
-        return formatDate(result);
-    };
-
-    const sunrise = formatH(6.0);
-    const sunset = formatH(18.2);
+    const sunriseHours = sunriseHoursRaw;
+    let sunsetHours = sunsetHoursRaw;
+    if (sunsetHours < sunriseHours) sunsetHours += 24;
 
     const lunarDay = tithi[0].index;
     const moonriseOffset = lunarDay * 0.8;
-    const moonrise = formatH((18.2 + moonriseOffset));
-    const moonset = formatH((6.0 + moonriseOffset));
+    const moonrise = formatTime(sunriseHours + moonriseOffset, ((sunriseHours + moonriseOffset) % 1) * 60);
+    const moonset = formatTime(sunsetHours + moonriseOffset, ((sunsetHours + moonriseOffset) % 1) * 60);
 
     const rahuKaal = calculateInauspiciousPeriod(rahuKaalSlots[dayIndex], sunriseHours, sunsetHours);
     const yamagandam = calculateInauspiciousPeriod(yamagandamSlots[dayIndex], sunriseHours, sunsetHours);
     const gulikaKaal = calculateInauspiciousPeriod(gulikaSlots[dayIndex], sunriseHours, sunsetHours);
 
     const middayHours = (sunriseHours + sunsetHours) / 2;
-    const abhijitMuhurat = `${formatH(middayHours - 0.4)} - ${formatH(middayHours + 0.4)}`;
-    const brahmaMuhurat = `${formatH(sunriseHours - 1.6)} - ${formatH(sunriseHours - 0.8)}`;
+    const abhijitMuhurat = `${formatTime(middayHours - 0.4, ((middayHours - 0.4) % 1) * 60)} - ${formatTime(middayHours + 0.4, ((middayHours + 0.4) % 1) * 60)}`;
+    const brahmaMuhurat = `${formatTime(sunriseHours - 1.6, ((sunriseHours - 1.6) % 1) * 60)} - ${formatTime(sunriseHours - 0.8, ((sunriseHours - 0.8) % 1) * 60)}`;
+    const vijayaMuhurat = `${formatTime(middayHours + 1.5, ((middayHours + 1.5) % 1) * 60)} - ${formatTime(middayHours + 2.22, ((middayHours + 2.22) % 1) * 60)}`;
 
     const hora = calculateHora(startOfPanchangDay, sunriseHours, sunsetHours);
 
     return {
-        date: startOfPanchangDay.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+        date: startOfPanchangDay.toLocaleDateString('en-IN', { timeZone: timezone, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
         day: days[dayIndex],
         tithi,
         nakshatra,
         yoga,
         karana,
-        sunrise,
-        sunset,
+        sunrise: formatTime(sunriseHours, (sunriseHours % 1) * 60),
+        sunset: formatTime(sunsetHours, (sunsetHours % 1) * 60),
         moonrise,
         moonset,
         rahuKaal,
@@ -244,7 +247,7 @@ export const getSamplePanchangData = (
         auspiciousTimings: [
             `Brahma Muhurta: ${brahmaMuhurat}`,
             `Abhijit Muhurta: ${abhijitMuhurat}`,
-            `Vijaya Muhurta: ${formatH(middayHours + 1.5)} - ${formatH(middayHours + 2.22)}`
+            `Vijaya Muhurta: ${vijayaMuhurat}`
         ],
         inauspiciousTimings: [
             `Rahu Kaal: ${rahuKaal}`,

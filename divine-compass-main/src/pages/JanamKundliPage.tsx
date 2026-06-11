@@ -35,6 +35,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getAscendant, getPlanetPositions, PlanetPosition } from "@/lib/astro/kundaliEngine";
 import { fetchLiveKundli, type LiveKundliData } from "@/lib/astrologyApi";
 import { cn } from "@/lib/utils";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const SIGNS = [
   "Aries",
@@ -269,6 +270,13 @@ const JanamKundliPage = () => {
 
   return (
     <Layout>
+        <SeoHead
+            title="Janam Kundli by Date of Birth - Free Vedic Chart"
+            description="Create your Janam Kundli by date, time, and place of birth. Free Vedic chart with planetary positions and clear interpretations."
+            path="/janam-kundli"
+            type="website"
+            keywords="janam kundli, kundli by date of birth, free janam kundli online"
+        />
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Janam Kundli"

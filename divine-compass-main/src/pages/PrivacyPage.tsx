@@ -1,8 +1,15 @@
 import { Layout } from "@/components/layout/Layout";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const PrivacyPage = () => {
   return (
     <Layout>
+        <SeoHead
+            title="Privacy Policy | Divine Panchang"
+            description="How Divine Panchang collects, uses, and protects your information."
+            path="/privacy"
+            type="website"
+        />
       <div className="container mx-auto px-4 py-12 max-w-3xl">
         <h1 className="font-serif text-3xl font-bold text-foreground mb-2">Privacy Policy</h1>
         <p className="text-sm text-muted-foreground mb-8">Last updated: June 2026</p>

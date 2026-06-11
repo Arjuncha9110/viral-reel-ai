@@ -43,20 +43,20 @@ export const Hero = () => {
             </motion.div>
 
             <h1 className="font-display text-4xl font-bold leading-[1.12] tracking-tight text-[#1a1440] md:text-5xl lg:text-6xl xl:text-7xl">
-              Your Daily{" "}
+              Your{" "}
               <span className="relative inline-block">
                 <span className="relative z-10 bg-gradient-to-r from-[#c55810] via-[#e07030] to-[#b04010] bg-clip-text text-transparent">
-                  Spiritual Compass
+                  Daily Panchang
                 </span>
                 <span className="absolute inset-x-0 bottom-1 h-[3px] rounded-full bg-gradient-to-r from-[#d4651a]/0 via-[#e87838]/70 to-[#d4651a]/0" />
               </span>
               <br />
-              Panchang &amp; Astrology
+              &amp; Vedic Guidance
             </h1>
 
             <p className="mx-auto max-w-xl text-lg leading-relaxed text-[#3a2c10]/60 lg:mx-0">
-              Check today's auspicious timings, generate your Janam Kundali, decode your numerology, and follow
-              time-tested Vedic guidance in one sacred space.
+              Check today's panchang — tithi, nakshatra, rahu kaal, and auspicious muhurat for your city — then go
+              deeper with your free Janam Kundali, dasha timeline, and numerology.
             </p>
 
             <motion.div

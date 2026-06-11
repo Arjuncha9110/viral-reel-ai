@@ -5,6 +5,7 @@ import { LocationData } from "@/components/LocationSelector";
 import { useKundaliReportPayment } from "@/hooks/useKundaliReportPayment";
 import { PricingSection } from "@/components/kundali/PricingSection";
 import { ReportForm } from "@/components/kundali/ReportForm";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const defaultLocation: LocationData = {
   name: "Bengaluru", stateCode: "KA", countryCode: "IN",
@@ -34,6 +35,13 @@ export const KundaliReportPage = () => {
 
   return (
     <Layout>
+        <SeoHead
+            title="Detailed Kundali Report - Full Vedic Birth Chart Analysis"
+            description="Get a detailed Kundali report with planetary analysis, dasha timeline, yogas, and remedies in a downloadable PDF."
+            path="/kundali-report"
+            type="website"
+            keywords="kundali report, detailed kundali analysis, vedic birth chart report pdf"
+        />
       <style>{`
         #paypal-button-container,
         #paypal-button-container > div,

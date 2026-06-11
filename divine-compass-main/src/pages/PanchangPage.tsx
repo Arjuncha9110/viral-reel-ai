@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import {
@@ -12,7 +13,8 @@ import {
   Star,
   AlertTriangle,
   CheckCircle,
-  Timer
+  Timer,
+  ArrowRight
 } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { PageHeader } from "@/components/shared/PageHeader";
@@ -28,6 +30,8 @@ import {
 import { cn } from "@/lib/utils";
 import { getSamplePanchangData } from "@/lib/calculators/astrology/panchang";
 import { LocationSelector, LocationData } from "@/components/LocationSelector";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
+import { panchangCities } from "@/data/panchangCities";
 import { PanchangSegment } from "@/lib/data/panchang";
 import { AdSenseBanner } from "@/components/shared/AdSenseBanner";
 
@@ -89,9 +93,22 @@ const PanchangSegmentDisplay = ({ segments, icon: Icon, title, colorClass }: {
   );
 };
 
-const PanchangPage = () => {
+export interface PanchangPageProps {
+  /** Preset location for city landing pages (/panchang/:citySlug). */
+  presetLocation?: LocationData;
+  headerTitle?: string;
+  headerSubtitle?: string;
+  seo?: {
+    title: string;
+    description: string;
+    path: string;
+    keywords?: string;
+  };
+}
+
+const PanchangPage = ({ presetLocation, headerTitle, headerSubtitle, seo }: PanchangPageProps = {}) => {
   const [date, setDate] = useState<Date>(new Date());
-  const [location, setLocation] = useState<LocationData>(defaultLocation);
+  const [location, setLocation] = useState<LocationData>(presetLocation ?? defaultLocation);
 
   const panchangData = getSamplePanchangData(date, location.lat, location.lon, location.timezone);
 
@@ -125,24 +142,34 @@ const PanchangPage = () => {
   return (
     <Layout>
       <SeoHead
-        title="Today's Panchang | Tithi, Nakshatra, Rahu Kaal & Muhurat"
-        description="Find today's panchang with tithi, nakshatra, yoga, karana, rahu kaal, abhijit muhurat, sunrise, and sunset for your location."
-        path="/panchang"
+        title={seo?.title ?? "Today's Panchang | Tithi, Nakshatra, Rahu Kaal & Muhurat"}
+        description={
+          seo?.description ??
+          "Find today's panchang with tithi, nakshatra, yoga, karana, rahu kaal, abhijit muhurat, sunrise, and sunset for your location."
+        }
+        path={seo?.path ?? "/panchang"}
         type="website"
-        keywords="today panchang, daily panchang, rahu kaal today, nakshatra today, tithi today, muhurat"
+        keywords={
+          seo?.keywords ??
+          "today panchang, daily panchang, rahu kaal today, nakshatra today, tithi today, muhurat"
+        }
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebPage",
-          name: "Today's Panchang",
-          url: "https://www.divinepanchang.space/panchang",
+          name: seo?.title ?? "Today's Panchang",
+          url: `https://www.divinepanchang.space${seo?.path ?? "/panchang"}`,
           description:
+            seo?.description ??
             "Daily Panchang with tithi, nakshatra, yoga, karana, rahu kaal, abhijit muhurat, and location-aware timings.",
         }}
       />
       <div className="container mx-auto px-4 py-8">
         <PageHeader
-          title="Daily Panchang"
-          subtitle="Discover today's auspicious timings, Tithi, Nakshatra, and planetary positions for your location"
+          title={headerTitle ?? "Daily Panchang"}
+          subtitle={
+            headerSubtitle ??
+            "Discover today's auspicious timings, Tithi, Nakshatra, and planetary positions for your location"
+          }
           icon={<CalendarIcon className="h-8 w-8" />}
         />
 
@@ -308,7 +335,7 @@ const PanchangPage = () => {
                   <div className="text-sm text-muted-foreground">
                     {currentHora.startTime} - {currentHora.endTime}
                   </div>
-                  <div className="text-xs text-primary">
+                  <div className="font-display font-bold text-foreground mt-1">
                     {currentHora.isDay ? "☀️ Day Hora" : "🌙 Night Hora"}
                   </div>
                 </div>
@@ -435,6 +462,18 @@ const PanchangPage = () => {
             </SpiritualCard>
           </div>
 
+          {/* Choghadiya CTA */}
+          <div className="mt-8 text-center bg-primary/5 border border-primary/20 rounded-2xl p-6 shadow-sm">
+            <h3 className="font-serif text-xl font-semibold text-foreground mb-2 flex items-center justify-center gap-2">
+              <Timer className="h-5 w-5 text-primary" />
+              Looking for specific timing windows?
+            </h3>
+            <p className="text-muted-foreground text-sm mb-5">Discover the most auspicious periods for your daily tasks with our Choghadiya calculator.</p>
+            <Link to="/choghadiya" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm">
+              Check Today's Choghadiya <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
           {/* Google AdSense Bottom Banner */}
           <AdSenseBanner adSlot="panchang_bottom_banner" adFormat="horizontal" />
 
@@ -464,10 +503,10 @@ const PanchangPage = () => {
 
               <div className="grid gap-4 sm:grid-cols-3">
                 {[
-                  { icon: "🌙", title: "Five Sacred Elements", desc: "Tithi, Vara, Nakshatra, Yoga, and Karana — each element reveals a different quality of the day's energy." },
+                  { icon: "🕉️", title: "Five Sacred Elements", desc: "Tithi, Vara, Nakshatra, Yoga, and Karana - each element reveals a different quality of the day's energy." },
                   { icon: "📍", title: "Truly Local", desc: "Timings for sunrise, Rahu Kaal, and Brahma Muhurta are calculated precisely for your city, not a generic average." },
-                  { icon: "⭐", title: "Plan Auspiciously", desc: "Choose the best times for ceremonies, travel, new ventures, and important decisions with confidence." },
-                ].map((item) => (
+                  { icon: "✨", title: "Plan Auspiciously", desc: "Choose the best times for ceremonies, travel, new ventures, and important decisions with confidence." }
+                ].map((item, idx) => (
                   <div key={item.title} className="rounded-xl border border-border/60 bg-card/80 p-5 text-center space-y-2">
                     <div className="text-2xl">{item.icon}</div>
                     <h3 className="font-serif text-base font-semibold text-foreground">{item.title}</h3>
@@ -482,10 +521,53 @@ const PanchangPage = () => {
                   Rahu Kaal is a daily period of approximately 90 minutes considered inauspicious for new beginnings. It is governed by Rahu (the north lunar node) and falls at different times each day of the week. Starting a journey, signing a contract, or launching a new project during Rahu Kaal is traditionally avoided in Vedic practice — however, continuing ongoing work during this window is perfectly fine.
                 </p>
               </div>
+
+              {/* Panchang by city — internal links to prerendered city pages */}
+              <div className="border-t border-border/40 pt-6 space-y-4">
+                <h3 className="font-serif text-lg font-semibold text-foreground">Today's Panchang by City</h3>
+                <div className="flex flex-wrap gap-2">
+                  {panchangCities
+                    .filter((city) => `/panchang/${city.slug}` !== seo?.path)
+                    .map((city) => (
+                      <Link
+                        key={city.slug}
+                        to={`/panchang/${city.slug}`}
+                        className="rounded-full border border-border/70 bg-background px-3.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                      >
+                        {city.name} Panchang
+                      </Link>
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <RelatedLinks
+        links={[
+          {
+            to: "/blog/what-is-panchang",
+            title: "What is Panchang? A Complete Guide",
+            description: "Tithi, Vara, Nakshatra, Yoga, and Karana explained — and how to use them for auspicious timing.",
+          },
+          {
+            to: "/ekadashi",
+            title: "Ekadashi Dates & Fasting Calendar",
+            description: "Upcoming Ekadashi tithis with fasting and parana timings.",
+          },
+          {
+            to: "/daily-guidance",
+            title: "Daily Vedic Guidance",
+            description: "Practical guidance for the day based on the current panchang.",
+          },
+          {
+            to: "/kundali",
+            title: "Free Janam Kundali",
+            description: "Generate your Vedic birth chart with accurate planetary positions.",
+          },
+        ]}
+      />
     </Layout>
   );
 };

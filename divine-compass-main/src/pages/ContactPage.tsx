@@ -1,9 +1,16 @@
 import { Layout } from "@/components/layout/Layout";
 import { Mail, Clock, MessageCircle } from "lucide-react";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const ContactPage = () => {
   return (
     <Layout>
+        <SeoHead
+            title="Contact Us | Divine Panchang"
+            description="Contact the Divine Panchang team with questions or feedback about our panchang, kundali, and numerology tools."
+            path="/contact"
+            type="website"
+        />
       <div className="container mx-auto px-4 py-12 max-w-3xl">
         <h1 className="font-serif text-3xl font-bold text-foreground mb-2">Contact Us</h1>
         <p className="text-sm text-muted-foreground mb-10">We're here to help. Reach out and we'll respond as soon as possible.</p>

@@ -6,10 +6,18 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { SpiritualCard } from "@/components/shared/SpiritualCard";
 import { Button } from "@/components/ui/button";
 import { hasInstagram, siteConfig } from "@/lib/siteConfig";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const DailyGuidancePage = () => {
   return (
     <Layout>
+        <SeoHead
+            title="Daily Vedic Guidance - Today's Outlook & Remedies"
+            description="Practical daily guidance based on today's panchang: what the day favours, what to avoid, and simple Vedic remedies."
+            path="/daily-guidance"
+            type="website"
+            keywords="daily vedic guidance, today astrology guidance, daily panchang guidance"
+        />
       <div className="container mx-auto px-4 py-8">
         <PageHeader
           title="Daily Guidance"

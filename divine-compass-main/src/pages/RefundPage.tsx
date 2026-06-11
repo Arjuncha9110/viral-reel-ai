@@ -1,8 +1,15 @@
 import { Layout } from "@/components/layout/Layout";
+import { SeoHead } from "@/components/shared/SeoHead";
 
 const RefundPage = () => {
   return (
     <Layout>
+        <SeoHead
+            title="Refund Policy | Divine Panchang"
+            description="Refund policy for paid reports from Divine Panchang."
+            path="/refund"
+            type="website"
+        />
       <div className="container mx-auto px-4 py-12 max-w-3xl">
         <h1 className="font-serif text-3xl font-bold text-foreground mb-2">Refund Policy</h1>
         <p className="text-sm text-muted-foreground mb-8">Last updated: June 2026</p>
