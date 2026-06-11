@@ -807,26 +807,7 @@ const SadeSatiPage = () => {
                                                 </div>
                                             )}
                                             
-                                            {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_PAYMENT_BYPASS === "true") && (
-                                                <Button
-                                                    onClick={() => {
-                                                        const dobString = birthDate;
-                                                        const details = {
-                                                            name, email, dob: dobString, tob: birthTime, gender,
-                                                            city: location.name, lat: location.lat, lon: location.lon, timezone: location.timezone,
-                                                            token: "dev_bypass_token",
-                                                        };
-                                                        localStorage.setItem("sade_sati_report_details", JSON.stringify(details));
-                                                        navigate(
-                                                            `/sade-sati-report-preview?name=${encodeURIComponent(name)}&dob=${dobString}&tob=${birthTime}&email=${encodeURIComponent(email)}&gender=${gender}&city=${encodeURIComponent(location.name)}&lat=${location.lat}&lon=${location.lon}&tz=${location.timezone}&token=dev_bypass_token`
-                                                        );
-                                                    }}
-                                                    variant="outline"
-                                                    className="w-full mt-2 border-green-500 text-green-600 hover:bg-green-50"
-                                                >
-                                                    [DEV ONLY] Bypass Payment
-                                                </Button>
-                                            )}
+
                                         </div>
                                     </div>
                                 )}
