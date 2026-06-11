@@ -21,12 +21,7 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { SeoHead } from "@/components/shared/SeoHead";
 import { SpiritualCard } from "@/components/shared/SpiritualCard";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { getSamplePanchangData } from "@/lib/calculators/astrology/panchang";
 import { LocationSelector, LocationData } from "@/components/LocationSelector";
@@ -187,27 +182,16 @@ const PanchangPage = ({ presetLocation, headerTitle, headerSubtitle, seo }: Panc
           transition={{ delay: 0.2 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10"
         >
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="spiritual"
-                size="lg"
-                className="w-full sm:w-auto min-w-[240px] justify-start text-left font-normal"
-              >
-                <CalendarIcon className="mr-2 h-4 w-4 text-primary" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="center">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(d) => d && setDate(d)}
-                initialFocus
-                className="pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
+          <div className="w-full sm:w-auto min-w-[200px]">
+            <Input
+              type="date"
+              value={format(date, "yyyy-MM-dd")}
+              onChange={(e) => {
+                if (e.target.value) setDate(new Date(e.target.value));
+              }}
+              className="h-11 bg-[#fffdfa] border-2 border-[#b59449]/20 focus:border-[#b59449]/60 rounded-xl text-foreground font-serif focus:ring-1 focus:ring-[#b59449] transition-all"
+            />
+          </div>
 
           <div className="w-full max-w-2xl">
             <LocationSelector
