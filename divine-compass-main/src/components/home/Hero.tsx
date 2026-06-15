@@ -67,7 +67,7 @@ export const Hero = () => {
             >
               <Link
                 to="/panchang"
-                className="group inline-flex items-center gap-2 rounded-2xl border border-[#e87838]/40 bg-gradient-to-r from-[#d4651a] to-[#a84810] px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#d4651a]/30 transition-all duration-200 hover:brightness-110 hover:shadow-xl hover:shadow-[#d4651a]/45"
+                className="group inline-flex items-center gap-2 rounded-2xl border border-[#d4651a]/40 bg-white/70 px-7 py-3.5 text-sm font-bold text-[#8a3c10] backdrop-blur-sm transition-all duration-200 hover:border-[#d4651a]/55 hover:bg-white/90 hover:text-[#6a2808]"
               >
                 <Sun className="h-4 w-4" />
                 Today's Panchang
@@ -76,11 +76,11 @@ export const Hero = () => {
 
               <Link
                 to="/panchang-live"
-                className="group inline-flex items-center gap-2 rounded-2xl border border-[#d4651a]/40 bg-white/70 px-7 py-3.5 text-sm font-bold text-[#8a3c10] backdrop-blur-sm transition-all duration-200 hover:border-[#d4651a]/55 hover:bg-white/90 hover:text-[#6a2808]"
+                className="group inline-flex items-center gap-2 rounded-2xl border border-[#e87838]/40 bg-gradient-to-r from-[#d4651a] to-[#a84810] px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#d4651a]/30 transition-all duration-200 hover:brightness-110 hover:shadow-xl hover:shadow-[#d4651a]/45"
               >
                 <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#d4651a]/60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#d4651a]" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
                 </span>
                 Live Panchang
               </Link>
