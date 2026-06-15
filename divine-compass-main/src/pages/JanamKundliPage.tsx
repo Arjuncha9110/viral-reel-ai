@@ -16,6 +16,8 @@ import {
   ChevronRight,
   Shield,
   Zap,
+  Phone,
+  FileText,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
@@ -33,9 +35,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getAscendant, getPlanetPositions, PlanetPosition } from "@/lib/astro/kundaliEngine";
-import { fetchLiveKundli, type LiveKundliData } from "@/lib/astrologyApi";
+import { fetchLiveKundli, type LiveKundliData, fetchLivePanchang, type LivePanchangData } from "@/lib/astrologyApi";
 import { cn } from "@/lib/utils";
+import { COUNTRY_CODES } from "@/data/countryCodes";
+import { BirthDatePicker } from "@/components/shared/BirthDatePicker";
 import { SeoHead } from "@/components/shared/SeoHead";
+import { KundliStatCards } from "@/components/kundali/KundliStatCards";
+import { KundliOverviewAccordion } from "@/components/kundali/KundliOverviewAccordion";
+import { BirthProfileTable } from "@/components/kundali/BirthProfileTable";
+import { DeeperMetadataAccordion } from "@/components/kundali/DeeperMetadataAccordion";
+import { computeBirthMetadata, type BirthMetadata } from "@/lib/astro/birthMetadata";
 
 const SIGNS = [
   "Aries",
@@ -106,6 +115,8 @@ const parseBirthDate = (value: string) => {
 const JanamKundliPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+91");
   const [birthDate, setBirthDate] = useState("");
   const [birthTime, setBirthTime] = useState("12:00");
   const [gender, setGender] = useState("male");
@@ -113,6 +124,8 @@ const JanamKundliPage = () => {
   const [detailsReady, setDetailsReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [kundliData, setKundliData] = useState<LiveKundliData | null>(null);
+  const [livePanchang, setLivePanchang] = useState<LivePanchangData | null>(null);
+  const [birthMetadata, setBirthMetadata] = useState<BirthMetadata | null>(null);
   const [chartStyle, setChartStyle] = useState<"north" | "south">("north");
   const [localChart, setLocalChart] = useState<{
     planets: PlanetPosition[];
@@ -207,6 +220,7 @@ const JanamKundliPage = () => {
   const canPrepare =
     name.trim().length > 0 &&
     email.includes("@") &&
+    phone.replace(/\D/g, "").length >= 8 &&
     Boolean(parsedBirthDate) &&
     birthTime.trim().length > 0 &&
     Boolean(location.name);
@@ -217,6 +231,39 @@ const JanamKundliPage = () => {
     setIsLoading(true);
 
     try {
+      const payload = {
+        sheet: "Website Data",
+        source: "janam_kundli_generate",
+        type: "janam_kundli",
+        page: "/janam-kundli",
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        dob: birthDate,
+        birthTime,
+        city: location.name,
+        stateCode: location.stateCode,
+        countryCode: location.countryCode,
+        timezone: location.timezone,
+        lat: location.lat,
+        lon: location.lon,
+        gender,
+        chartStyle,
+      };
+
+      try {
+        const leadRes = await fetch("/api/leads/capture", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!leadRes.ok) {
+          console.warn("[janam-kundli] Lead capture failed", leadRes.status);
+        }
+      } catch (error) {
+        console.warn("[janam-kundli] Lead capture unavailable", error);
+      }
+
       const birthUTC = toUTC(parsedBirthDate, birthTime, location.timezone);
       const planets = getPlanetPositions(birthUTC, location.lat, location.lon);
       const ascendant = getAscendant(birthUTC, location.lat, location.lon);
@@ -226,13 +273,29 @@ const JanamKundliPage = () => {
         lagnaSignIdx: Math.floor(ascendant / 30),
       });
 
-      const response = await fetchLiveKundli(parsedBirthDate, birthTime, {
-        city: location.name,
-        state: location.stateCode,
-        timezone: location.timezone,
-        lat: location.lat,
-        lng: location.lon,
-      });
+      const metadata = computeBirthMetadata(planets, ascendant, parsedBirthDate, birthUTC, location.lat, location.lon);
+      setBirthMetadata(metadata);
+
+      const [panchangRes, response] = await Promise.all([
+        fetchLivePanchang(parsedBirthDate, {
+          city: location.name,
+          state: location.stateCode,
+          timezone: location.timezone,
+          lat: location.lat,
+          lng: location.lon,
+        }),
+        fetchLiveKundli(parsedBirthDate, birthTime, {
+          city: location.name,
+          state: location.stateCode,
+          timezone: location.timezone,
+          lat: location.lat,
+          lng: location.lon,
+        })
+      ]);
+
+      if (panchangRes.status === "success") {
+        setLivePanchang(panchangRes.data);
+      }
 
       setDetailsReady(true);
 
@@ -306,8 +369,8 @@ const JanamKundliPage = () => {
                 </p>
               </div>
 
-              {/* Name + Email */}
-              <div className="grid gap-4 md:grid-cols-2">
+              {/* Name + Email + Phone */}
+              <div className="grid gap-4 md:grid-cols-3">
                 <div className="space-y-1.5">
                   <Label htmlFor="name" className="flex items-center gap-1.5 text-[13px] font-semibold text-[#2c1a08]">
                     <User className="h-3.5 w-3.5 text-[#d4651a]" /> Full Name
@@ -333,24 +396,38 @@ const JanamKundliPage = () => {
                     className="h-11 rounded-xl border border-[#d8c090]/50 bg-white focus:border-[#d4651a]/60 focus:ring-1 focus:ring-[#d4651a]/20 text-[#1c1408] placeholder:text-[#a08060]/50 transition-all"
                   />
                 </div>
+                <div className="space-y-1.5">
+                  <Label className="flex items-center gap-1.5 text-[13px] font-semibold text-[#2c1a08]">
+                    <Phone className="h-3.5 w-3.5 text-[#d4651a]" /> WhatsApp / Phone
+                  </Label>
+                  <div className="flex h-11 w-full rounded-xl border border-[#d8c090]/50 bg-white overflow-hidden focus-within:border-[#d4651a]/60 focus-within:ring-1 focus-within:ring-[#d4651a]/20 transition-all">
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      className="h-full w-[76px] shrink-0 border-r border-[#d8c090]/50 bg-[#fdf8f0] px-2 text-[12px] font-bold text-[#2c1a08] outline-none cursor-pointer"
+                    >
+                      {COUNTRY_CODES.map(c => <option key={c.iso3} value={c.code}>{c.code}</option>)}
+                    </select>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="9110295352"
+                      className="flex-1 min-w-0 h-full px-3 bg-transparent text-[14px] text-[#1c1408] outline-none placeholder:text-[#a08060]/50"
+                    />
+                  </div>
+                </div>
               </div>
 
-              {/* Date + Time + Gender */}
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="birthDate" className="flex items-center gap-1.5 text-[13px] font-semibold text-[#2c1a08]">
-                    <Calendar className="h-3.5 w-3.5 text-[#d4651a]" /> Date of Birth
-                  </Label>
-                  <Input
-                    id="birthDate"
-                    type="date"
-                    value={birthDate}
-                    onChange={(event) => setBirthDate(event.target.value)}
-                    min="1900-01-01"
-                    max={format(new Date(), "yyyy-MM-dd")}
-                    className="h-11 rounded-xl border border-[#d8c090]/50 bg-white focus:border-[#d4651a]/60 focus:ring-1 focus:ring-[#d4651a]/20 text-[#1c1408] transition-all"
-                  />
-                </div>
+              {/* Date of Birth — full width */}
+              <div className="space-y-1.5">
+                <Label className="flex items-center gap-1.5 text-[13px] font-semibold text-[#2c1a08]">
+                  <Calendar className="h-3.5 w-3.5 text-[#d4651a]" /> Date of Birth
+                </Label>
+                <BirthDatePicker value={birthDate} onChange={setBirthDate} />
+              </div>
+              {/* Time + Gender */}
+              <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="birthTime" className="flex items-center gap-1.5 text-[13px] font-semibold text-[#2c1a08]">
                     <Clock3 className="h-3.5 w-3.5 text-[#d4651a]" /> Exact Birth Time
@@ -426,6 +503,25 @@ const JanamKundliPage = () => {
                   Fill your name, email and date of birth to continue
                 </p>
               )}
+
+              {/* Paid Report CTA */}
+              <div className="mt-1 relative overflow-hidden rounded-2xl border border-[#d4a84a]/30 bg-gradient-to-br from-[#13203e] to-[#0c1628] px-5 py-4 shadow-[0_8px_32px_rgba(12,22,40,0.25)]">
+                <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#d4a84a]/60 to-transparent" />
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#d4a84a] mb-0.5">Premium Report</p>
+                    <p className="text-[13.5px] font-bold text-white leading-snug">Get Your 70-Page Detailed Kundali Report</p>
+                    <p className="text-[11.5px] text-white/45 mt-0.5">Dashas · Yogas · Remedies · Predictions · Delivered to email</p>
+                  </div>
+                  <Link
+                    to="/kundali-report"
+                    className="shrink-0 flex items-center gap-1.5 rounded-xl bg-gradient-to-br from-[#d4651a] to-[#a84410] px-4 py-2.5 text-[12.5px] font-bold text-white shadow-[0_4px_12px_rgba(212,101,26,0.4)] hover:shadow-[0_6px_18px_rgba(212,101,26,0.55)] hover:brightness-110 transition-all"
+                  >
+                    <FileText className="h-3.5 w-3.5" />
+                    Buy ₹299
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -454,136 +550,45 @@ const JanamKundliPage = () => {
                 </div>
               )}
 
+              <KundliStatCards
+                kundliData={kundliData}
+                mangalDosha={kundliData?.hasMangalDosha}
+              />
+
               <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-                <SpiritualCard delay={0.1} hover={false}>
-                  <div className="space-y-5">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm text-primary">
-                      <ScrollText className="h-4 w-4" />
-                      <span>{kundliData ? "Live Birth Details Ready" : "Birth Details Ready"}</span>
-                    </div>
-
-                    <div className="space-y-3">
-                      <h3 className="font-display text-3xl font-semibold text-foreground">
-                        {kundliData ? "Your Janam Kundli essentials" : "Your Janam Kundli input summary"}
-                      </h3>
-                      <p className="leading-relaxed text-muted-foreground">
-                        {kundliData
-                          ? "These markers now come from the live birth-details engine and give you the core chart identifiers before deeper interpretation begins."
-                          : "These are the essential details a birth chart uses before chart interpretation, dasha timing, and transit analysis begin."}
-                      </p>
-                    </div>
-
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-2xl border border-border/70 bg-background p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Full Name</p>
-                        <p className="mt-2 text-base font-medium text-foreground">{name.trim()}</p>
-                      </div>
-                      <div className="rounded-2xl border border-border/70 bg-background p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Email</p>
-                        <p className="mt-2 text-base font-medium text-foreground">{email.trim()}</p>
-                      </div>
-                      <div className="rounded-2xl border border-border/70 bg-background p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Birth Date</p>
-                        <p className="mt-2 text-base font-medium text-foreground">{birthSummary.formattedDate}</p>
-                      </div>
-                      <div className="rounded-2xl border border-border/70 bg-background p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Birth Time</p>
-                        <p className="mt-2 text-base font-medium text-foreground">{birthTime}</p>
-                      </div>
-                      <div className="rounded-2xl border border-border/70 bg-background p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Birth Place</p>
-                        <p className="mt-2 text-base font-medium text-foreground">
-                          {location.name}, {location.stateCode}
-                        </p>
-                      </div>
-                      <div className="rounded-2xl border border-border/70 bg-background p-4">
-                        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Profile</p>
-                        <p className="mt-2 text-base font-medium text-foreground">
-                          {gender[0].toUpperCase()}
-                          {gender.slice(1)} • {birthSummary.day}
-                        </p>
-                      </div>
-                      {kundliData?.moonSign && (
-                        <div className="rounded-2xl border border-border/70 bg-background p-4">
-                          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Moon Sign</p>
-                          <p className="mt-2 text-base font-medium text-foreground">
-                            {kundliData.moonSign}
-                            {kundliData.moonSignLord ? ` • Lord ${kundliData.moonSignLord}` : ""}
-                          </p>
-                        </div>
-                      )}
-                      {kundliData?.nakshatra && (
-                        <div className="rounded-2xl border border-border/70 bg-background p-4">
-                          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Nakshatra</p>
-                          <p className="mt-2 text-base font-medium text-foreground">
-                            {kundliData.nakshatra}
-                            {kundliData.pada ? ` • Pada ${kundliData.pada}` : ""}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </SpiritualCard>
-
-                <SpiritualCard delay={0.15} hover={false}>
-                  <div className="space-y-5">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-                        <Stars className="h-5 w-5 text-primary" />
-                      </div>
-                      <h3 className="font-display text-2xl font-semibold text-foreground">
-                        {kundliData ? "Live chart markers" : "What a full kundli covers"}
-                      </h3>
-                    </div>
-
-                    {kundliData ? (
-                      <div className="grid gap-3">
-                        {[
-                          kundliData.sunSign
-                            ? `Sun sign: ${kundliData.sunSign}${kundliData.sunSignLord ? ` • Lord ${kundliData.sunSignLord}` : ""}`
-                            : null,
-                          kundliData.zodiac ? `Zodiac context: ${kundliData.zodiac}` : null,
-                          kundliData.nakshatraLord ? `Nakshatra lord: ${kundliData.nakshatraLord}` : null,
-                          kundliData.additionalInfo?.deity ? `Deity: ${kundliData.additionalInfo.deity}` : null,
-                          kundliData.additionalInfo?.nadi ? `Nadi: ${kundliData.additionalInfo.nadi}` : null,
-                          kundliData.additionalInfo?.syllables ? `Suggested syllables: ${kundliData.additionalInfo.syllables}` : null,
-                          kundliData.hasMangalDosha !== null
-                            ? kundliData.hasMangalDosha
-                              ? `Mangal dosha indicated${kundliData.mangalDoshaDescription ? ` • ${kundliData.mangalDoshaDescription}` : ""}`
-                              : "Mangal dosha not indicated in the current live response."
-                            : null,
-                        ]
-                          .filter((item): item is string => Boolean(item))
-                          .map((item) => (
-                            <div
-                              key={item}
-                              className="flex items-start gap-3 rounded-2xl border border-border/70 bg-background p-4"
-                            >
-                              <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
-                              <p className="text-sm leading-relaxed text-muted-foreground">{item}</p>
-                            </div>
-                          ))}
-                      </div>
-                    ) : (
-                      <div className="grid gap-3">
-                        {[
-                          "Lagna, Moon sign, and house structure for personality and life themes",
-                          "Graha positions for strengths, pressure points, and timing sensitivity",
-                          "Dasha and transit layers for longer cycles and shorter decision windows",
-                          "Practical remedies, compatibility, and life-focus guidance based on the full chart",
-                        ].map((item) => (
-                          <div
-                            key={item}
-                            className="flex items-start gap-3 rounded-2xl border border-border/70 bg-background p-4"
-                          >
-                            <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
-                            <p className="text-sm leading-relaxed text-muted-foreground">{item}</p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </SpiritualCard>
+                <div className="space-y-6">
+                  <KundliOverviewAccordion />
+                  <BirthProfileTable
+                    name={name.trim()}
+                    gender={gender}
+                    dob={birthSummary.formattedDate}
+                    time={birthTime}
+                    place={`${location.name}, ${location.stateCode}`}
+                    lat={location.lat}
+                    lon={location.lon}
+                    timezone={location.timezone}
+                    metadata={birthMetadata}
+                  />
+                </div>
+                <div className="space-y-6">
+                  <DeeperMetadataAccordion
+                    metadata={birthMetadata}
+                    panchangData={livePanchang}
+                    kundliData={kundliData}
+                    personalDetails={{
+                      name: name.trim(),
+                      email: email.trim(),
+                      phone: phone.trim(),
+                      gender,
+                      dob: birthSummary.formattedDate,
+                      time: birthTime,
+                      place: `${location.name}, ${location.stateCode}`,
+                      timezone: location.timezone,
+                      lat: location.lat,
+                      lon: location.lon,
+                    }}
+                  />
+                </div>
               </div>
 
               {localChart && (
@@ -715,46 +720,14 @@ const JanamKundliPage = () => {
                 </div>
               )}
 
-              <div className="grid gap-6 md:grid-cols-3">
-                <SpiritualCard delay={0.2}>
-                  <div className="space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-sacred-amber">
-                      <Compass className="h-6 w-6 text-primary-foreground" />
-                    </div>
-                    <h4 className="font-display text-xl font-semibold text-foreground">
-                      {kundliData ? "Chart Snapshot" : "Chart Readiness"}
-                    </h4>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {kundliData
-                        ? "You now have the key birth-details markers needed for dasha timing, transit work, and a deeper chart-reading layer."
-                        : "Your birth details are structured and ready for deeper kundli logic or a manual chart reading flow."}
-                    </p>
-                  </div>
-                </SpiritualCard>
-
-                <SpiritualCard delay={0.25}>
-                  <div className="space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-gold to-gold-light">
-                      <BookOpen className="h-6 w-6 text-foreground" />
-                    </div>
-                    <h4 className="font-display text-xl font-semibold text-foreground">Next Tool</h4>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      Use Dasha Calculator after this if you want to explore long-term timing patterns around life phases.
-                    </p>
-                  </div>
-                </SpiritualCard>
-
-                <SpiritualCard delay={0.3}>
-                  <div className="space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-maroon-light">
-                      <Sparkles className="h-6 w-6 text-secondary-foreground" />
-                    </div>
-                    <h4 className="font-display text-xl font-semibold text-foreground">Daily Layer</h4>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      Pair your full chart with Daily Guidance to keep astrology grounded in everyday choices and timing.
-                    </p>
-                  </div>
-                </SpiritualCard>
+              <div className="mt-8 mb-4 border-t border-border/50 pt-8 text-center">
+                <Link
+                  to="/kundali-report"
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#d4651a] to-[#a84410] px-6 py-3 text-sm font-bold text-white shadow-lg transition-all hover:scale-105"
+                >
+                  <ScrollText className="h-4 w-4" />
+                  Get Detailed 70+ Page Premium Report
+                </Link>
               </div>
 
               <SpiritualCard delay={0.35} hover={false}>

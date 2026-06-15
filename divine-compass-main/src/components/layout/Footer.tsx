@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Heart, Instagram, Mail, MapPin, Youtube } from "lucide-react";
+import { Heart, Instagram, Mail, MapPin, Youtube, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { hasInstagram, siteConfig } from "@/lib/siteConfig";
+import { hasInstagram, hasFacebook, siteConfig } from "@/lib/siteConfig";
 
 export const Footer = () => {
   const [newsletterEmail, setNewsletterEmail] = useState("");
@@ -80,6 +80,14 @@ export const Footer = () => {
                   </a>
                 </Button>
               )}
+              {hasFacebook && (
+                <Button asChild variant="outline" size="sm" className="border-[#d8bc7a]/24 bg-white/70 text-[#4b3521] hover:bg-white hover:text-[#2a190c]">
+                  <a href={siteConfig.facebookUrl} target="_blank" rel="noreferrer">
+                    <Facebook className="h-4 w-4" />
+                    Facebook
+                  </a>
+                </Button>
+              )}
             </div>
           </div>
 
@@ -123,11 +131,7 @@ export const Footer = () => {
               <a href={`mailto:${siteConfig.contactEmail}`} className="text-sm text-muted-foreground transition-colors hover:text-primary">
                 {siteConfig.contactEmail}
               </a>
-              {!hasInstagram && (
-                <p className="text-xs leading-relaxed text-muted-foreground">
-                  Instagram can be added here as soon as the final handle is ready.
-                </p>
-              )}
+
             </div>
           </div>
         </div>

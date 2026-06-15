@@ -131,7 +131,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({
         data-export-mode={exportMode ? "true" : "false"}
         lang={language === "kn" ? "kn" : "en"}
         className={cn(
-          "relative w-[210mm] min-h-[296.8mm] print:h-[297mm] print:overflow-hidden p-[16mm] flex flex-col justify-between select-none print:m-0 print:border-none print:shadow-none print:rounded-none",
+          "relative w-[210mm] min-h-[296.8mm] h-max print:h-[297mm] print:overflow-hidden p-[16mm] flex flex-col justify-between select-none print:m-0 print:border-none print:shadow-none print:rounded-none",
         exportMode && "min-h-[297mm] h-[297mm] p-[13mm]",
         useDarkStyle
           ? "bg-[#07182d] text-[#fffaf0] border-2 border-[#c7a65a] page-break-dark"
@@ -408,8 +408,11 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       <h3 className="text-[16px] font-extrabold text-[#1b2d45] border-b border-[#d7b96a]/35 pb-2 mb-3.5 flex items-center gap-2 tracking-[0.01em]">
         <span className="text-[#9a6a24]">✦</span> {t(title, language)}
       </h3>
-      {/* Body text polished to 13.5px for A4 readability */}
-      <p className="text-[13.5px] text-justify leading-[1.78] text-[#2f3744] mb-4">
+      {/* Body text polished to 13.5px for A4 readability (smaller for Indic languages) */}
+      <p className={cn(
+        "text-justify leading-[1.78] text-[#2f3744] mb-4",
+        language && ["ml", "ta", "te", "kn", "hi", "mr", "bn", "or", "gu", "si"].includes(language) ? "text-[11.5px]" : "text-[13.5px]"
+      )}>
         {t(content, language)}
       </p>
       {(strengths || challenges) && (
@@ -417,13 +420,13 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {strengths && (
             <div className="bg-[#eef8f0] p-3 rounded-[9px] border border-[#bcd9c2] flex flex-col">
               <span className="font-bold text-[#27533a] block mb-1">{t("✓ Inherent Strengths:", language)}</span>
-              <span className="text-[#45515f] leading-relaxed flex-1 text-[11px]">{t(strengths, language)}</span>
+              <span className={cn("text-[#45515f] leading-relaxed flex-1", language && ["ml", "ta", "te", "kn", "hi", "mr", "bn", "or", "gu", "si"].includes(language) ? "text-[9.5px]" : "text-[11px]")}>{t(strengths, language)}</span>
             </div>
           )}
           {challenges && (
             <div className="bg-[#fff1ed] p-3 rounded-[9px] border border-[#e5c1b7] flex flex-col">
               <span className="font-bold text-[#7b2d36] block mb-1">{t("✗ Vulnerabilities:", language)}</span>
-              <span className="text-[#45515f] leading-relaxed flex-1 text-[11px]">{t(challenges, language)}</span>
+              <span className={cn("text-[#45515f] leading-relaxed flex-1", language && ["ml", "ta", "te", "kn", "hi", "mr", "bn", "or", "gu", "si"].includes(language) ? "text-[9.5px]" : "text-[11px]")}>{t(challenges, language)}</span>
             </div>
           )}
         </div>

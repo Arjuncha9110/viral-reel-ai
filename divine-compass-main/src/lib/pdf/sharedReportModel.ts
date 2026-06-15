@@ -323,25 +323,28 @@ export function chunkEntries<T>(entries: T[], size: number): T[][] {
 
 export function buildSharedReportData(data: SharedBirthData, language = "en") {
   const t = (text: string): string => {
-    if (language === "kn" && text) {
+    if (language && language !== "en" && text) {
       const cleanText = text.trim();
       const cachedTranslation = lookupTranslation(cleanText) ?? lookupTranslation(text);
       if (cachedTranslation) return cachedTranslation;
-      if (KANNADA_DICT[cleanText]) return KANNADA_DICT[cleanText];
-      if (KANNADA_DICT[text]) return KANNADA_DICT[text];
 
-      let result = text;
-      if (result.includes("deg N")) result = result.replace("deg N", "ಡಿಗ್ರಿ ಉ");
-      if (result.includes("deg S")) result = result.replace("deg S", "ಡಿಗ್ರಿ ದ");
-      if (result.includes("deg E")) result = result.replace("deg E", "ಡಿಗ್ರಿ ಪೂ");
-      if (result.includes("deg W")) result = result.replace("deg W", "ಡಿಗ್ರಿ ಪ");
-      if (result.includes("Approx")) result = result.replace("Approx", "ಅಂದಾಜು");
-      if (result.includes("Years")) result = result.replace("Years", "ವರ್ಷಗಳು");
-      if (result.includes("Bhukti")) result = result.replace("Bhukti", "ಭುಕ್ತಿ");
-      if (result.includes("ACTIVE")) result = result.replace("ACTIVE", "ಸಕ್ರಿಯ");
-      if (result.includes("CURRENT")) result = result.replace("CURRENT", "ಪ್ರಸ್ತುತ");
-      if (result.includes("deg")) result = result.replace("deg", "ಡಿಗ್ರಿ");
-      return result;
+      if (language === "kn") {
+        if (KANNADA_DICT[cleanText]) return KANNADA_DICT[cleanText];
+        if (KANNADA_DICT[text]) return KANNADA_DICT[text];
+
+        let result = text;
+        if (result.includes("deg N")) result = result.replace("deg N", "ಡಿಗ್ರಿ ಉ");
+        if (result.includes("deg S")) result = result.replace("deg S", "ಡಿಗ್ರಿ ದ");
+        if (result.includes("deg E")) result = result.replace("deg E", "ಡಿಗ್ರಿ ಪೂ");
+        if (result.includes("deg W")) result = result.replace("deg W", "ಡಿಗ್ರಿ ಪ");
+        if (result.includes("Approx")) result = result.replace("Approx", "ಅಂದಾಜು");
+        if (result.includes("Years")) result = result.replace("Years", "ವರ್ಷಗಳು");
+        if (result.includes("Bhukti")) result = result.replace("Bhukti", "ಭುಕ್ತಿ");
+        if (result.includes("ACTIVE")) result = result.replace("ACTIVE", "ಸಕ್ರಿಯ");
+        if (result.includes("CURRENT")) result = result.replace("CURRENT", "ಪ್ರಸ್ತುತ");
+        if (result.includes("deg")) result = result.replace("deg", "ಡಿಗ್ರಿ");
+        return result;
+      }
     }
     return text;
   };

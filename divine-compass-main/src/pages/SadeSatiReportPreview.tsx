@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { SadeSatiReportTemplate, SadeSatiReportBirthData } from "@/components/shared/SadeSatiReportTemplate";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ShieldCheck, FileDown, Sparkles, Printer, FileText, Share2 } from "lucide-react";
-import { generateSadeSatiPdf } from "@/lib/pdf/generateSadeSatiPdf";
+
 import { cn } from "@/lib/utils";
 
 // ─── Error Boundary to catch and display runtime crashes ───────────────────
@@ -92,59 +92,68 @@ const SadeSatiReportPreview: React.FC = () => {
     const tokenParam = searchParams.get("token");
     const sessionIdParam = searchParams.get("session_id");
 
-    const isValidToken = (token: string | null | undefined): boolean => {
-      if (!token) return false;
-      const t = token.trim();
-      return (
-        t.startsWith("pay_verified_") ||
-        t.startsWith("paypal_verified_") ||
-        t.startsWith("paddle_verified_") ||
-        t.startsWith("dev_")
-      );
+    const verifyAccess = async (token: string | null | undefined, sessionId: string | null | undefined) => {
+      if (!token && !sessionId) return false;
+      try {
+        const res = await fetch("/api/payment/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, sessionId, reportType: "sade-sati" }),
+        });
+        if (res.ok) {
+          const payload = await res.json();
+          return payload.status === "success";
+        }
+      } catch (err) {
+        console.error("Session verify error", err);
+      }
+      return false;
     };
 
-    if (nameParam && dobParam && tobParam) {
-      const urlHasPayment = isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
-      if (!urlHasPayment) {
+    const loadData = async () => {
+      if (nameParam && dobParam && tobParam) {
         setIsAuthorized(false);
+        const hasAccess = await verifyAccess(tokenParam, sessionIdParam);
+        setIsAuthorized(hasAccess);
+        
+        setData({
+          name: nameParam,
+          email: emailParam || "customer@divinepanchang.space",
+          dob: dobParam,
+          tob: tobParam,
+          gender: genderParam,
+          city: cityParam || "Bengaluru",
+          lat: latParam ? parseFloat(latParam) : 12.9716,
+          lon: lonParam ? parseFloat(lonParam) : 77.5946,
+          timezone: tzParam,
+        });
+        setIsDemo(false);
+        return;
       }
-      setData({
-        name: nameParam,
-        email: emailParam || "customer@divinepanchang.space",
-        dob: dobParam,
-        tob: tobParam,
-        gender: genderParam,
-        city: cityParam || "Bengaluru",
-        lat: latParam ? parseFloat(latParam) : 12.9716,
-        lon: lonParam ? parseFloat(lonParam) : 77.5946,
-        timezone: tzParam,
-      });
-      setIsDemo(false);
-      return;
-    }
 
-    // 2. Try loading from localStorage
-    const saved = localStorage.getItem("sade_sati_report_details");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.name) {
-          const localHasPayment = isValidToken(parsed.token) || isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
-          if (!localHasPayment) {
+      const saved = localStorage.getItem("sade_sati_report_details");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.name) {
             setIsAuthorized(false);
+            const hasAccess = await verifyAccess(parsed.token || tokenParam, parsed.sessionId || sessionIdParam);
+            setIsAuthorized(hasAccess);
+            setData(parsed);
+            setIsDemo(false);
+            return;
           }
-          setData(parsed);
-          setIsDemo(false);
-          return;
+        } catch (e) {
+          console.error("Error parsing saved details", e);
         }
-      } catch (e) {
-        console.error("Error parsing saved details", e);
       }
-    }
 
-    // 3. Fallback to Gorgeous Demo/Sample Data
-    setData(demoData);
-    setIsDemo(true);
+      setData(demoData);
+      setIsDemo(true);
+      setIsAuthorized(true);
+    };
+
+    loadData();
   }, [searchParams]);
 
   // Default to Print Friendly layout (pure white backgrounds)
@@ -178,37 +187,17 @@ const SadeSatiReportPreview: React.FC = () => {
     if (!data || isDownloading) return;
     setIsDownloading(true);
     setDownloadError("");
-    setDownloadProgress("Generating high-resolution Vedic PDF...");
+    setDownloadProgress("Opening print dialog...");
     try {
-      const blob = await generateSadeSatiPdf({
-        name: data.name,
-        email: data.email,
-        dob: data.dob,
-        tob: data.tob,
-        gender: data.gender,
-        city: data.city,
-        lat: data.lat,
-        lon: data.lon,
-        timezone: data.timezone,
-      });
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = getPdfFileName();
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-
-      setDownloadProgress("PDF downloaded successfully.");
-      setTimeout(() => setDownloadProgress(""), 2500);
-    } catch (err) {
-      console.error("Failed to download PDF", err);
-      setDownloadError(err instanceof Error ? err.message : "Unknown PDF export error");
-    } finally {
+      setTimeout(() => {
+        window.print();
+        setDownloadProgress("");
+        setIsDownloading(false);
+      }, 300);
+    } catch (error) {
+      console.error("Failed to print PDF", error);
+      setDownloadError(error instanceof Error ? error.message : "Unknown error");
       setIsDownloading(false);
-      setDownloadProgress("");
     }
   };
 

@@ -180,24 +180,28 @@ const PanchangPage = ({ presetLocation, headerTitle, headerSubtitle, seo }: Panc
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10"
+          className="mb-10 mx-auto w-full max-w-3xl"
         >
-          <div className="w-full sm:w-auto min-w-[200px]">
-            <Input
-              type="date"
-              value={format(date, "yyyy-MM-dd")}
-              onChange={(e) => {
-                if (e.target.value) setDate(new Date(e.target.value));
-              }}
-              className="h-11 bg-[#fffdfa] border-2 border-[#b59449]/20 focus:border-[#b59449]/60 rounded-xl text-foreground font-serif focus:ring-1 focus:ring-[#b59449] transition-all"
-            />
-          </div>
-
-          <div className="w-full max-w-2xl">
-            <LocationSelector
-              onLocationSelect={setLocation}
-              initialCity={location.name}
-            />
+          <div className="flex flex-col gap-4">
+            <div className="w-full space-y-1.5">
+              <label className="flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-wide text-[#6b4c2a]">
+                <CalendarIcon className="h-3.5 w-3.5 text-[#d4651a]" /> Select Date
+              </label>
+              <Input
+                type="date"
+                value={format(date, "yyyy-MM-dd")}
+                onChange={(e) => {
+                  if (e.target.value) setDate(new Date(e.target.value));
+                }}
+                className="h-11 bg-[#fffdfa] border border-[#b59449]/30 focus:border-[#b59449]/60 rounded-xl text-foreground font-serif focus:ring-1 focus:ring-[#b59449]/40 transition-all shadow-sm"
+              />
+            </div>
+            <div className="w-full">
+              <LocationSelector
+                onLocationSelect={setLocation}
+                initialCity={location.name}
+              />
+            </div>
           </div>
         </motion.div>
 

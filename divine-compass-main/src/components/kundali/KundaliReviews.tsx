@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { MessageSquareHeart, ShieldCheck, Star, Quote, Send, CheckCircle } from "lucide-react";
+import { MessageSquareHeart, ShieldCheck, Star, Quote, Send, CheckCircle, Phone, Mail } from "lucide-react";
+import { COUNTRY_CODES } from "@/data/countryCodes";
 import { SpiritualCard } from "@/components/shared/SpiritualCard";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -11,8 +12,20 @@ interface Review {
   title: string;
   body: string;
   stars: number;
+  email?: string;
+  phone?: string;       // stored as full number e.g. "9110295352"
+  countryCode?: string; // e.g. "+91"
   isUser?: boolean;
 }
+
+const maskPhone = (countryCode: string, phone: string): string => {
+  if (!phone) return "";
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length < 3) return countryCode + " " + phone;
+  const visible = digits.slice(0, 2);
+  const masked = "*".repeat(Math.min(digits.length - 2, 4));
+  return `${countryCode} ${visible}${masked}`;
+};
 
 const seedReviews: Review[] = [
   {
@@ -112,6 +125,12 @@ const ReviewCard = ({ review, index }: { review: Review; index: number }) => (
       <div>
         <p className="text-sm font-semibold text-foreground leading-tight">{review.name}</p>
         <p className="text-xs text-muted-foreground tracking-wide">{review.location}</p>
+        {review.phone && review.countryCode && (
+          <p className="text-xs text-muted-foreground/70 mt-0.5 flex items-center gap-1">
+            <Phone className="h-2.5 w-2.5" />
+            {maskPhone(review.countryCode, review.phone)}
+          </p>
+        )}
       </div>
       {review.isUser && (
         <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
@@ -131,6 +150,9 @@ const KundaliReviews = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [stars, setStars] = useState(5);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+91");
 
   useEffect(() => {
     try {
@@ -150,6 +172,9 @@ const KundaliReviews = () => {
       title: title.trim(),
       body: body.trim(),
       stars,
+      email: email.trim(),
+      phone: phone.trim(),
+      countryCode,
       isUser: true,
     };
     const updated = [...userReviews, newReview];
@@ -161,7 +186,7 @@ const KundaliReviews = () => {
     }
     setSubmitted(true);
     setShowForm(false);
-    setName(""); setLocation(""); setTitle(""); setBody(""); setStars(5);
+    setName(""); setLocation(""); setTitle(""); setBody(""); setStars(5); setEmail(""); setPhone(""); setCountryCode("+91");
   };
 
   const allReviews = [...seedReviews, ...userReviews];
@@ -261,6 +286,33 @@ const KundaliReviews = () => {
                           placeholder="e.g. Mumbai"
                           className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground outline-none focus:border-primary/50 transition"
                         />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="flex items-center gap-1 text-xs text-muted-foreground uppercase tracking-wide">
+                          <Mail className="h-3 w-3" /> Email *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="your@email.com"
+                          className="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground outline-none focus:border-primary/50 transition"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="flex items-center gap-1 text-xs text-muted-foreground uppercase tracking-wide">
+                          <Phone className="h-3 w-3" /> Phone *
+                        </label>
+                        <div className="flex h-[42px] rounded-xl border border-border bg-background overflow-hidden focus-within:border-primary/50 transition">
+                          <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)}
+                            className="h-full w-[72px] shrink-0 border-r border-border bg-muted/40 px-2 text-xs font-bold text-foreground outline-none cursor-pointer">
+                            {COUNTRY_CODES.map(c => <option key={c.iso3} value={c.code}>{c.code}</option>)}
+                          </select>
+                          <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)}
+                            placeholder="9110295352"
+                            className="flex-1 min-w-0 h-full px-3 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/50" />
+                        </div>
                       </div>
                     </div>
                     <div className="space-y-1.5">

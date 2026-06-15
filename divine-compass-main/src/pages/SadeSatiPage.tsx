@@ -2,7 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
-import { Star, Sparkles, Calendar, Clock, ChevronRight, Info, CheckCircle, Download } from "lucide-react";
+import { Star, Sparkles, Calendar, Clock, ChevronRight, Info, CheckCircle, Download, User, Mail, Phone } from "lucide-react";
+import { BirthDatePicker } from "@/components/shared/BirthDatePicker";
+import { COUNTRY_CODES } from "@/data/countryCodes";
 import { Layout } from "@/components/layout/Layout";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { SpiritualCard } from "@/components/shared/SpiritualCard";
@@ -27,7 +29,7 @@ import {
     SadeSatiPhase,
     getSiderealSaturnLongitude
 } from "@/lib/calculators/astrology/sadeSati";
-import { generateSadeSatiPdf } from "@/lib/pdf/generateSadeSatiPdf";
+
 import { SeoHead } from "@/components/shared/SeoHead";
 
 // Stripe replaces PayPal for international payments
@@ -69,6 +71,8 @@ const SadeSatiPage = () => {
     const [purchaseStep, setPurchaseStep] = useState<"idle" | "form" | "processing" | "done">("idle");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [countryCode, setCountryCode] = useState("+91");
     const [gender, setGender] = useState("male");
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [paymentError, setPaymentError] = useState<string | null>(null);
@@ -103,71 +107,88 @@ const SadeSatiPage = () => {
         const ok = await loadRazorpay();
         if (!ok) { setPaymentError("Failed to load payment gateway. Please try again."); setPurchaseStep("form"); return; }
 
-        const options = {
-            key: "rzp_live_Su2QpyCfiUhFPm",
-            amount: REPORT_PRICE * 100,
-            currency: "INR",
-            name: "Divine Panchang",
-            description: "Premium In-depth Sade Sati Report",
-            image: "/logo-srichakra.png",
-            handler: async (response: any) => {
-                try {
-                    setPurchaseStep("processing");
-                    const dobString = birthDate;
-                    const verifyRes = await fetch("/api/payment/verify", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            paymentId: response.razorpay_payment_id,
-                            orderId: response.razorpay_order_id,
-                            signature: response.razorpay_signature,
-                            email,
-                            name,
-                            dob: dobString,
-                            tob: birthTime,
-                            gender,
-                            city: location.name,
-                            lat: location.lat,
-                            lon: location.lon,
-                            timezone: location.timezone,
-                            plan: "sade-sati",
-                        }),
-                    });
-                    const verifyData = await verifyRes.json();
-                    if (verifyRes.ok && verifyData.status === "success") {
-                        const details = {
-                            name,
-                            email,
-                            dob: dobString,
-                            tob: birthTime,
-                            gender,
-                            city: location.name,
-                            lat: location.lat,
-                            lon: location.lon,
-                            timezone: location.timezone,
-                        };
-                        localStorage.setItem("sade_sati_report_details", JSON.stringify(details));
-                        navigate(
-                            `/sade-sati-report-preview?name=${encodeURIComponent(name)}&dob=${dobString}&tob=${birthTime}&email=${encodeURIComponent(email)}&gender=${gender}&city=${encodeURIComponent(location.name)}&lat=${location.lat}&lon=${location.lon}&tz=${location.timezone}&token=${verifyData.token}`
-                        );
-                    } else {
-                        throw new Error(verifyData.message || "Payment verification failed on server.");
-                    }
-                } catch (e: any) {
-                    setPaymentError(e.message || "Report generation failed. Please contact support@divinepanchang.space with your payment ID: " + response.razorpay_payment_id);
-                    setPurchaseStep("form");
-                }
-            },
-            prefill: { name, email },
-            theme: { color: "#0b1730" },
-            modal: {
-                ondismiss: () => { if (purchaseStep === "processing") setPurchaseStep("idle"); }
+        try {
+            const orderRes = await fetch("/api/payment/razorpay-order", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: REPORT_PRICE, currency: "INR", plan: "sade-sati" }),
+            });
+            const orderData = await orderRes.json();
+            if (!orderRes.ok || !orderData.orderId) {
+                throw new Error(orderData.message || "Failed to create Razorpay order.");
             }
-        };
 
-        const rzp = new (window as any).Razorpay(options);
-        rzp.open();
-        setPurchaseStep("form");
+            const options = {
+                key: "rzp_live_Su2QpyCfiUhFPm",
+                amount: REPORT_PRICE * 100,
+                currency: "INR",
+                order_id: orderData.orderId,
+                name: "Divine Panchang",
+                description: "Premium In-depth Sade Sati Report",
+                image: "/logo-srichakra.png",
+                handler: async (response: any) => {
+                    try {
+                        setPurchaseStep("processing");
+                        const dobString = birthDate;
+                        const verifyRes = await fetch("/api/payment/verify", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                paymentId: response.razorpay_payment_id,
+                                orderId: response.razorpay_order_id,
+                                signature: response.razorpay_signature,
+                                email,
+                                name,
+                                dob: dobString,
+                                tob: birthTime,
+                                gender,
+                                city: location.name,
+                                lat: location.lat,
+                                lon: location.lon,
+                                timezone: location.timezone,
+                                plan: "sade-sati",
+                            }),
+                        });
+                        const verifyData = await verifyRes.json();
+                        if (verifyRes.ok && verifyData.status === "success") {
+                            const details = {
+                                name,
+                                email,
+                                dob: dobString,
+                                tob: birthTime,
+                                gender,
+                                city: location.name,
+                                lat: location.lat,
+                                lon: location.lon,
+                                timezone: location.timezone,
+                                token: verifyData.token,
+                            };
+                            localStorage.setItem("sade_sati_report_details", JSON.stringify(details));
+                            navigate(
+                                `/sade-sati-report-preview?name=${encodeURIComponent(name)}&dob=${dobString}&tob=${birthTime}&email=${encodeURIComponent(email)}&gender=${gender}&city=${encodeURIComponent(location.name)}&lat=${location.lat}&lon=${location.lon}&tz=${location.timezone}&token=${verifyData.token}`
+                            );
+                        } else {
+                            throw new Error(verifyData.message || "Payment verification failed on server.");
+                        }
+                    } catch (e: any) {
+                        setPaymentError(e.message || "Report generation failed. Please contact support@divinepanchang.space with your payment ID: " + response.razorpay_payment_id);
+                        setPurchaseStep("form");
+                    }
+                },
+                prefill: { name, email },
+                theme: { color: "#0b1730" },
+                modal: {
+                    ondismiss: () => { if (purchaseStep === "processing") setPurchaseStep("idle"); }
+                }
+            };
+
+            const rzp = new (window as any).Razorpay(options);
+            rzp.open();
+            setPurchaseStep("form");
+        } catch (err: any) {
+            setPaymentError(err.message || "Failed to initiate payment.");
+            setPurchaseStep("form");
+        }
     };
 
     const handleCalculate = () => {
@@ -487,19 +508,55 @@ const SadeSatiPage = () => {
                         <div className="absolute left-0 bottom-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl pointer-events-none" />
                         
                         <div className="space-y-6 relative z-10">
+                            {/* Name + Email + Phone */}
+                            <div className="grid gap-4 sm:grid-cols-3">
+                                <div className="space-y-2">
+                                    <Label className="text-[#0b1730] font-serif font-semibold text-sm flex items-center gap-1.5">
+                                        <User className="h-4 w-4 text-primary" /> Full Name
+                                    </Label>
+                                    <Input
+                                        type="text"
+                                        placeholder="e.g. Arjun Sharma"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        className="h-11 bg-[#fffdfa] border-2 border-[#b59449]/20 focus:border-[#b59449]/60 rounded-xl text-foreground focus:ring-1 focus:ring-[#b59449] transition-all"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-[#0b1730] font-serif font-semibold text-sm flex items-center gap-1.5">
+                                        <Mail className="h-4 w-4 text-primary" /> Email Address
+                                    </Label>
+                                    <Input
+                                        type="email"
+                                        placeholder="your@email.com"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="h-11 bg-[#fffdfa] border-2 border-[#b59449]/20 focus:border-[#b59449]/60 rounded-xl text-foreground focus:ring-1 focus:ring-[#b59449] transition-all"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-[#0b1730] font-serif font-semibold text-sm flex items-center gap-1.5">
+                                        <Phone className="h-4 w-4 text-primary" /> WhatsApp / Phone
+                                    </Label>
+                                    <div className="flex h-11 rounded-xl border-2 border-[#b59449]/20 bg-[#fffdfa] overflow-hidden focus-within:border-[#b59449]/60 focus-within:ring-1 focus-within:ring-[#b59449] transition-all">
+                                        <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)}
+                                            className="h-full w-[76px] shrink-0 border-r border-[#b59449]/20 bg-[#fdf8f0] px-2 text-[12px] font-bold text-[#0b1730] outline-none cursor-pointer">
+                                            {COUNTRY_CODES.map(c => <option key={c.iso3} value={c.code}>{c.code}</option>)}
+                                        </select>
+                                        <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
+                                            placeholder="9110295352"
+                                            className="flex-1 min-w-0 h-full px-3 bg-transparent text-[14px] text-foreground outline-none placeholder:text-muted-foreground/50" />
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label className="text-[#0b1730] font-serif font-semibold text-sm flex items-center gap-1.5">
                                         <Calendar className="h-4 w-4 text-primary" />
                                         Date of Birth
                                     </Label>
-                                    <Input
-                                        type="date"
-                                        value={birthDate}
-                                        onChange={(e) => setBirthDate(e.target.value)}
-                                        max={new Date().toISOString().split("T")[0]}
-                                        className="h-11 bg-[#fffdfa] border-2 border-[#b59449]/20 focus:border-[#b59449]/60 rounded-xl text-foreground font-serif focus:ring-1 focus:ring-[#b59449] transition-all"
-                                    />
+                                    <BirthDatePicker value={birthDate} onChange={setBirthDate} />
                                 </div>
 
                                 <div className="space-y-2">

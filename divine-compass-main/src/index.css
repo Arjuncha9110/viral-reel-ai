@@ -58,18 +58,18 @@
     --sacred-amber: 24 85% 52%;
 
     /* Gradients */
-    --gradient-saffron: linear-gradient(135deg, hsl(24 82% 48%), hsl(26 88% 58%));
-    --gradient-gold: linear-gradient(135deg, hsl(26 90% 55%), hsl(28 95% 65%));
-    --gradient-maroon: linear-gradient(135deg, hsl(0 55% 28%), hsl(0 45% 38%));
-    --gradient-sacred: linear-gradient(180deg, hsl(40 33% 97%) 0%, hsl(30 28% 93%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(24 82% 48% / 0.08) 0%, hsl(26 90% 55% / 0.08) 50%, hsl(0 55% 28% / 0.08) 100%);
+    --gradient-saffron: linear-gradient(135deg, hsl(24, 82%, 48%), hsl(26, 88%, 58%));
+    --gradient-gold: linear-gradient(135deg, hsl(26, 90%, 55%), hsl(28, 95%, 65%));
+    --gradient-maroon: linear-gradient(135deg, hsl(0, 55%, 28%), hsl(0, 45%, 38%));
+    --gradient-sacred: linear-gradient(180deg, hsl(40, 33%, 97%) 0%, hsl(30, 28%, 93%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsla(24, 82%, 48%, 0.08) 0%, hsla(26, 90%, 55%, 0.08) 50%, hsla(0, 55%, 28%, 0.08) 100%);
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(20 40% 20% / 0.07);
-    --shadow-card: 0 8px 30px -8px hsl(20 40% 20% / 0.09);
-    --shadow-elevated: 0 16px 48px -12px hsl(20 40% 20% / 0.14);
-    --shadow-glow-saffron: 0 0 30px hsl(24 82% 48% / 0.28);
-    --shadow-glow-gold: 0 0 24px hsl(26 90% 55% / 0.38);
+    --shadow-soft: 0 4px 20px -4px hsla(20, 40%, 20%, 0.07);
+    --shadow-card: 0 8px 30px -8px hsla(20, 40%, 20%, 0.09);
+    --shadow-elevated: 0 16px 48px -12px hsla(20, 40%, 20%, 0.14);
+    --shadow-glow-saffron: 0 0 30px hsla(24, 82%, 48%, 0.28);
+    --shadow-glow-gold: 0 0 24px hsla(26, 90%, 55%, 0.38);
 
     /* Sidebar */
     --sidebar-background: 40 30% 99%;
@@ -120,17 +120,17 @@
     --temple-cream: 20 25% 8%;
     --sacred-amber: 35 85% 50%;
 
-    --gradient-saffron: linear-gradient(135deg, hsl(24 90% 55%), hsl(35 85% 50%));
-    --gradient-gold: linear-gradient(135deg, hsl(43 90% 50%), hsl(45 95% 60%));
-    --gradient-maroon: linear-gradient(135deg, hsl(0 50% 35%), hsl(0 40% 45%));
-    --gradient-sacred: linear-gradient(180deg, hsl(20 25% 8%) 0%, hsl(20 20% 12%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(24 90% 55% / 0.15) 0%, hsl(43 90% 50% / 0.1) 50%, hsl(0 50% 35% / 0.15) 100%);
+    --gradient-saffron: linear-gradient(135deg, hsl(24, 90%, 55%), hsl(35, 85%, 50%));
+    --gradient-gold: linear-gradient(135deg, hsl(43, 90%, 50%), hsl(45, 95%, 60%));
+    --gradient-maroon: linear-gradient(135deg, hsl(0, 50%, 35%), hsl(0, 40%, 45%));
+    --gradient-sacred: linear-gradient(180deg, hsl(20, 25%, 8%) 0%, hsl(20, 20%, 12%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsla(24, 90%, 55%, 0.15) 0%, hsla(43, 90%, 50%, 0.1) 50%, hsla(0, 50%, 35%, 0.15) 100%);
 
-    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
-    --shadow-card: 0 8px 30px -8px hsl(0 0% 0% / 0.4);
-    --shadow-elevated: 0 12px 40px -12px hsl(0 0% 0% / 0.5);
-    --shadow-glow-saffron: 0 0 30px hsl(24 90% 55% / 0.25);
-    --shadow-glow-gold: 0 0 20px hsl(43 90% 50% / 0.3);
+    --shadow-soft: 0 4px 20px -4px hsla(0, 0%, 0%, 0.3);
+    --shadow-card: 0 8px 30px -8px hsla(0, 0%, 0%, 0.4);
+    --shadow-elevated: 0 12px 40px -12px hsla(0, 0%, 0%, 0.5);
+    --shadow-glow-saffron: 0 0 30px hsla(24, 90%, 55%, 0.25);
+    --shadow-glow-gold: 0 0 20px hsla(43, 90%, 50%, 0.3);
 
     --sidebar-background: 20 20% 10%;
     --sidebar-foreground: 40 20% 90%;
@@ -321,7 +321,4 @@
     margin-top: 10px !important;
   }
 
-  [data-report-page="true"][data-export-mode="true"] .space-y-3\.5 > :not([hidden]) ~ :not([hidden]) {
-    margin-top: 8px !important;
-  }
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { BirthDatePicker } from "@/components/shared/BirthDatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Map, Calendar, Clock, LayoutGrid, List, Sparkles } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
@@ -140,13 +141,7 @@ const KundaliPage = () => {
                                     <Label className="flex items-center gap-2">
                                         <Calendar className="h-4 w-4 text-primary" /> Birth Date
                                     </Label>
-                                    <Input
-                                        type="date"
-                                        value={birthDate}
-                                        onChange={(e) => setBirthDate(e.target.value)}
-                                        max={new Date().toISOString().split("T")[0]}
-                                        className="h-11 bg-card border-2 border-primary/20 focus:border-primary/50 rounded-xl text-foreground"
-                                    />
+                                    <BirthDatePicker value={birthDate} onChange={setBirthDate} />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label className="flex items-center gap-2">

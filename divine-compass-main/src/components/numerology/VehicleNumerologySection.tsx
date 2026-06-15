@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BirthDatePicker } from "@/components/shared/BirthDatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { Car, Sparkles, Hash, AlertTriangle, CheckCircle, HelpCircle } from "lucide-react";
 import { SpiritualCard } from "@/components/shared/SpiritualCard";
@@ -84,14 +85,7 @@ export const VehicleNumerologySection = () => {
                   <span>Date of Birth</span>
                   <span className="text-[10px] text-muted-foreground bg-primary/10 px-1.5 py-0.5 rounded">Optional</span>
                 </Label>
-                <Input
-                  id="dob"
-                  type="date"
-                  value={dob}
-                  onChange={(e) => setDob(e.target.value)}
-                  className="h-12 bg-background border-2 border-primary/20 focus:border-primary/50"
-                  onKeyDown={(e) => e.key === "Enter" && handleCalculate()}
-                />
+                <BirthDatePicker value={dob} onChange={setDob} />
               </div>
             </div>
             

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BirthDatePicker } from "@/components/shared/BirthDatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { format, differenceInYears, differenceInMonths } from "date-fns";
 import { Moon, Sparkles, Calendar, Clock, MapPin, Star, ChevronDown, ChevronRight } from "lucide-react";
@@ -123,13 +124,7 @@ const DashaPage = () => {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label className="text-foreground font-medium">Date of Birth</Label>
-                  <Input
-                    type="date"
-                    value={birthDate}
-                    onChange={(e) => setBirthDate(e.target.value)}
-                    max={new Date().toISOString().split("T")[0]}
-                    className="h-11 bg-card border-2 border-primary/20 focus:border-primary/50 rounded-xl text-foreground"
-                  />
+                  <BirthDatePicker value={birthDate} onChange={setBirthDate} />
                 </div>
 
                 {/* Birth Time */}

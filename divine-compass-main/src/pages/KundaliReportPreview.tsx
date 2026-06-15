@@ -117,12 +117,12 @@ const demoData: KundaliBirthData = {
 };
 
 const KundaliReportPreview: React.FC = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [data, setData] = useState<KundaliBirthData | null>(null);
   const [isDemo, setIsDemo] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(true);
-  const [language, setLanguage] = useState<"en" | "kn">("en");
+  const [language, setLanguage] = useState<string>("en");
   const [templateKey, setTemplateKey] = useState(0);
   const [isPdfExportMode, setIsPdfExportMode] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -161,73 +161,85 @@ const KundaliReportPreview: React.FC = () => {
     const tokenParam = searchParams.get("token");
     const sessionIdParam = searchParams.get("session_id");
 
-    const isValidToken = (token: string | null | undefined): boolean => {
-      if (!token) return false;
-      const t = token.trim();
-      return (
-        t.startsWith("pay_verified_") ||
-        t.startsWith("paypal_verified_") ||
-        t.startsWith("paddle_verified_") ||
-        t.startsWith("dev_")
-      );
-    };
-
     const langParam = searchParams.get("lang");
-    if (langParam === "en" || langParam === "kn") {
+    if (langParam) {
       setLanguage(langParam);
     } else {
-      const savedLang = localStorage.getItem("kundali_report_lang") as "en" | "kn";
-      if (savedLang === "en" || savedLang === "kn") {
+      const savedLang = localStorage.getItem("kundali_report_lang");
+      if (savedLang) {
         setLanguage(savedLang);
       }
     }
 
-    if (nameParam && dobParam && tobParam) {
-      const urlHasPayment = isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
-      if (!urlHasPayment) {
-        setIsAuthorized(false);
-      }
-      setData({
-        name: nameParam,
-        email: emailParam || "customer@divinepanchang.space",
-        dob: dobParam,
-        tob: tobParam,
-        gender: genderParam,
-        city: cityParam || "Bengaluru",
-        lat: latParam ? parseFloat(latParam) : 12.9716,
-        lon: lonParam ? parseFloat(lonParam) : 77.5946,
-        timezone: tzParam,
-        plan: planParam || "detailed",
-        chartStyle: chartStyleParam === "south" ? "south" : "north",
-      });
-      setIsDemo(false);
-      return;
-    }
-
-    const saved = localStorage.getItem("kundali_report_details");
-    if (saved) {
+    const verifyAccess = async (token: string | null | undefined, sessionId: string | null | undefined) => {
+      if (planParam === "free") return true; // Free plan bypasses payment check
+      if (!token && !sessionId) return false;
       try {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.name) {
-          const localHasPayment = isValidToken(parsed.token) || isValidToken(tokenParam) || (!!sessionIdParam && sessionIdParam.startsWith("cs_"));
-          if (!localHasPayment) {
-            setIsAuthorized(false);
-          }
-          setData(parsed);
-          setIsDemo(false);
-          return;
+        const res = await fetch("/api/payment/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, sessionId, reportType: "kundali" }),
+        });
+        if (res.ok) {
+          const payload = await res.json();
+          return payload.status === "success";
         }
-      } catch (error) {
-        console.error("Error parsing saved details", error);
+      } catch (err) {
+        console.error("Session verify error", err);
       }
-    }
+      return false;
+    };
 
-    setData(demoData);
-    setIsDemo(true);
+    const loadData = async () => {
+      if (nameParam && dobParam && tobParam) {
+        setIsAuthorized(false);
+        const hasAccess = await verifyAccess(tokenParam, sessionIdParam);
+        setIsAuthorized(hasAccess);
+        
+        setData({
+          name: nameParam,
+          email: emailParam || "customer@divinepanchang.space",
+          dob: dobParam,
+          tob: tobParam,
+          gender: genderParam,
+          city: cityParam || "Bengaluru",
+          lat: latParam ? parseFloat(latParam) : 12.9716,
+          lon: lonParam ? parseFloat(lonParam) : 77.5946,
+          timezone: tzParam,
+          plan: planParam || "detailed",
+          chartStyle: chartStyleParam === "south" ? "south" : "north",
+        });
+        setIsDemo(false);
+        return;
+      }
+
+      const saved = localStorage.getItem("kundali_report_details");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.name) {
+            setIsAuthorized(false);
+            const hasAccess = await verifyAccess(parsed.token || tokenParam, parsed.sessionId || sessionIdParam);
+            setIsAuthorized(hasAccess);
+            setData(parsed);
+            setIsDemo(false);
+            return;
+          }
+        } catch (error) {
+          console.error("Error parsing saved details", error);
+        }
+      }
+
+      setData(demoData);
+      setIsDemo(true);
+      setIsAuthorized(true);
+    };
+
+    loadData();
   }, [searchParams]);
 
   useEffect(() => {
-    if (language !== "kn" || !data) return;
+    if (language === "en" || !data) return;
     if (translationRunning.current) return;
 
     // Wait for the DOM to be fully rendered before translating
@@ -237,16 +249,16 @@ const KundaliReportPreview: React.FC = () => {
       setIsTranslating(true);
       try {
         const { translateReportDom } = await import("@/lib/pdf/translateReportDom");
-        await translateReportDom(reportContainerRef.current, "kn");
+        await translateReportDom(reportContainerRef.current, language);
         // Force React to re-run the translation pass on any newly mounted nodes
         setTemplateKey((k) => k + 1);
         // Second pass after re-render to catch newly added text nodes
         await new Promise((r) => setTimeout(r, 300));
         if (reportContainerRef.current) {
-          await translateReportDom(reportContainerRef.current, "kn");
+          await translateReportDom(reportContainerRef.current, language);
         }
       } catch (error) {
-        console.warn("Kannada translation skipped:", error);
+        console.warn(`${language} translation skipped:`, error);
       } finally {
         setIsTranslating(false);
         translationRunning.current = false;
@@ -287,37 +299,27 @@ const KundaliReportPreview: React.FC = () => {
     setDownloadProgress("Preparing report...");
 
     try {
-      if (language === "kn") {
-        setDownloadProgress("Warming up Kannada translations...");
+      if (language !== "en") {
+        setDownloadProgress("Warming up translations...");
         const { preTranslateContent } = await import("@/lib/pdf/preTranslate");
         const { buildSharedReportData } = await import("@/lib/pdf/sharedReportModel");
 
         // 1. Build the complete English report structure (source of truth)
         const sharedData = buildSharedReportData(data, "en");
 
-        // 2. Warm up all Kannada translations directly from the source of truth structure
-        await preTranslateContent([sharedData], "kn");
+        // 2. Warm up all translations directly from the source of truth structure
+        await preTranslateContent([sharedData], language);
       }
 
-      setDownloadProgress("Generating PDF report...");
-      const { generateKundaliPdf } = await import("@/lib/pdf/generateKundaliPdf");
-      const pdfBlob = await generateKundaliPdf(data, language);
-
-      const url = window.URL.createObjectURL(pdfBlob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = getPdfFileName();
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-
-      setDownloadProgress("PDF downloaded successfully.");
-      setTimeout(() => setDownloadProgress(""), 2500);
+      setDownloadProgress("Opening print dialog...");
+      setTimeout(() => {
+        window.print();
+        setDownloadProgress("");
+        setIsDownloading(false);
+      }, 300);
     } catch (error) {
-      console.error("Failed to download PDF", error);
-      setDownloadError(error instanceof Error ? error.message : "Unknown PDF export error");
-    } finally {
+      console.error("Failed to print PDF", error);
+      setDownloadError(error instanceof Error ? error.message : "Unknown print error");
       setIsDownloading(false);
     }
   };
@@ -435,37 +437,43 @@ const KundaliReportPreview: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex bg-gray-900/80 p-1 rounded-xl border border-gray-800">
-            <button
-              onClick={() => {
-                if (language !== "en") {
-                  setLanguage("en");
-                  setTemplateKey((k) => k + 1); // force remount to clear Kannada DOM mutations
-                  localStorage.setItem("kundali_report_lang", "en");
-                }
-              }}
-              className={cn(
-                "px-3 py-1 text-xs font-bold rounded-lg transition-all",
-                language === "en" ? "bg-[#b59449] text-white shadow-md" : "text-gray-400 hover:text-white"
-              )}
-            >
-              English
-            </button>
-            <button
-              onClick={() => {
-                if (language !== "kn") {
-                  setLanguage("kn");
-                  setTemplateKey((k) => k + 1); // force remount so Kannada translation runs on fresh DOM
-                  localStorage.setItem("kundali_report_lang", "kn");
-                }
-              }}
-              className={cn(
-                "px-3 py-1 text-xs font-bold rounded-lg transition-all",
-                language === "kn" ? "bg-[#b59449] text-white shadow-md" : "text-gray-400 hover:text-white"
-              )}
-            >
-              Kannada
-            </button>
+          <div className="flex bg-gray-900/80 rounded-xl border border-gray-800 relative">
+            <select
+                value={language}
+                onChange={(e) => {
+                  const newLang = e.target.value;
+                  if (language !== newLang) {
+                    import("@/lib/pdf/preTranslate").then(m => m.clearTranslationCache());
+                    setLanguage(newLang);
+                    setTemplateKey((k) => k + 1);
+                    localStorage.setItem("kundali_report_lang", newLang);
+                    searchParams.set("lang", newLang);
+                    setSearchParams(searchParams);
+                  }
+                }}
+                className="bg-transparent text-white px-3 py-1 text-xs font-bold rounded-lg transition-all appearance-none cursor-pointer pr-6 focus:outline-none"
+              >
+                {[
+                  { code: "en", name: "English" },
+                  { code: "ml", name: "Malayalam" },
+                  { code: "ta", name: "Tamil" },
+                  { code: "te", name: "Telugu" },
+                  { code: "hi", name: "Hindi" },
+                  { code: "kn", name: "Kannada" },
+                  { code: "mr", name: "Marathi" },
+                  { code: "bn", name: "Bengali" },
+                  { code: "or", name: "Oriya" },
+                  { code: "gu", name: "Gujarati" },
+                  { code: "si", name: "Sinhala" },
+                ].map((lang) => (
+                  <option key={lang.code} value={lang.code} className="bg-gray-900 text-white">
+                    {lang.name}
+                  </option>
+                ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#b59449]">
+              <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
           </div>
 
           <div className="hidden md:flex items-center gap-1 text-[11px] text-gray-300 bg-gray-900/60 border border-gray-800 px-3 py-1.5 rounded-xl">
@@ -525,8 +533,8 @@ const KundaliReportPreview: React.FC = () => {
 
           {isTranslating && (
             <div className="max-w-[210mm] w-full bg-[#1a1040]/80 border border-[#b59449]/40 p-3.5 text-xs text-[#b59449] rounded-xl flex items-center justify-center gap-2 print:hidden animate-pulse font-serif">
-              <span className="text-base">🔄</span>
-              <span>ಕನ್ನಡಕ್ಕೆ ಭಾಷಾಂತರಿಸಲಾಗುತ್ತಿದೆ... — Translating to Kannada, please wait...</span>
+              <span>🔄</span>
+              <span>Translating content to selected language, please wait...</span>
             </div>
           )}
 

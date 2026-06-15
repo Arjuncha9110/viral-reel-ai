@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BirthDatePicker } from "@/components/shared/BirthDatePicker";
 import { format } from "date-fns";
 import { Heart, Activity, User, Info, CheckCircle2, Calendar, Clock3, MapPin } from "lucide-react";
 import { SeoHead } from "@/components/shared/SeoHead";
@@ -10,7 +11,7 @@ import { calculateAshtakoot, AshtakootResult } from "@/lib/calculators/astrology
 import { getNakshatra, getSiderealMoon } from "@/lib/calculators/astrology/nakshatra";
 import { Upload, FileText, Bot, Download, AlertCircle } from "lucide-react";
 import { extractKundliPdfData, extractRawKundliPdfText } from "@/lib/kundliMatching/extractKundliPdfData";
-import { generateDetailedMatchPdf } from "@/lib/pdf/generateDetailedMatchPdf";
+
 import { generateDeterministicMatchAnalysis } from "@/lib/calculators/astrology/matchReport";
 import type { ExtractedKundliData, MatchAnalysisResult } from "@/lib/kundliMatching/types";
 import { useMemo } from "react";
@@ -166,16 +167,7 @@ export default function MatchPage() {
   };
 
   const handleDownloadReport = async () => {
-    if (!aiResult || !groomExtracted || !brideExtracted || !aiAshtakootResult) return;
-    const blob = await generateDetailedMatchPdf(groomExtracted, brideExtracted, aiResult, aiAshtakootResult);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Divine_Panchang_Detailed_Match_Report.pdf";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    window.print();
   };
 
   const handleMatch = () => {
@@ -283,19 +275,14 @@ export default function MatchPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-3">
                     <div>
                       <label className="flex items-center gap-1.5 text-xs font-bold text-[#8c7a6b] uppercase mb-1">
                         <Calendar className="h-3 w-3" /> Birth Date
                       </label>
-                      <Input
-                        type="date"
-                        value={boyBirthDate}
-                        onChange={(e) => setBoyBirthDate(e.target.value)}
-                        className="h-11 rounded-lg border-[#e6dfd5] bg-[#f9f8f6] focus:border-[#3b82f6]"
-                      />
+                      <BirthDatePicker value={boyBirthDate} onChange={setBoyBirthDate} />
                     </div>
-                    <div>
+                    <div className="w-48">
                       <label className="flex items-center gap-1.5 text-xs font-bold text-[#8c7a6b] uppercase mb-1">
                         <Clock3 className="h-3 w-3" /> Birth Time
                       </label>
@@ -360,19 +347,14 @@ export default function MatchPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-3">
                     <div>
                       <label className="flex items-center gap-1.5 text-xs font-bold text-[#8c7a6b] uppercase mb-1">
                         <Calendar className="h-3 w-3" /> Birth Date
                       </label>
-                      <Input
-                        type="date"
-                        value={girlBirthDate}
-                        onChange={(e) => setGirlBirthDate(e.target.value)}
-                        className="h-11 rounded-lg border-[#e6dfd5] bg-[#f9f8f6] focus:border-[#ec4899]"
-                      />
+                      <BirthDatePicker value={girlBirthDate} onChange={setGirlBirthDate} />
                     </div>
-                    <div>
+                    <div className="w-48">
                       <label className="flex items-center gap-1.5 text-xs font-bold text-[#8c7a6b] uppercase mb-1">
                         <Clock3 className="h-3 w-3" /> Birth Time
                       </label>

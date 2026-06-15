@@ -16,11 +16,18 @@ export function mergeTranslations(pairs: Record<string, string>) {
   Object.assign(runtimeCache, pairs);
 }
 
+/** Clear the translation cache completely */
+export function clearTranslationCache() {
+  for (const key of Object.keys(runtimeCache)) {
+    delete runtimeCache[key];
+  }
+}
+
 /** Look up a string — runtime cache first, then static dict */
 export function lookupTranslation(text: string): string | undefined {
   if (!text) return undefined;
   const clean = text.trim();
-  return runtimeCache[clean] ?? runtimeCache[text] ?? KANNADA_DICT[clean] ?? KANNADA_DICT[text];
+  return runtimeCache[clean] ?? runtimeCache[text];
 }
 
 function decodeHtmlEntities(text: string): string {

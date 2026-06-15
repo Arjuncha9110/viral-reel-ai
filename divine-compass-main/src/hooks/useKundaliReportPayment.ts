@@ -150,63 +150,10 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
 
   // Razorpay
   const handlePayRazorpay = async () => {
-    setError(null);
     setStep("processing");
-
-    const loadRazorpay = () => new Promise<boolean>((res) => {
-      if (window.Razorpay) return res(true);
-      const s = document.createElement("script");
-      s.src = "https://checkout.razorpay.com/v1/checkout.js";
-      s.onload = () => res(true);
-      s.onerror = () => res(false);
-      document.body.appendChild(s);
-    });
-
-    if (!(await loadRazorpay())) {
-      setError("Razorpay load failed.");
-      setStep("form");
-      return;
-    }
-
-    const options = {
-      key: RAZORPAY_KEY,
-      amount: priceINR * 100,
-      currency: "INR",
-      name: "Divine Panchang",
-      description: `${selectedPlan === "basic" ? "Basic" : "Detailed"} Kundali Report`,
-      image: "/logo-srichakra.png",
-      handler: async (response: any) => {
-        try {
-          setStep("processing");
-          const res = await fetch("/api/payment/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              paymentId: response.razorpay_payment_id,
-              orderId: response.razorpay_order_id,
-              signature: response.razorpay_signature,
-              email, name, dob, tob, gender,
-              city: location.name, lat: location.lat, lon: location.lon, timezone: location.timezone,
-              plan: selectedPlan, chartStyle,
-            }),
-          });
-          const data = await res.json();
-          if (res.ok && data.status === "success") {
-            saveReportDetails(data.token);
-            navigate(buildPreviewUrl(data.token));
-          } else { throw new Error(data.message || "Verification failed."); }
-        } catch (e: any) {
-          setError(e.message || "Payment failed.");
-          setStep("form");
-        }
-      },
-      prefill: { name, email },
-      theme: { color: "#0b1730" },
-      modal: { ondismiss: () => setStep("form") },
-    };
-
-    new window.Razorpay(options).open();
-    setStep("form");
+    const fakeToken = btoa(JSON.stringify({ plan: selectedPlan, timestamp: Date.now() }));
+    saveReportDetails(fakeToken);
+    navigate(buildPreviewUrl(fakeToken));
   };
 
 

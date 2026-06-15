@@ -1,3 +1,4 @@
+import React from "react";
 import { motion } from "framer-motion";
 import { FileText, Clock, Download, CheckCircle, Sparkles, Star, Zap, Shield, BookOpen } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
@@ -31,6 +32,9 @@ export const KundaliReportPage = () => {
     canProceed,
     priceINR, priceUSD
   } = useKundaliReportPayment({ defaultLocation });
+
+  const [phone, setPhone] = React.useState("");
+  const [countryCode, setCountryCode] = React.useState("+91");
 
 
   return (
@@ -139,6 +143,8 @@ export const KundaliReportPage = () => {
               gender={gender} setGender={setGender}
               location={location} setLocation={setLocation}
               email={email} setEmail={setEmail}
+              countryCode={countryCode} setCountryCode={setCountryCode}
+              phone={phone} setPhone={setPhone}
               chartStyle={chartStyle} setChartStyle={setChartStyle}
               language={language} setLanguage={setLanguage}
               paymentRegion={paymentRegion}

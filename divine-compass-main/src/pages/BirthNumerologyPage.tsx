@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BirthDatePicker } from "@/components/shared/BirthDatePicker";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { Star, Sparkles, Calendar, Heart, Compass, Award, BookOpen, AlertCircle, CheckCircle } from "lucide-react";
@@ -104,13 +105,7 @@ const BirthNumerologyPage = () => {
                 <Label className="text-foreground font-medium">
                   Select Your Date of Birth
                 </Label>
-                <Input
-                  type="date"
-                  value={birthDate}
-                  onChange={(e) => setBirthDate(e.target.value)}
-                  max={new Date().toISOString().split("T")[0]}
-                  className="h-11 bg-card border-2 border-primary/20 focus:border-primary/50 rounded-xl text-foreground"
-                />
+                <BirthDatePicker value={birthDate} onChange={setBirthDate} />
                 <p className="text-xs text-muted-foreground">
                   Your birth date contains the blueprint of your life's purpose
                 </p>
