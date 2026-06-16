@@ -79,7 +79,7 @@ export const homeStructuredData = [
     "@type": "Organization",
     name: "Divine Panchang",
     url: siteConfig.websiteUrl,
-    logo: `${siteConfig.websiteUrl}/logo-srichakra.png`,
+    logo: `${siteConfig.websiteUrl}/logo-srichakra.png?v=6`,
     sameAs: [siteConfig.youtubeUrl, siteConfig.instagramUrl],
   },
 ];
