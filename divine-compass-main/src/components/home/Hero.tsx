@@ -164,7 +164,7 @@ export const Hero = () => {
                 <div className="relative z-10 space-y-7">
                   <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border border-[#e07838]/40 bg-[#0d1535]/80 p-2.5 shadow-[0_0_0_8px_rgba(212,101,26,0.09),0_0_0_16px_rgba(212,101,26,0.04)] md:h-36 md:w-36">
                     <img
-                      src="/om_logo.jpg"
+                      src="/om_logo.jpg?v=3"
                       alt="Divine Panchang Sri Chakra"
                       className="h-full w-full rounded-full object-cover"
                     />

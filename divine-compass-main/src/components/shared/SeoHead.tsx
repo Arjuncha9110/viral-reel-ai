@@ -45,7 +45,7 @@ export const SeoHead = ({
   title,
   description,
   path,
-  image = "/om_logo.jpg",
+  image = "/om_logo.jpg?v=3",
   type = "website",
   keywords,
   structuredData,

@@ -125,7 +125,7 @@ const SadeSatiPage = () => {
                 order_id: orderData.orderId,
                 name: "Divine Panchang",
                 description: "Premium In-depth Sade Sati Report",
-                image: "/om_logo.jpg",
+                image: "/om_logo.jpg?v=3",
                 handler: async (response: any) => {
                     try {
                         setPurchaseStep("processing");
