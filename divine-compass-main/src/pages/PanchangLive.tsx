@@ -598,7 +598,7 @@ const PanchangLive = () => {
                 <div className="h-full w-full rounded-full bg-[#180d2e] flex items-center justify-center shadow-[inset_0_0_24px_rgba(212,101,26,0.15)]">
                   {/* Inner content: Sri Chakra logo */}
                   <img
-                    src="/logo-srichakra.png"
+                    src="/om_logo.png"
                     alt="Divine Panchang"
                     className="h-14 w-14 rounded-full object-cover opacity-90"
                     onError={(e) => {
