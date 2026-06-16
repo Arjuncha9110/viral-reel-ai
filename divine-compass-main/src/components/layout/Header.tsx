@@ -83,7 +83,7 @@ export const Header = () => {
         <Link to="/" className="flex shrink-0 items-center gap-3 group">
           <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#d8bc7a]/50 bg-gradient-to-b from-[#fffdf8] to-[#f5e8cc] p-1 shadow-[0_6px_20px_rgba(120,86,32,0.14)] transition-shadow group-hover:shadow-[0_8px_24px_rgba(120,86,32,0.22)]">
             <img
-              src="/logo-srichakra.png"
+              src="/divine-panchang-logo.svg"
               alt="Divine Panchang"
               className="h-full w-full rounded-xl object-cover pointer-events-none select-none"
               draggable={false}
