@@ -125,7 +125,7 @@ const SadeSatiPage = () => {
                 order_id: orderData.orderId,
                 name: "Divine Panchang",
                 description: "Premium In-depth Sade Sati Report",
-                image: "/divine-panchang-logo.svg",
+                image: "/logo-srichakra.png",
                 handler: async (response: any) => {
                     try {
                         setPurchaseStep("processing");
