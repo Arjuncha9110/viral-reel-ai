@@ -47,7 +47,7 @@ export const Footer = () => {
               <div className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-[#d8bc7a]/40 bg-[linear-gradient(180deg,#fffdfa,#f3ead8)] p-1 shadow-[0_12px_28px_rgba(122,91,40,0.14)]">
                 <div className="absolute inset-[3px] rounded-[1rem] border border-[#b59449]/10" />
                 <img
-                  src="/logo-srichakra.png?v=6"
+                  src="/logo-srichackra.png?v=locked"
                   alt="Divine Panchang logo"
                   className="relative h-full w-full rounded-[1rem] object-cover pointer-events-none select-none"
                   draggable={false}

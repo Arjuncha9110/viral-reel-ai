@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { LocationSelector, LocationData } from "@/components/LocationSelector";
 import { AdSenseBanner } from "@/components/shared/AdSenseBanner";
 import { RelatedLinks } from "@/components/shared/RelatedLinks";
+import { DivineAiPreviewCard } from "@/components/shared/DivineAiPreviewCard";
 import {
     getSadeSatiPhases,
     getCurrentSadeSatiStatus,
@@ -125,7 +126,7 @@ const SadeSatiPage = () => {
                 order_id: orderData.orderId,
                 name: "Divine Panchang",
                 description: "Premium In-depth Sade Sati Report",
-                image: "/logo-srichakra.png?v=6",
+                image: "/logo-srichackra.png?v=locked",
                 handler: async (response: any) => {
                     try {
                         setPurchaseStep("processing");
@@ -1110,6 +1111,19 @@ const SadeSatiPage = () => {
 
                 {/* Google AdSense Bottom Banner */}
                 <AdSenseBanner adSlot="sadesati_bottom_banner" adFormat="horizontal" />
+
+                <div className="mx-auto mt-10 max-w-5xl">
+                    <DivineAiPreviewCard
+                        source="sade-sati"
+                        title="Add an AI Saturn Coach"
+                        description="Turn Sade Sati from a one-time calculator into an ongoing guidance layer with weekly discipline prompts, emotional reflection, and non-fear-based remedies."
+                        prompts={[
+                            "How should I handle my current Saturn phase?",
+                            "What discipline should I strengthen this week?",
+                            "Give me one grounded Saturday remedy.",
+                        ]}
+                    />
+                </div>
 
                 {/* Content Section */}
                 <div className="max-w-3xl mx-auto mt-16">

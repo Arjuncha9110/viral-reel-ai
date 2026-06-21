@@ -45,7 +45,7 @@ export const SeoHead = ({
   title,
   description,
   path,
-  image = "/logo-srichakra.png?v=6",
+  image = "/logo-srichackra.png?v=locked",
   type = "website",
   keywords,
   structuredData,

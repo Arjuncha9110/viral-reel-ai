@@ -30,6 +30,7 @@ import { SpiritualCard } from "@/components/shared/SpiritualCard";
 import { AdSenseBanner } from "@/components/shared/AdSenseBanner";
 import { KundliChart } from "@/components/shared/KundliChart";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { DivineAiPreviewCard } from "@/components/shared/DivineAiPreviewCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -273,7 +274,17 @@ const JanamKundliPage = () => {
         lagnaSignIdx: Math.floor(ascendant / 30),
       });
 
-      const metadata = computeBirthMetadata(planets, ascendant, parsedBirthDate, birthUTC, location.lat, location.lon);
+      const metadata = computeBirthMetadata({
+        planets,
+        ascendant,
+        lagnaSignIdx: Math.floor(ascendant / 30),
+        birthUTC,
+        localMidnightUTC: new Date(Date.UTC(parsedBirthDate.getFullYear(), parsedBirthDate.getMonth(), parsedBirthDate.getDate())),
+        weekdayIndex: parsedBirthDate.getDay(),
+        lat: location.lat,
+        lon: location.lon,
+        timezone: location.timezone,
+      });
       setBirthMetadata(metadata);
 
       const [panchangRes, response] = await Promise.all([
@@ -558,6 +569,8 @@ const JanamKundliPage = () => {
               <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
                 <div className="space-y-6">
                   <KundliOverviewAccordion />
+                </div>
+                <div className="space-y-6">
                   <BirthProfileTable
                     name={name.trim()}
                     gender={gender}
@@ -569,8 +582,6 @@ const JanamKundliPage = () => {
                     timezone={location.timezone}
                     metadata={birthMetadata}
                   />
-                </div>
-                <div className="space-y-6">
                   <DeeperMetadataAccordion
                     metadata={birthMetadata}
                     panchangData={livePanchang}
@@ -752,6 +763,17 @@ const JanamKundliPage = () => {
                   </div>
                 </div>
               </SpiritualCard>
+
+              <DivineAiPreviewCard
+                source="kundali"
+                title="Ask Divine AI about your chart"
+                description="Use the birth details and chart context here to explain personality, career direction, marriage themes, current dasha lessons, or a 30-day spiritual plan in simpler language."
+                prompts={[
+                  "Explain my personality in simple words.",
+                  "What does my current phase want from me?",
+                  "Create my 30-day spiritual plan.",
+                ]}
+              />
             </motion.div>
           )}
         </AnimatePresence>

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Moon, ScrollText, Sparkles, Sun, Volume2 } from "lucide-react";
+import { ArrowRight, Moon, ScrollText, Sparkles, Sparkle, Sun, Volume2 } from "lucide-react";
 
 import { useOmChant } from "@/components/om/OmChantProvider";
 import { trustSignals } from "@/data/homeData";
@@ -86,14 +86,34 @@ export const Hero = () => {
               </Link>
 
               <Link
-                to="/kundali"
+                to="/janam-kundli"
                 className="group inline-flex items-center gap-2 rounded-2xl border border-[#d4651a]/30 bg-white/70 px-7 py-3.5 text-sm font-bold text-[#8a3c10] backdrop-blur-sm transition-all duration-200 hover:border-[#d4651a]/55 hover:bg-white/90 hover:text-[#6a2808]"
               >
                 <Moon className="h-4 w-4" />
                 Free Janam Kundali
               </Link>
 
+              {/* Futuristic AI button */}
+              <Link
+                to="/divine-ai"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-2xl px-7 py-3.5 text-sm font-bold text-white shadow-[0_8px_30px_rgba(99,82,255,0.35)] transition-all duration-300 hover:shadow-[0_10px_40px_rgba(124,92,255,0.55)]"
+              >
+                {/* Animated gradient core */}
+                <span className="absolute inset-0 bg-[linear-gradient(110deg,#211b48,#3b2d8f,#6d3bd4,#211b48)] bg-[length:200%_100%] animate-shimmer" />
+                {/* Glow ring */}
+                <span className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20" />
+                {/* Sheen sweep on hover */}
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
+                <span className="relative z-10 flex items-center gap-2">
+                  <span className="relative flex h-4 w-4 items-center justify-center">
+                    <Sparkle className="absolute h-4 w-4 text-[#ffd9a8] opacity-80 animate-pulse" />
+                    <Sparkles className="h-4 w-4 text-white" />
+                  </span>
+                  Ask Divine AI
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -164,7 +184,7 @@ export const Hero = () => {
                 <div className="relative z-10 space-y-7">
                   <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border border-[#e07838]/40 bg-[#0d1535]/80 p-2.5 shadow-[0_0_0_8px_rgba(212,101,26,0.09),0_0_0_16px_rgba(212,101,26,0.04)] md:h-36 md:w-36">
                     <img
-                      src="/logo-srichakra.png?v=6"
+                      src="/logo-srichackra.png?v=locked"
                       alt="Divine Panchang Sri Chakra"
                       className="h-full w-full rounded-full object-cover"
                     />
@@ -196,8 +216,8 @@ export const Hero = () => {
                   </div>
 
                   <Link
-                    to="/kundali"
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#e07030]/30 bg-[#e07030]/12 py-3 text-sm font-semibold text-[#f08040] transition hover:bg-[#e07030]/22"
+                    to="/janam-kundli"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#e07030]/40 bg-[#e07030]/15 py-3 text-sm font-semibold text-[#f08040] transition-all duration-300 hover:border-[#e07030]/70 hover:bg-[#e07030]/25 hover:text-[#f8a060] hover:shadow-[0_0_24px_rgba(224,112,48,0.45)]"
                   >
                     <ScrollText className="h-4 w-4" />
                     Generate My Free Kundali

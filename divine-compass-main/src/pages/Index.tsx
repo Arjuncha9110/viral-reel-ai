@@ -6,6 +6,7 @@ import { Hero } from "@/components/home/Hero";
 import { FeaturesGrid } from "@/components/home/FeaturesGrid";
 import { SadeSatiPromo } from "@/components/home/SadeSatiPromo";
 import { KundaliCTA } from "@/components/home/KundaliCTA";
+import { DivineAiGuruSection } from "@/components/home/DivineAiGuruSection";
 
 const Index = () => {
   return (
@@ -26,6 +27,7 @@ const Index = () => {
         <AdSenseBanner adSlot="homepage_top_banner" adFormat="horizontal" />
       </div>
 
+      <DivineAiGuruSection />
       <FeaturesGrid />
       <SadeSatiPromo />
       <KundaliCTA />

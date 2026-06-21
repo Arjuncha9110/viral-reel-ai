@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment files with secrets — add vars to Cloudflare Pages dashboard instead
+.env
+.env.local
+.env.*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

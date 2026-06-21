@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppContent } from "./App";
 import { getCollectedSeo, resetCollectedSeo, type CollectedSeo } from "./seo/seoCollector";
+import { AuthContext } from "./context/AuthContext";
 
 export { seoRoutes } from "./seo/routes";
 
@@ -29,7 +30,17 @@ export function render(url: string): RenderResult {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <StaticRouter location={url}>
-          <AppContent />
+          <AuthContext.Provider value={{ 
+            currentUser: null, 
+            loading: false, 
+            login: async () => { throw new Error("SSR"); }, 
+            logout: async () => {}, 
+            register: async () => { throw new Error("SSR"); }, 
+            googleLogin: async () => { throw new Error("SSR"); }, 
+            forgotPassword: async () => {} 
+          }}>
+            <AppContent />
+          </AuthContext.Provider>
         </StaticRouter>
       </TooltipProvider>
     </QueryClientProvider>

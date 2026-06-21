@@ -6,18 +6,26 @@
   <meta name="google-adsense-account" content="ca-pub-3815465421045047">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3815465421045047" crossorigin="anonymous"></script>
 
+  <script>
+    window.addEventListener('error', function(e) {
+      var errDiv = document.createElement('div');
+      errDiv.style = 'position:fixed;top:0;left:0;width:100%;background:red;color:white;z-index:99999;padding:20px;font-size:18px;white-space:pre-wrap;';
+      errDiv.innerText = 'Global Error: ' + (e.error ? e.error.stack : e.message);
+      document.body.appendChild(errDiv);
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+      var errDiv = document.createElement('div');
+      errDiv.style = 'position:fixed;top:50%;left:0;width:100%;background:orange;color:white;z-index:99999;padding:20px;font-size:18px;white-space:pre-wrap;';
+      errDiv.innerText = 'Unhandled Promise Rejection: ' + (e.reason ? (e.reason.stack || e.reason.toString()) : 'Unknown reason');
+      document.body.appendChild(errDiv);
+    });
+  </script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0b1730" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260611" />
-  <link rel="shortcut icon" href="/favicon.ico?v=20260611" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=20260611" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=20260611" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=20260611" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png?v=20260611" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260611" />
-  <link rel="manifest" href="/site.webmanifest?v=20260611" />
-  <title>Daily Panchang &amp; Vedic Guidance Online | Divine Panchang</title>
-  <meta name="description" content="Free daily panchang with today's tithi, nakshatra, yoga, karana, rahu kaal, and sunrise, plus kundali, dasha, and numerology tools for clear Vedic guidance." />
+  <link rel="icon" type="image/png" href="/logo-srichackra.png?v=locked" />
+  <link rel="shortcut icon" href="/logo-srichackra.png?v=locked" />
+  <link rel="apple-touch-icon" href="/logo-srichackra.png?v=locked" />
   <meta name="author" content="Divine Panchang" />
   <meta name="google-site-verification" content="FHMmcTvyPYLacM33wmWsZLg5AEZNeevSCsq0I0zxtSw" />
 
@@ -25,16 +33,16 @@
   <meta property="og:description" content="Free daily panchang with today's tithi, nakshatra, yoga, karana, rahu kaal, and sunrise, plus kundali, dasha, and numerology tools for clear Vedic guidance." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.divinepanchang.space/" />
-  <meta property="og:image" content="https://www.divinepanchang.space/logo-srichakra.png?v=6" />
-  <meta property="og:image:width" content="512" />
-  <meta property="og:image:height" content="512" />
+  <meta property="og:image" content="https://www.divinepanchang.space/logo-srichackra.png?v=locked" />
+  <meta property="og:image:width" content="1254" />
+  <meta property="og:image:height" content="1254" />
   <meta property="og:site_name" content="Divine Panchang" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@DivinePanchang" />
   <meta name="twitter:title" content="Daily Panchang &amp; Vedic Guidance Online | Divine Panchang" />
   <meta name="twitter:description" content="Free daily panchang with today's tithi, nakshatra, yoga, karana, rahu kaal, and sunrise, plus kundali, dasha, and numerology tools for clear Vedic guidance." />
-  <meta name="twitter:image" content="https://www.divinepanchang.space/logo-srichakra.png?v=6" />
+  <meta name="twitter:image" content="https://www.divinepanchang.space/logo-srichackra.png?v=locked" />
 </head>
 
 <body>

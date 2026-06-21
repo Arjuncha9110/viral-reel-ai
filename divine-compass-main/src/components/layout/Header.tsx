@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Activity,
@@ -52,7 +53,9 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { currentUser } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
   const isSecondaryActive = secondaryLinks.some((link) => isActive(link.path));
@@ -83,7 +86,7 @@ export const Header = () => {
         <Link to="/" className="flex shrink-0 items-center gap-3 group">
           <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#d8bc7a]/50 bg-gradient-to-b from-[#fffdf8] to-[#f5e8cc] p-1 shadow-[0_6px_20px_rgba(120,86,32,0.14)] transition-shadow group-hover:shadow-[0_8px_24px_rgba(120,86,32,0.22)]">
             <img
-              src="/logo-srichakra.png?v=6"
+              src="/logo-srichackra.png?v=locked"
               alt="Divine Panchang"
               className="h-full w-full rounded-xl object-cover pointer-events-none select-none"
               draggable={false}
@@ -224,6 +227,23 @@ export const Header = () => {
             Live Panchang
             <Activity className="h-3.5 w-3.5 opacity-80 group-hover:scale-110 transition-transform" />
           </Link>
+
+          {/* Auth Button */}
+          {currentUser ? (
+            <Link
+              to="/dashboard"
+              className="ml-3 inline-flex items-center gap-1.5 rounded-xl border border-[#d8bc7a]/50 bg-gradient-to-b from-white/80 to-[#fdf3e0]/80 px-4 py-2 text-[13.5px] font-semibold text-[#5a3a18] transition-all hover:border-[#d4651a]/40 hover:text-[#a84810] hover:bg-[#d4651a]/06"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              className="ml-3 inline-flex items-center gap-1.5 rounded-xl border border-[#d8bc7a]/50 bg-gradient-to-b from-white/80 to-[#fdf3e0]/80 px-4 py-2 text-[13.5px] font-semibold text-[#5a3a18] transition-all hover:border-[#d4651a]/40 hover:text-[#a84810] hover:bg-[#d4651a]/06"
+            >
+              Sign In
+            </Link>
+          )}
         </div>
 
         {/* ── Mobile Menu Toggle ── */}
@@ -286,6 +306,23 @@ export const Header = () => {
                   Open Live Panchang
                   <Activity className="h-4 w-4 opacity-80" />
                 </Link>
+
+                {/* Mobile Auth */}
+                {currentUser ? (
+                  <Link
+                    to="/dashboard"
+                    className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-xl border border-[#d8bc7a]/50 bg-white/70 px-5 py-3 text-sm font-semibold text-[#5a3a18]"
+                  >
+                    Go to Dashboard
+                  </Link>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-xl border border-[#d8bc7a]/50 bg-white/70 px-5 py-3 text-sm font-semibold text-[#5a3a18]"
+                  >
+                    Sign In / Register
+                  </Link>
+                )}
               </div>
             </div>
           </motion.div>

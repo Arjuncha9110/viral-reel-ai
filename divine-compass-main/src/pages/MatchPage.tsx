@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Heart, Activity, User, Info, CheckCircle2, Calendar, Clock3, MapPin } from "lucide-react";
 import { SeoHead } from "@/components/shared/SeoHead";
 import { Layout } from "@/components/layout/Layout";
+import { DivineAiPreviewCard } from "@/components/shared/DivineAiPreviewCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LocationSelector, LocationData } from "@/components/LocationSelector";
@@ -460,6 +461,19 @@ export default function MatchPage() {
 
           {/* AI Match Upload Section */}
           <div className="max-w-4xl mx-auto mt-20 pt-16 border-t-2 border-dashed border-[#e6dfd5]">
+            <div className="mb-10">
+              <DivineAiPreviewCard
+                source="match"
+                title="Add an AI Relationship Guide"
+                description="Keep the astrology precise, then let Divine AI translate the compatibility result into practical relationship language without fear-based conclusions."
+                prompts={[
+                  "Explain this compatibility in practical terms.",
+                  "Where will communication need more patience?",
+                  "What should both partners consciously build?",
+                ]}
+              />
+            </div>
+
             <div className="text-center mb-10">
               <span className="bg-[#fef3c7] text-[#b45309] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">
                 PREMIUM DETAILED ANALYSIS (FREE FOR A LIMITED TIME)
