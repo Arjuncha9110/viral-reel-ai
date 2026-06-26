@@ -172,7 +172,7 @@ const KundaliReportPreview: React.FC = () => {
     }
 
     const verifyAccess = async (token: string | null | undefined, sessionId: string | null | undefined) => {
-      if (planParam === "free") return true; // Free plan bypasses payment check
+      if (planParam === "free") return false; // Free plan no longer bypasses payment check
       if (!token && !sessionId) return false;
 
       // Try API verification first (production path)

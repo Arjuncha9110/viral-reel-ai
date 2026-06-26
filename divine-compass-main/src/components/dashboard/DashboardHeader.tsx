@@ -39,7 +39,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         {/* Logo + name */}
         <div className="flex items-center gap-2.5">
           <img
-            src="/logo-srichakra.png"
+            src="/logo-srichakra.png?v=locked"
             alt="Divine Panchang"
             className="w-9 h-9 rounded-full object-cover shadow-sm"
             onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}

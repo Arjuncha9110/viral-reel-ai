@@ -126,7 +126,7 @@ const SadeSatiPage = () => {
                 order_id: orderData.orderId,
                 name: "Divine Panchang",
                 description: "Premium In-depth Sade Sati Report",
-                image: "/logo-srichackra.png?v=locked",
+                image: "/logo-srichakra.png?v=locked",
                 handler: async (response: any) => {
                     try {
                         setPurchaseStep("processing");
@@ -450,12 +450,57 @@ const SadeSatiPage = () => {
 
                             {/* Right Side: price, plan badge, CTA, small note */}
                             <div className="flex w-full max-w-[340px] mx-auto flex-col justify-end items-center text-center p-4 md:p-5 bg-[#070e1b] border border-[#b59449]/20 rounded-[24px] relative overflow-hidden min-h-[420px]">
-                                {/* Shani Dev Background Image */}
-                                <div className="absolute inset-0 z-0">
-                                    <img src="/shani-crow.jpg" alt="Lord Shani" className="w-full h-full object-cover object-center" />
+
+                                {/* Saturn SVG Illustration — always renders, no file dependency */}
+                                <div className="absolute inset-0 z-0 flex items-center justify-center">
+                                    <svg viewBox="0 0 340 420" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                                        <defs>
+                                            <radialGradient id="spaceGrad" cx="50%" cy="40%" r="60%">
+                                                <stop offset="0%" stopColor="#0f2a4a"/>
+                                                <stop offset="100%" stopColor="#03080f"/>
+                                            </radialGradient>
+                                            <radialGradient id="planetGrad" cx="38%" cy="35%" r="60%">
+                                                <stop offset="0%" stopColor="#c8a96e"/>
+                                                <stop offset="40%" stopColor="#9a7340"/>
+                                                <stop offset="100%" stopColor="#4a3010"/>
+                                            </radialGradient>
+                                            <radialGradient id="glowRing" cx="50%" cy="50%" r="50%">
+                                                <stop offset="0%" stopColor="#b59449" stopOpacity="0.4"/>
+                                                <stop offset="100%" stopColor="#b59449" stopOpacity="0"/>
+                                            </radialGradient>
+                                        </defs>
+                                        {/* Deep space background */}
+                                        <rect width="340" height="420" fill="url(#spaceGrad)"/>
+                                        {/* Stars */}
+                                        {[[30,40],[80,20],[140,60],[200,30],[270,50],[310,25],[50,100],[250,90],[320,130],[20,200],[300,180],[100,280],[280,310],[60,370],[240,380]].map(([x,y],i)=>(
+                                            <circle key={i} cx={x} cy={y} r={i%3===0?1.5:0.8} fill="#fff" opacity={0.4+0.4*(i%3)/2}/>
+                                        ))}
+                                        {/* Saturn glow halo */}
+                                        <ellipse cx="170" cy="190" rx="110" ry="110" fill="url(#glowRing)" opacity="0.5"/>
+                                        {/* Saturn rings — back half */}
+                                        <ellipse cx="170" cy="205" rx="130" ry="22" fill="none" stroke="#c8a96e" strokeWidth="14" strokeOpacity="0.25" clipPath="url(#ringBackClip)"/>
+                                        <ellipse cx="170" cy="205" rx="108" ry="18" fill="none" stroke="#e0c070" strokeWidth="7" strokeOpacity="0.18"/>
+                                        {/* Saturn planet body */}
+                                        <circle cx="170" cy="190" r="72" fill="url(#planetGrad)"/>
+                                        {/* Surface bands */}
+                                        <ellipse cx="170" cy="178" rx="68" ry="10" fill="#b8863a" opacity="0.22"/>
+                                        <ellipse cx="170" cy="196" rx="70" ry="8" fill="#7a5520" opacity="0.18"/>
+                                        <ellipse cx="170" cy="210" rx="65" ry="7" fill="#c89a50" opacity="0.14"/>
+                                        {/* Planet highlight */}
+                                        <ellipse cx="148" cy="164" rx="24" ry="16" fill="white" opacity="0.09"/>
+                                        {/* Saturn rings — front half */}
+                                        <ellipse cx="170" cy="205" rx="130" ry="22" fill="none" stroke="#d4a84a" strokeWidth="12" strokeOpacity="0.55" clipPath="url(#ringFrontClip)"/>
+                                        <ellipse cx="170" cy="205" rx="108" ry="18" fill="none" stroke="#f0c870" strokeWidth="5" strokeOpacity="0.35"/>
+                                        <clipPath id="ringBackClip"><rect x="0" y="0" width="340" height="205"/></clipPath>
+                                        <clipPath id="ringFrontClip"><rect x="0" y="205" width="340" height="215"/></clipPath>
+                                        {/* Mystical Shani text */}
+                                        <text x="170" y="345" textAnchor="middle" fontFamily="serif" fontSize="22" fill="#b59449" opacity="0.7" letterSpacing="6">ॐ शनि</text>
+                                        <text x="170" y="368" textAnchor="middle" fontFamily="serif" fontSize="10" fill="#b59449" opacity="0.45" letterSpacing="3">LORD SHANI · SATURN</text>
+                                    </svg>
                                 </div>
-                                {/* Soft ambient gradient */}
-                                <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#070e1b]/40 via-transparent to-[#070e1b]/60" />
+
+                                {/* Dark overlay so price card is readable */}
+                                <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-transparent to-[#070e1b]/80" />
 
                                 {/* Lifetime Guide Badge (Floating Top) */}
                                 <div className="absolute top-4 z-10">
@@ -464,7 +509,7 @@ const SadeSatiPage = () => {
                                     </span>
                                 </div>
 
-                                {/* Floating Glassmorphic Text Container to reveal the crow */}
+                                {/* Price + CTA */}
                                 <div className="relative z-10 w-full max-w-[240px] mt-auto p-5 bg-[#070e1b]/70 backdrop-blur-md rounded-[22px] border border-white/10 shadow-2xl">
                                     <div className="space-y-0.5">
                                         <div>

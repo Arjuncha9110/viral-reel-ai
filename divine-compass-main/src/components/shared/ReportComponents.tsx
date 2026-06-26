@@ -258,7 +258,18 @@ export const CoverPage: React.FC<CoverPageProps> = ({
   return (
     <ReportPage isDark={true} pageNumber={1} sectionTitle="Cover Page" language={language}>
       <div className="h-full flex flex-col justify-between items-center py-6 relative">
-        
+
+        {/* Sri Chakra logo — centered background watermark */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0">
+          <img
+            src="/logo-srichakra.png"
+            alt=""
+            aria-hidden
+            className="w-[340px] h-[340px] object-contain opacity-[0.07] mix-blend-screen"
+            style={{ WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" } as React.CSSProperties}
+          />
+        </div>
+
         {/* HUGE luxury background cosmic mandala watermark */}
         <div className="absolute top-[16%] w-[500px] h-[500px] rounded-full border-4 border-[#c7a65a]/12 flex items-center justify-center opacity-50 animate-[spin_180s_linear_infinite] pointer-events-none">
           <div className="w-[452px] h-[452px] rounded-full border-2 border-dashed border-[#c7a65a]/26 flex items-center justify-center">
@@ -270,7 +281,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({
         <div className="absolute bottom-[9%] left-[12%] h-[90px] w-[360px] rounded-[100%] border-t-2 border-[#c7a65a]/15 rotate-[-8deg] pointer-events-none" />
 
         {/* Top Ornate Flourish */}
-        <div className="text-center z-10 font-serif mt-2">
+        <div className="text-center z-10 font-serif mt-6">
           <p className="text-xs uppercase tracking-[0.45em] text-[#d9bd73] font-extrabold mb-1.5">
             {t("VEDIC ASTROLOGY STUDIES", language)}
           </p>
@@ -293,7 +304,7 @@ export const CoverPage: React.FC<CoverPageProps> = ({
           <p className="text-xs italic tracking-[0.16em] text-[#fffaf0]/90 max-w-[430px] mx-auto leading-relaxed">
             {t("\"A Complete Mathematical Journey Through Your Sacred Cosmic Alignment\"", language)}
           </p>
-          
+
           {/* OM sacred seal */}
           <div className="relative inline-flex items-center justify-center mt-6 w-24 h-24 rounded-full border-2 border-[#d9bd73] bg-[#0b203a]/90 shadow-[0_18px_50px_rgba(0,0,0,0.45)]">
             <div className="absolute inset-1 rounded-full border border-dashed border-[#d9bd73]/60" />

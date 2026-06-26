@@ -60,7 +60,7 @@ export const AppEntry: React.FC = () => {
         
         <div className="w-28 h-28 relative z-10 rounded-full overflow-hidden flex items-center justify-center border-[3px] border-amber-500/80 shadow-[0_0_30px_rgba(245,158,11,0.4)] animate-pulse bg-white">
           <img 
-            src="/logo-srichackra.png?v=locked" 
+            src="/logo-srichakra.png?v=locked" 
             alt="Divine Panchang" 
             className="w-full h-full object-cover scale-110"
           />

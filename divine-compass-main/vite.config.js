@@ -1,13 +1,10 @@
 // Divine Panchang — Vite config (updated 2026-06-21)
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const lockedLogoSource = path.resolve(__dirname, "logo-srichackra.png");
-const lockedLogoPublicPath = "/logo-srichackra.png";
 
 const SYSTEM_PROMPT = `You are Divine AI Guru, a calm Vedic spiritual companion for a daily panchang and astrology website (Divine Panchang).
 You provide practical, non-fear-based daily guidance using Panchang, astrology profile data, and the user's stated goal.
@@ -28,14 +25,8 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     {
-      name: "locked-divine-panchang-logo",
+      name: "divine-panchang-dev-api",
       configureServer(server) {
-        server.middlewares.use(lockedLogoPublicPath, (_req, res) => {
-          res.setHeader("Content-Type", "image/png");
-          res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
-          fs.createReadStream(lockedLogoSource).pipe(res);
-        });
-
         server.middlewares.use("/api/ai/divine-guidance", async (req, res, next) => {
           if (req.method !== "POST") return next();
 
@@ -92,13 +83,6 @@ export default defineConfig(({ mode }) => ({
               res.end(JSON.stringify({ error: err.message }));
             }
           });
-        });
-      },
-      generateBundle() {
-        this.emitFile({
-          type: "asset",
-          fileName: "logo-srichackra.png",
-          source: fs.readFileSync(lockedLogoSource),
         });
       },
     },
