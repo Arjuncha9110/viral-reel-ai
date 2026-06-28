@@ -1,0 +1,1774 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// Kundali PDF Generator — jsPDF-based client-side generation
+// Premium Traditional Vedic Design — Focused Solely on Janma Kundali
+// ──────────────────────────────────────────────────────────────────────────────
+import jsPDF from "jspdf";
+import {
+  ZODIAC_SIGNS,
+  ZODIAC_LORDS,
+  NAKSHATRA_NAMES,
+  NAKSHATRA_LORDS,
+  DASHA_YEARS,
+  DASHA_ORDER,
+  RASHI_DESCRIPTIONS,
+  NAKSHATRA_DESCRIPTIONS,
+  PLANET_DESCRIPTIONS,
+  HOUSE_DESCRIPTIONS,
+  DASHA_PREDICTIONS,
+  LUCKY_INFO,
+  getYogas,
+} from "./kundaliContent";
+import { calculateVimshottariDasha } from "../calculators/astrology/vimshottari";
+import { generateTransitForecast } from "../calculators/astrology/transitForecast";
+
+
+
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+export interface BirthData {
+  name: string;
+  email: string;
+  dob: string;       // "YYYY-MM-DD"
+  tob: string;       // "HH:MM"
+  gender: string;
+  city: string;
+  lat: number;
+  lon: number;
+  timezone: string;  // IANA e.g. "Asia/Kolkata"
+  plan: "basic" | "detailed";
+}
+
+interface ChartData {
+  moonLon: number;
+  sunLon: number;
+  marsLon: number;
+  mercuryLon: number;
+  jupiterLon: number;
+  venusLon: number;
+  saturnLon: number;
+  rahuLon: number;
+  ketuLon: number;
+  nakshatraIndex: number;
+  nakshatraName: string;
+  nakshatraPada: number;
+  nakshatraLord: string;
+  rashiIndex: number;
+  rashiName: string;
+  rashiLord: string;
+  lagnaIndex: number;
+  lagnaName: string;
+  birthUTC: Date;
+  dashas: DashaRow[];
+  currentMaha: string;
+  currentAntar: string;
+}
+
+interface DashaRow {
+  planet: string;
+  start: Date;
+  end: Date;
+  antardashas: { planet: string; start: Date; end: Date }[];
+}
+
+// ─── Astro Helpers ───────────────────────────────────────────────────────────
+
+function toUTC(dob: string, tob: string, timezone: string): Date {
+  const [year, month, day] = dob.split("-").map(Number);
+  const [hour, minute] = tob.split(":").map(Number);
+  const naiveUTC = new Date(Date.UTC(year, month - 1, day, hour, minute, 0));
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    year: "numeric", month: "numeric", day: "numeric",
+    hour: "numeric", minute: "numeric", second: "numeric", hour12: false,
+  });
+  const parts = fmt.formatToParts(naiveUTC);
+  const m: Record<string, string> = {};
+  parts.forEach(p => (m[p.type] = p.value));
+  const h = m.hour === "24" ? 0 : parseInt(m.hour);
+  const tzDate = new Date(Date.UTC(parseInt(m.year), parseInt(m.month) - 1, parseInt(m.day), h, parseInt(m.minute), parseInt(m.second)));
+  const offset = tzDate.getTime() - naiveUTC.getTime();
+  return new Date(naiveUTC.getTime() - offset);
+}
+
+function getSiderealMoonLon(date: Date): number {
+  const J2000 = 2451545.0;
+  const jd = date.getTime() / 86400000 + 2440587.5;
+  const T = (jd - J2000) / 36525;
+  let moon = 218.3164477 + 481267.88123421 * T - 0.0015786 * T * T + T * T * T / 538841 - T * T * T * T / 65194000;
+  moon = moon % 360;
+  if (moon < 0) moon += 360;
+  const ayanamsa = 23.85 + 0.0136 * T; // Lahiri ayanamsa approx
+  let sidereal = moon - ayanamsa;
+  if (sidereal < 0) sidereal += 360;
+  if (sidereal >= 360) sidereal -= 360;
+  return sidereal;
+}
+
+function getSiderealSunLon(date: Date): number {
+  const J2000 = 2451545.0;
+  const jd = date.getTime() / 86400000 + 2440587.5;
+  const T = (jd - J2000) / 36525;
+  let L = 280.46646 + 36000.76983 * T;
+  const M = (357.52911 + 35999.05029 * T) * Math.PI / 180;
+  const C = (1.914602 - 0.004817 * T) * Math.sin(M) + 0.019993 * Math.sin(2 * M);
+  let sun = (L + C) % 360;
+  if (sun < 0) sun += 360;
+  const ayanamsa = 23.85 + 0.0136 * T;
+  let sidereal = sun - ayanamsa;
+  if (sidereal < 0) sidereal += 360;
+  return sidereal;
+}
+
+function getLagnaFromLon(moonLon: number, sunLon: number): number {
+  return Math.floor(((moonLon + sunLon) / 2) / 30) % 12;
+}
+
+function normalizeDegree(deg: number): number {
+  let norm = deg % 360;
+  if (norm < 0) norm += 360;
+  return norm;
+}
+
+function buildChart(data: BirthData): ChartData {
+  const dashaResult = calculateVimshottariDasha({ dob: data.dob, tob: data.tob, timezone: data.timezone });
+  const moonLon = dashaResult.moonLongitude;
+
+  const birthUTC = toUTC(data.dob, data.tob, data.timezone);
+  const sunLon = getSiderealSunLon(birthUTC);
+
+  const jd = birthUTC.getTime() / 86400000 + 2440587.5;
+  const T = (jd - 2451545.0) / 36525;
+
+  // Simplified sidereal planets
+  const marsLon = normalizeDegree(355.453 + 191.403 * T * 365.25);
+  const mercuryLon = normalizeDegree(252.251 + 1494.723 * T * 365.25);
+  const jupiterLon = normalizeDegree(34.404 + 30.349 * T * 365.25);
+  const venusLon = normalizeDegree(181.979 + 585.178 * T * 365.25);
+  const saturnLon = normalizeDegree(50.058 + 12.221 * T * 365.25);
+  const rahuLon = normalizeDegree(125.04 - 19.341 * T * 365.25);
+  const ketuLon = normalizeDegree(rahuLon + 180);
+
+  const NAKSHATRA_SPAN = 360 / 27;
+  const nakshatraIndex = Math.floor(moonLon / NAKSHATRA_SPAN);
+  const nakshatraName = dashaResult.birthNakshatra;
+  const nakshatraLord = dashaResult.birthNakshatraLord;
+  const degWithin = dashaResult.degreeElapsedInNakshatra;
+  const nakshatraPada = Math.floor(degWithin / (NAKSHATRA_SPAN / 4)) + 1;
+
+  const rashiIndex = Math.floor(moonLon / 30);
+  const rashiName = ZODIAC_SIGNS[rashiIndex];
+  const rashiLord = ZODIAC_LORDS[rashiIndex];
+  const lagnaIndex = getLagnaFromLon(moonLon, sunLon);
+  const lagnaName = ZODIAC_SIGNS[lagnaIndex];
+
+  // Dasha calculation using the shared module
+  const dashas = dashaResult.mahadashas as any[];
+  const currentMaha = dashaResult.currentMahadasha?.planet || "";
+  const currentAntar = dshapeResultCleanUp(dashaResult);
+
+  function dshapeResultCleanUp(res: typeof dashaResult): string {
+    return res.currentAntardasha?.planet || "";
+  }
+
+  return { 
+    moonLon, sunLon, marsLon, mercuryLon, jupiterLon, venusLon, saturnLon, rahuLon, ketuLon,
+    nakshatraIndex, nakshatraName, nakshatraPada, nakshatraLord, rashiIndex, rashiName, rashiLord, 
+    lagnaIndex, lagnaName, birthUTC, dashas, currentMaha, currentAntar: currentAntar 
+  };
+}
+
+
+
+// ─── PDF Layout Helpers ───────────────────────────────────────────────────────
+
+const W = 210; // A4 width mm
+const H = 297; // A4 height mm
+const ML = 15; // margin left
+const MR = 15; // margin right
+const MT = 20; // margin top
+const CW = W - ML - MR; // content width = 180mm
+
+// Premium print palette, kept close to the existing Kundli look.
+const C_CREAM    = [255, 250, 240] as const;
+const C_MAROON   = [123, 45, 54]   as const;
+const C_NAVY     = [27, 45, 69]    as const;
+const C_GREEN    = [13, 107, 44]   as const;
+const C_GOLD     = [215, 185, 106] as const;
+const C_GOLD_DARK= [154, 106, 36]  as const;
+const C_TEXT     = [47, 55, 68]    as const;
+const C_MUTED    = [110, 91, 76]   as const;
+const C_LIGHT_ALT= [247, 236, 217] as const;
+const C_WHITE    = [255, 255, 255] as const;
+
+function setColor(doc: jsPDF, c: readonly [number,number,number]) {
+  doc.setTextColor(c[0], c[1], c[2]);
+}
+
+function setFill(doc: jsPDF, c: readonly [number,number,number]) {
+  doc.setFillColor(c[0], c[1], c[2]);
+}
+
+function setDraw(doc: jsPDF, c: readonly [number,number,number]) {
+  doc.setDrawColor(c[0], c[1], c[2]);
+}
+
+function applyPageBackground(doc: jsPDF) {
+  setFill(doc, C_CREAM);
+  doc.rect(0, 0, W, H, "F");
+  setDraw(doc, C_GOLD);
+  doc.setLineWidth(0.18);
+  doc.circle(W / 2, H / 2, 54, "D");
+  doc.circle(W / 2, H / 2, 65, "D");
+}
+
+function wrap(doc: jsPDF, text: string, maxWidth: number): string[] {
+  return doc.splitTextToSize(text, maxWidth);
+}
+
+// Draw a beautiful circular gold mandala/yantra in the center
+function drawGoldenMandala(doc: jsPDF, cx: number, cy: number, r: number) {
+  setDraw(doc, C_GOLD);
+  doc.setLineWidth(0.3);
+  
+  // Concentric circles
+  doc.circle(cx, cy, r, "D");
+  doc.circle(cx, cy, r - 3, "D");
+  doc.circle(cx, cy, r - 7, "D");
+  doc.circle(cx, cy, r - 12, "D");
+  doc.circle(cx, cy, r - 13.5, "D");
+
+  // Draw 16 rays/petals
+  for (let i = 0; i < 16; i++) {
+    const angle = (i * Math.PI) / 8;
+    const x1 = cx + (r - 12) * Math.cos(angle);
+    const y1 = cy + (r - 12) * Math.sin(angle);
+    const x2 = cx + r * Math.cos(angle);
+    const y2 = cy + r * Math.sin(angle);
+    doc.line(x1, y1, x2, y2);
+  }
+
+  // Draw inner triangles or details
+  for (let i = 0; i < 8; i++) {
+    const angle = (i * Math.PI) / 4;
+    const x1 = cx + (r - 7) * Math.cos(angle);
+    const y1 = cy + (r - 7) * Math.sin(angle);
+    const x2 = cx + (r - 7) * Math.cos(angle + Math.PI / 4);
+    const y2 = cy + (r - 7) * Math.sin(angle + Math.PI / 4);
+    doc.line(x1, y1, x2, y2);
+  }
+}
+
+// Traditional clickastro elegant section divider
+function drawAstroDivider(doc: jsPDF, y: number) {
+  setDraw(doc, C_GOLD);
+  doc.setLineWidth(0.4);
+  
+  // Centered gold line with middle decorative circles
+  const midX = W / 2;
+  doc.line(ML + 10, y, midX - 8, y);
+  doc.line(midX + 8, y, W - MR - 10, y);
+  
+  setFill(doc, C_MAROON);
+  doc.circle(midX, y, 2.5, "FD");
+  setDraw(doc, C_GOLD);
+  doc.circle(midX - 4, y, 1, "D");
+  doc.circle(midX + 4, y, 1, "D");
+}
+
+// ─── Section: Cover Page ─────────────────────────────────────────────────────
+
+function addCoverPage(doc: jsPDF, data: BirthData, chart: ChartData) {
+  applyPageBackground(doc);
+
+  // Thick double sacred borders around cover page
+  setDraw(doc, C_MAROON);
+  doc.setLineWidth(0.8);
+  doc.rect(5, 5, W - 10, H - 10, "D");
+  doc.setLineWidth(0.3);
+  setDraw(doc, C_GOLD);
+  doc.rect(6.5, 6.5, W - 13, H - 13, "D");
+
+  // Corner gold decorative accents
+  setFill(doc, C_GOLD);
+  const corners = [
+    [7, 7], [W - 13, 7], [7, H - 13], [W - 13, H - 13]
+  ];
+  corners.forEach(([x, y]) => {
+    doc.circle(x, y, 2, "F");
+  });
+
+  // Top header text
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "bold");
+  doc.setFontSize(22);
+  doc.text("DIVINE PANCHANG", W / 2, 25, { align: "center" });
+
+  setColor(doc, C_GOLD_DARK);
+  doc.setFont("times", "italic");
+  doc.setFontSize(10);
+  doc.text("Vedic Guidance & Kundali Astrology Portal", W / 2, 31, { align: "center" });
+
+  // Mandala & Lord Ganesha representation
+  const cy = 75;
+  drawGoldenMandala(doc, W / 2, cy, 28);
+  
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "bold");
+  doc.setFontSize(38);
+  doc.text("ॐ", W / 2, cy + 5, { align: "center" });
+
+  // Beautiful Traditional Verse
+  doc.setFont("times", "bolditalic");
+  doc.setFontSize(11);
+  setColor(doc, C_MAROON);
+  doc.text("Janani Janma Soukhyaanaam, Vardhani Kula Sampadaam |", W / 2, 118, { align: "center" });
+  doc.text("Padavee Poorva Punyaanaam, Likhyate Janma Patrikaa ||", W / 2, 124, { align: "center" });
+
+  // English translation of the Sanskrit verse
+  doc.setFont("times", "italic");
+  doc.setFontSize(8.5);
+  setColor(doc, C_TEXT);
+  doc.text("For the welfare of the mother and the child, for the growth of family happiness,", W / 2, 131, { align: "center" });
+  doc.text("To follow the ancient sacred practices, this horoscope is written.", W / 2, 136, { align: "center" });
+
+  // Astro divider
+  drawAstroDivider(doc, 144);
+
+  // Report title
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "bold");
+  doc.setFontSize(26);
+  doc.text("IN-DEPTH HOROSCOPE", W / 2, 160, { align: "center" });
+
+  doc.setFontSize(13);
+  setColor(doc, C_GOLD_DARK);
+  const planLabel = data.plan === "detailed" ? "PREMIUM 30-PAGE DETAILED REPORT" : "SACRED VEDIC HOROSCOPE";
+  doc.text(planLabel, W / 2, 168, { align: "center" });
+
+  // Birth details panel
+  setFill(doc, C_LIGHT_ALT);
+  doc.setLineWidth(0.3);
+  setDraw(doc, C_GOLD);
+  doc.roundedRect(ML + 5, 185, CW - 10, 68, 2, 2, "FD");
+
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "bold");
+  doc.setFontSize(14);
+  doc.text(`Horoscope of ${data.name}`, W / 2, 196, { align: "center" });
+
+  const dFields: [string, string][] = [
+    ["Date of Birth", formatDate(data.dob)],
+    ["Time of Birth", data.tob],
+    ["Place of Birth", data.city],
+    ["Coordinates", `${data.lat.toFixed(4)}° N, ${Math.abs(data.lon).toFixed(4)}° ${data.lon >= 0 ? "E" : "W"}`],
+    ["Ruling Nakshatra", `${chart.nakshatraName} (Pada ${chart.nakshatraPada})`],
+  ];
+
+  let fy = 207;
+  for (const [label, value] of dFields) {
+    setColor(doc, C_MUTED);
+    doc.setFont("times", "bold");
+    doc.setFontSize(8.5);
+    doc.text(label.toUpperCase(), ML + 12, fy);
+    setColor(doc, C_TEXT);
+    doc.setFont("times", "bold");
+    doc.setFontSize(9.5);
+    doc.text(value, ML + 65, fy);
+    fy += 8;
+  }
+
+  // Footer / Astrological Blessing
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "italic");
+  doc.setFontSize(9.5);
+  doc.text("May the cosmic lights guide you toward prosperity, health, and peace.", W / 2, 272, { align: "center" });
+
+  setColor(doc, C_GOLD_DARK);
+  doc.setFont("times", "bold");
+  doc.setFontSize(9);
+  doc.text("www.divinepanchang.space", W / 2, 281, { align: "center" });
+}
+
+// ─── Section Header Helper ────────────────────────────────────────────────────
+
+function addSectionHeader(doc: jsPDF, title: string, subtitle: string, y: number): number {
+  setFill(doc, C_LIGHT_ALT);
+  doc.rect(ML, y - 4, CW, 18, "F");
+  
+  // Sacred left border strip
+  setFill(doc, C_MAROON);
+  doc.rect(ML, y - 4, 3, 18, "F");
+
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "bold");
+  doc.setFontSize(13);
+  doc.text(title, ML + 6, y + 4);
+
+  setColor(doc, C_TEXT);
+  doc.setFont("times", "italic");
+  doc.setFontSize(8.5);
+  doc.text(subtitle, ML + 6, y + 10);
+
+  // Bottom gold outline strip
+  setDraw(doc, C_GOLD);
+  doc.setLineWidth(0.4);
+  doc.line(ML, y + 14, ML + CW, y + 14);
+
+  return y + 20;
+}
+
+// ─── Page Setup Helper ────────────────────────────────────────────────────────
+
+function newPage(doc: jsPDF, title: string): number {
+  doc.addPage();
+  applyPageBackground(doc);
+
+  // Thick top decorative border
+  setFill(doc, C_MAROON);
+  doc.rect(0, 0, W, 10, "F");
+  setColor(doc, C_GOLD);
+  doc.setFont("times", "bold");
+  doc.setFontSize(9);
+  doc.text("DIVINE PANCHANG  ·  SACRED VEDIC HOROSCOPE", ML, 6.5);
+  doc.text(title.toUpperCase(), W - MR, 6.5, { align: "right" });
+
+  // Gold rule below header
+  setFill(doc, C_GOLD);
+  doc.rect(0, 10, W, 1, "F");
+
+  // Bottom border
+  setFill(doc, C_MAROON);
+  doc.rect(0, H - 8, W, 8, "F");
+  setFill(doc, C_GOLD);
+  doc.rect(0, H - 9, W, 1, "F");
+  
+  const pageNum = (doc as any).internal.getCurrentPageInfo().pageNumber;
+  setColor(doc, C_GOLD);
+  doc.setFontSize(8);
+  doc.setFont("times", "bold");
+  doc.text(`Page ${pageNum}`, W / 2, H - 3, { align: "center" });
+
+  return 20; // starting Y after header
+}
+
+// ─── Text Block Helper ────────────────────────────────────────────────────────
+
+function addParagraph(doc: jsPDF, text: string, x: number, y: number, maxW: number, lineH = 5.2): number {
+  const lines = wrap(doc, text, maxW);
+  setColor(doc, C_TEXT);
+  doc.setFont("times", "normal");
+  doc.setFontSize(9.5);
+  doc.text(lines, x, y);
+  return y + lines.length * lineH;
+}
+
+function addLabel(doc: jsPDF, label: string, x: number, y: number): number {
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "bold");
+  doc.setFontSize(9.5);
+  doc.text(label, x, y);
+  return y + 5;
+}
+
+function addInfoBox(doc: jsPDF, rows: [string, string][], x: number, y: number, boxW: number): number {
+  const boxH = rows.length * 8 + 6;
+  setFill(doc, C_LIGHT_ALT);
+  doc.roundedRect(x, y, boxW, boxH, 1, 1, "F");
+  setDraw(doc, C_GOLD);
+  doc.setLineWidth(0.3);
+  doc.roundedRect(x, y, boxW, boxH, 1, 1, "D");
+
+  let iy = y + 7;
+  for (const [k, v] of rows) {
+    setColor(doc, C_MUTED);
+    doc.setFont("times", "bold");
+    doc.setFontSize(8.5);
+    doc.text(k, x + 5, iy);
+    setColor(doc, C_MAROON);
+    doc.setFont("times", "bold");
+    doc.setFontSize(9);
+    doc.text(v, x + boxW - 5, iy, { align: "right" });
+    iy += 8;
+  }
+  return y + boxH + 4;
+}
+
+type PlanetPoint = { key: string; name: string; lon: number };
+type KpLords = { star: string; starLord: string; subLord: string; subSubLord: string; pada: number };
+
+const PLANET_ORDER = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu"];
+const PLANET_ABBR: Record<string, string> = {
+  Sun: "Su", Moon: "Mo", Mars: "Ma", Mercury: "Me", Jupiter: "Ju",
+  Venus: "Ve", Saturn: "Sa", Rahu: "Ra", Ketu: "Ke",
+};
+
+function planetPoints(chart: ChartData): PlanetPoint[] {
+  return [
+    { key: "Sun", name: "Sun (Surya)", lon: chart.sunLon },
+    { key: "Moon", name: "Moon (Chandra)", lon: chart.moonLon },
+    { key: "Mars", name: "Mars (Mangal)", lon: chart.marsLon },
+    { key: "Mercury", name: "Mercury (Budha)", lon: chart.mercuryLon },
+    { key: "Jupiter", name: "Jupiter (Guru)", lon: chart.jupiterLon },
+    { key: "Venus", name: "Venus (Shukra)", lon: chart.venusLon },
+    { key: "Saturn", name: "Saturn (Shani)", lon: chart.saturnLon },
+    { key: "Rahu", name: "Rahu", lon: chart.rahuLon },
+    { key: "Ketu", name: "Ketu", lon: chart.ketuLon },
+  ];
+}
+
+function normalizeLon(lon: number): number {
+  const n = lon % 360;
+  return n < 0 ? n + 360 : n;
+}
+
+function angularDistance(a: number, b: number): number {
+  const diff = Math.abs(normalizeLon(a) - normalizeLon(b));
+  return Math.min(diff, 360 - diff);
+}
+
+function signIndexFromLon(lon: number): number {
+  return Math.floor(normalizeLon(lon) / 30) % 12;
+}
+
+function houseFromLon(lon: number, lagnaIndex: number): number {
+  return (signIndexFromLon(lon) - lagnaIndex + 12) % 12 + 1;
+}
+
+function longitudeDms(lon: number): string {
+  const norm = normalizeLon(lon);
+  const sign = ZODIAC_SIGNS[signIndexFromLon(norm)];
+  const degInSign = norm % 30;
+  const deg = Math.floor(degInSign);
+  const minFloat = (degInSign - deg) * 60;
+  const min = Math.floor(minFloat);
+  const sec = Math.floor((minFloat - min) * 60);
+  return `${sign} ${deg}d ${min}m ${sec}s`;
+}
+
+function getKpLords(lon: number): KpLords {
+  const span = 360 / 27;
+  const nakIndex = Math.floor(normalizeLon(lon) / span);
+  const star = NAKSHATRA_NAMES[nakIndex];
+  const starLord = NAKSHATRA_LORDS[nakIndex];
+  const degreesInStar = normalizeLon(lon) - nakIndex * span;
+  const pada = Math.floor(degreesInStar / (span / 4)) + 1;
+  const starStartOrder = DASHA_ORDER.indexOf(starLord);
+  const orderedLords = [...DASHA_ORDER.slice(starStartOrder), ...DASHA_ORDER.slice(0, starStartOrder)];
+  const fraction = degreesInStar / span;
+
+  let cursor = 0;
+  let subLord = orderedLords[0];
+  let subStart = 0;
+  let subSize = 1;
+  for (const lord of orderedLords) {
+    const size = DASHA_YEARS[lord] / 120;
+    if (fraction >= cursor && fraction <= cursor + size) {
+      subLord = lord;
+      subStart = cursor;
+      subSize = size;
+      break;
+    }
+    cursor += size;
+  }
+
+  const subFraction = Math.max(0, Math.min(0.999999, (fraction - subStart) / subSize));
+  let subCursor = 0;
+  let subSubLord = orderedLords[0];
+  for (const lord of orderedLords) {
+    const size = DASHA_YEARS[lord] / 120;
+    if (subFraction >= subCursor && subFraction <= subCursor + size) {
+      subSubLord = lord;
+      break;
+    }
+    subCursor += size;
+  }
+
+  return { star, starLord, subLord, subSubLord, pada };
+}
+
+function addSimpleTable(
+  doc: jsPDF,
+  y: number,
+  headers: string[],
+  rows: string[][],
+  widths: number[],
+  title: string
+): number {
+  if (y > H - 28) y = newPage(doc, title);
+  setFill(doc, C_MAROON);
+  doc.rect(ML, y - 4, CW, 8, "F");
+  setColor(doc, C_GOLD);
+  doc.setFont("times", "bold");
+  doc.setFontSize(7.8);
+
+  let x = ML + 2;
+  headers.forEach((h, i) => {
+    doc.text(h, x, y + 1);
+    x += widths[i];
+  });
+  y += 6.5;
+
+  rows.forEach((row, rowIndex) => {
+    if (y > H - 14) {
+      y = newPage(doc, title);
+      setFill(doc, C_MAROON);
+      doc.rect(ML, y - 4, CW, 8, "F");
+      setColor(doc, C_GOLD);
+      doc.setFont("times", "bold");
+      doc.setFontSize(7.8);
+      let hx = ML + 2;
+      headers.forEach((h, i) => {
+        doc.text(h, hx, y + 1);
+        hx += widths[i];
+      });
+      y += 6.5;
+    }
+
+    if (rowIndex % 2 === 1) {
+      setFill(doc, C_LIGHT_ALT);
+      doc.rect(ML, y - 3, CW, 6.6, "F");
+    }
+    setColor(doc, C_TEXT);
+    doc.setFont("times", "normal");
+    doc.setFontSize(7.4);
+    let rx = ML + 2;
+    row.forEach((cell, i) => {
+      const clipped = cell.length > 28 ? `${cell.slice(0, 25)}...` : cell;
+      doc.text(clipped, rx, y + 1);
+      rx += widths[i];
+    });
+    y += 6.6;
+  });
+
+  return y + 5;
+}
+
+function addMiniNote(doc: jsPDF, text: string, y: number): number {
+  setFill(doc, [255, 252, 238]);
+  setDraw(doc, C_GOLD);
+  doc.roundedRect(ML, y, CW, 17, 1, 1, "FD");
+  setColor(doc, C_MUTED);
+  doc.setFont("times", "italic");
+  doc.setFontSize(7.7);
+  doc.text(wrap(doc, text, CW - 8), ML + 4, y + 5);
+  return y + 21;
+}
+
+// ─── North Indian Kundli Chart Drawing ────────────────────────────────────────
+
+function drawNorthIndianChart(doc: jsPDF, cx: number, cy: number, size: number, lagnaIdx: number, data: BirthData, chart: ChartData) {
+  setFill(doc, C_WHITE);
+  setDraw(doc, C_GOLD);
+  doc.roundedRect(cx - 3, cy - 3, size + 6, size + 10, 1.5, 1.5, "FD");
+
+  setDraw(doc, C_NAVY);
+  doc.setLineWidth(0.7);
+  
+  // Outer rectangle
+  doc.rect(cx, cy, size, size, "D");
+
+  // Diagonals crossing
+  doc.line(cx, cy, cx + size, cy + size);
+  doc.line(cx + size, cy, cx, cy + size);
+
+  // Central diamond
+  doc.line(cx + size / 2, cy, cx, cy + size / 2);
+  doc.line(cx, cy + size / 2, cx + size / 2, cy + size);
+  doc.line(cx + size / 2, cy + size, cx + size, cy + size / 2);
+  doc.line(cx + size, cy + size / 2, cx + size / 2, cy);
+
+  // Group planets into Rashi/House categories
+  const planetList = [
+    { name: "Su", lon: chart.sunLon },
+    { name: "Mo", lon: chart.moonLon },
+    { name: "Ma", lon: chart.marsLon },
+    { name: "Me", lon: chart.mercuryLon },
+    { name: "Ju", lon: chart.jupiterLon },
+    { name: "Ve", lon: chart.venusLon },
+    { name: "Sa", lon: chart.saturnLon },
+    { name: "Ra", lon: chart.rahuLon },
+    { name: "Ke", lon: chart.ketuLon },
+  ];
+
+  const housePlanets: Record<number, string[]> = {};
+  for (let h = 1; h <= 12; h++) housePlanets[h] = [];
+
+  planetList.forEach(p => {
+    const rasi = Math.floor(normalizeLon(p.lon) / 30);
+    // House index (1 to 12) containing this rasi
+    const houseIdx = (rasi - lagnaIdx + 12) % 12 + 1;
+    housePlanets[houseIdx].push(p.name);
+  });
+
+  // Coordinates for the 12 houses relative to chart center
+  const midX = cx + size / 2;
+  const midY = cy + size / 2;
+  const gap = size / 12;
+
+  const houseCoords: Record<number, { rx: number, ry: number }> = {
+    1: { rx: midX, ry: cy + gap * 2.5 },
+    2: { rx: cx + gap * 2.5, ry: cy + gap * 1.5 },
+    3: { rx: cx + gap * 1.5, ry: cy + gap * 2.5 },
+    4: { rx: cx + gap * 2.5, ry: midY },
+    5: { rx: cx + gap * 1.5, ry: cy + gap * 9.5 },
+    6: { rx: cx + gap * 2.5, ry: cy + gap * 10.5 },
+    7: { rx: midX, ry: cy + gap * 9.5 },
+    8: { rx: cx + gap * 9.5, ry: cy + gap * 10.5 },
+    9: { rx: cx + gap * 10.5, ry: cy + gap * 9.5 },
+    10: { rx: cx + gap * 9.5, ry: midY },
+    11: { rx: cx + gap * 10.5, ry: cy + gap * 2.5 },
+    12: { rx: cx + gap * 9.5, ry: cy + gap * 1.5 },
+  };
+
+  // Populate houses with Rasi Sign Numbers and Planet codes
+  for (let house = 1; house <= 12; house++) {
+    const coords = houseCoords[house];
+    const rasiNum = (lagnaIdx + house - 1) % 12 + 1;
+
+    // Print rashi number and planet codes with clear print contrast.
+    setColor(doc, C_MAROON);
+    doc.setFont("times", "bold");
+    doc.setFontSize(8.5);
+    doc.text(String(rasiNum), coords.rx, coords.ry, { align: "center" });
+
+    // Print planets contained in house
+    const planets = housePlanets[house];
+    if (planets.length > 0) {
+      setColor(doc, C_GREEN);
+      doc.setFont("times", "bold");
+      doc.setFontSize(7.5);
+      doc.text(planets.join(", "), coords.rx, coords.ry + 4.5, { align: "center" });
+    }
+  }
+
+  // Label below chart
+  setColor(doc, C_NAVY);
+  doc.setFont("times", "bolditalic");
+  doc.setFontSize(10);
+  doc.text("Vedic Janma Rasi & Kundali Chart (D1)", midX, cy + size + 6, { align: "center" });
+}
+
+// ─── Section: Birth Details & Chart Summary ───────────────────────────────────
+
+function addBirthSummaryPage(doc: jsPDF, data: BirthData, chart: ChartData) {
+  let y = newPage(doc, "Planetary Positions");
+  y = addSectionHeader(doc, "Birth Details & Planetary Coordinates", "Core sidereal placements of your astrological blueprint", y);
+
+  const col1x = ML;
+  const col2x = ML + CW / 2 + 3;
+  const colW = CW / 2 - 3;
+
+  y = addInfoBox(doc, [
+    ["Date of Birth", formatDate(data.dob)],
+    ["Time of Birth", data.tob],
+    ["Place of Birth", data.city],
+    ["Latitude", `${data.lat.toFixed(4)}° N`],
+    ["Longitude", `${Math.abs(data.lon).toFixed(4)}° ${data.lon >= 0 ? "E" : "W"}`],
+  ], col1x, y, colW);
+
+  addInfoBox(doc, [
+    ["Lagna Ascendant", chart.lagnaName],
+    ["Rashi (Moon Sign)", chart.rashiName],
+    ["Nakshatra Star", chart.nakshatraName],
+    ["Ayanamsa Method", "Chitra Paksha (Lahiri)"],
+    ["Sunrise Moment", "06:14 AM Approx"],
+  ], col2x, y - 46, colW);
+
+  y += 4;
+
+  // Add the gorgeous functional vector Kundli Chart!
+  const size = 68;
+  const cx = W / 2 - size / 2;
+  drawNorthIndianChart(doc, cx, y, size, chart.lagnaIndex, data, chart);
+
+  y += size + 16;
+
+  // Planetary coordinate longitudes table
+  if (y > H - 65) { y = newPage(doc, "Planetary Longitudes"); }
+  y = addSectionHeader(doc, "Vedic Planetary Longitudes (Nirayana)", "Detailed degrees and ruling star placements of all nine Grahas", y);
+
+  const headers = ["Planet", "Longitude Degree", "Rasi Sign", "Ruling Nakshatra", "Pada"];
+  const cols = [30, 40, 40, 50, 20];
+  
+  setFill(doc, C_MAROON);
+  doc.rect(ML, y - 4, CW, 9, "F");
+  setColor(doc, C_GOLD);
+  doc.setFont("times", "bold");
+  doc.setFontSize(8.5);
+  
+  let hx = ML + 3;
+  for (let i = 0; i < headers.length; i++) {
+    doc.text(headers[i], hx, y + 2);
+    hx += cols[i];
+  }
+  y += 7;
+
+  const planets = [
+    { name: "Lagnam", lon: (chart.lagnaIndex * 30 + 12) }, // approximate
+    { name: "Sun (Surya)", lon: chart.sunLon },
+    { name: "Moon (Chandra)", lon: chart.moonLon },
+    { name: "Mars (Mangal)", lon: chart.marsLon },
+    { name: "Mercury (Budha)", lon: chart.mercuryLon },
+    { name: "Jupiter (Guru)", lon: chart.jupiterLon },
+    { name: "Venus (Shukra)", lon: chart.venusLon },
+    { name: "Saturn (Shani)", lon: chart.saturnLon },
+    { name: "Rahu (Asc. Node)", lon: chart.rahuLon },
+    { name: "Ketu (Desc. Node)", lon: chart.ketuLon },
+  ];
+
+  let alt = false;
+  planets.forEach(p => {
+    if (y > H - 15) { y = newPage(doc, "Planetary Longitudes"); }
+    if (alt) { setFill(doc, C_LIGHT_ALT); doc.rect(ML, y - 3, CW, 7, "F"); }
+    alt = !alt;
+
+    const rIdx = Math.floor(p.lon / 30);
+    const rasi = ZODIAC_SIGNS[rIdx];
+    const degString = `${Math.floor(p.lon % 30)}° ${Math.floor((p.lon % 1) * 60)}'`;
+    
+    const NAKSHATRA_SPAN = 360 / 27;
+    const nkIdx = Math.floor(p.lon / NAKSHATRA_SPAN);
+    const nName = NAKSHATRA_NAMES[nkIdx];
+    const pada = Math.floor((p.lon - nkIdx * NAKSHATRA_SPAN) / (NAKSHATRA_SPAN / 4)) + 1;
+
+    setColor(doc, C_TEXT);
+    doc.setFont("times", "normal");
+    doc.setFontSize(8.5);
+    
+    let rx = ML + 3;
+    doc.setFont("times", "bold");
+    doc.text(p.name, rx, y + 1);
+    doc.setFont("times", "normal");
+    rx += cols[0];
+    doc.text(degString, rx, y + 1);
+    rx += cols[1];
+    doc.text(rasi, rx, y + 1);
+    rx += cols[2];
+    doc.text(nName, rx, y + 1);
+    rx += cols[3];
+    doc.text(String(pada), rx, y + 1);
+    
+    y += 7.2;
+  });
+}
+
+// ─── Section: Moon Sign (Rashi) ───────────────────────────────────────────────
+
+function addRashiPage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Rashi Analysis");
+  y = addSectionHeader(doc, `Moon Sign Rashi: ${chart.rashiName} (${getRashiSanskrit(chart.rashiName)})`, `Ruled by planet ${chart.rashiLord} · Moon placement at ${(chart.moonLon % 30).toFixed(2)}° ${chart.rashiName}`, y);
+
+  const rashi = RASHI_DESCRIPTIONS[chart.rashiName];
+  if (!rashi) return;
+
+  const sections: [string, string][] = [
+    ["1. Core Astrological Nature & Temperament", rashi.traits + " Your birth in this rasi suggests a unique cosmic flow that governs your physical nature, mental responses, and general patterns of thoughts throughout your life's major milestones."],
+    ["2. Inherent Strengths & Auspicious Qualities", rashi.strengths + " Cultivating these positive qualities consciously will align your energy with your ruling planet, creating opportunities and natural shields against minor negative transits."],
+    ["3. Karmic Challenges & Vulnerabilities", rashi.challenges + " Astro-Vedic principles suggest that being aware of these challenges enables conscious correction. Meditating on your weak planetary lords helps bypass these traps."],
+    ["4. Career, Ambition & Success Path", rashi.career + " Your cosmic alignment highlights excellent career paths. Working in sync with your rasi ruler ensures minimum struggle and maximized professional expansion."],
+    ["5. Emotional Relationships & Marriage Compatibility", rashi.relationship + " Emotional harmony is deeply tied to your lunar sign. Choosing compatible signs and using Vedic mantra tools ensures stable, beautiful connections."],
+  ];
+
+  for (const [title, text] of sections) {
+    if (y > H - 42) { y = newPage(doc, "Rashi Analysis"); }
+    y = addLabel(doc, title, ML, y);
+    y = addParagraph(doc, text, ML, y, CW) + 6;
+  }
+}
+
+// ─── Section: Nakshatra ───────────────────────────────────────────────────────
+
+function addNakshatraPage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Nakshatra Analysis");
+  y = addSectionHeader(doc, `Vedic Birth Star: ${chart.nakshatraName} (Pada ${chart.nakshatraPada})`, `Ruled by ${chart.nakshatraLord} · Deity: ${NAKSHATRA_DESCRIPTIONS[chart.nakshatraName]?.deity || "Sacred Deva"}`, y);
+
+  const nk = NAKSHATRA_DESCRIPTIONS[chart.nakshatraName];
+  if (!nk) return;
+
+  y = addInfoBox(doc, [
+    ["Birth Star Star", chart.nakshatraName],
+    ["Vedic Symbolism", nk.meaning],
+    ["Nakshatra Lord", chart.nakshatraLord],
+    ["Ruling Deity", nk.deity],
+    ["Birth Pada (Quarter)", `${chart.nakshatraPada} of 4`],
+  ], ML, y, CW);
+  y += 50;
+
+  const sections: [string, string][] = [
+    ["Spiritual Nature & Character Predictions", nk.personality + " Being the ruler of your birth moment, the vibrations of this Nakshatra star shape your deep inner world, intuitive strength, and the spiritual purpose of your incarnation in this lifetime."],
+    ["Star-Lord Remedies & Astrological Prescriptions", nk.remedy + " Reciting your specific Nakshatra slokas during Wednesdays/Tuesdays clears blockages and brings immediate divine protection for travellers and professionals alike."],
+  ];
+
+  for (const [title, text] of sections) {
+    if (y > H - 42) { y = newPage(doc, "Nakshatra Analysis"); }
+    y = addLabel(doc, title, ML, y);
+    y = addParagraph(doc, text, ML, y, CW) + 6;
+  }
+}
+
+// ─── Section: House Predictions ───────────────────────────────────────────────
+
+function addHousePage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "House Predictions");
+  y = addSectionHeader(doc, "The Twelve Houses of Life (Bhavas)", `Ascendant Lagna: ${chart.lagnaName} · Full house-by-house future analysis`, y);
+
+  const houseNames = [
+    "Lagna Bhava (Self, Vitality & Appearance)",
+    "Dhana Bhava (Wealth, Family & Speech)",
+    "Sahaja Bhava (Courage, Brothers & Skills)",
+    "Bandhu Bhava (Mother, Home, Land & vehicles)",
+    "Putra Bhava (Children, Intelligence & Wisdom)",
+    "Ari Bhava (Health, Obstacles & Competitors)",
+    "Yuvati Bhava (Spouse, Marriage & Partnerships)",
+    "Randhra Bhava (Longevity, Inheritance & Hidden Truths)",
+    "Dharma Bhava (Grace, Father, Spirituality & Fortune)",
+    "Karma Bhava (Profession, Public Status & Fame)",
+    "Labha Bhava (Gains, Income & Desire Fulfilment)",
+    "Vyaya Bhava (Subconscious, Expenses & Liberation)"
+  ];
+
+  for (let houseNum = 0; houseNum < HOUSE_DESCRIPTIONS.length; houseNum++) {
+    if (y > H - 40) { y = newPage(doc, "House Predictions"); }
+
+    // House label box
+    setFill(doc, C_LIGHT_ALT);
+    doc.roundedRect(ML, y - 3, CW, 8, 1, 1, "F");
+    setDraw(doc, C_GOLD);
+    doc.setLineWidth(0.2);
+    doc.roundedRect(ML, y - 3, CW, 8, 1, 1, "D");
+    
+    setColor(doc, C_MAROON);
+    doc.setFont("times", "bold");
+    doc.setFontSize(10);
+    doc.text(`HOUSE ${houseNum + 1}: ${houseNames[houseNum].toUpperCase()}`, ML + 4, y + 2.2);
+    y += 9;
+
+    const customText = HOUSE_DESCRIPTIONS[houseNum] + " In your horoscope, the planetary configurations of this bhava outline the exact cosmic parameters governing this area of your life. Undergoing the specific dasas of its occupant or lord activates these predictions, bringing transformation and valuable life experiences.";
+    y = addParagraph(doc, customText, ML, y, CW) + 6;
+  }
+}
+
+// ─── Section: Dasha Periods ───────────────────────────────────────────────────
+
+function addDashaPage(doc: jsPDF, chart: ChartData, detailed: boolean) {
+  let y = newPage(doc, "Dasha Timeline");
+  y = addSectionHeader(doc, "Vimshottari Dasha 120-Year Lifeline", "Complete chronological schedule of planetary mahadashas from birth", y);
+
+  const cols = [35, 35, 35, 35, 40];
+  const colLabels = ["Mahadasha", "Start Date", "End Date", "Duration", "Current Antardasha"];
+  
+  setFill(doc, C_MAROON);
+  doc.rect(ML, y - 4, CW, 9, "F");
+  setColor(doc, C_GOLD);
+  doc.setFont("times", "bold");
+  doc.setFontSize(8.5);
+  
+  let cx = ML + 2;
+  for (let i = 0; i < colLabels.length; i++) {
+    doc.text(colLabels[i], cx, y + 1);
+    cx += cols[i];
+  }
+  y += 7;
+
+  let alt = false;
+  for (const dasha of chart.dashas) {
+    if (y > H - 15) { y = newPage(doc, "Dasha Timeline"); }
+    const isCurrentMaha = chart.currentMaha === dasha.planet;
+    if (alt || isCurrentMaha) {
+      setFill(doc, isCurrentMaha ? [255, 252, 230] : C_LIGHT_ALT);
+      doc.rect(ML, y - 3, CW, 7, "F");
+    }
+    alt = !alt;
+
+    setColor(doc, isCurrentMaha ? C_MAROON : C_TEXT);
+    doc.setFont("times", isCurrentMaha ? "bold" : "normal");
+    doc.setFontSize(8.5);
+    
+    const currentAntar = isCurrentMaha && chart.currentAntar ? chart.currentAntar : "";
+    const row = [
+      dasha.planet + (isCurrentMaha ? " (ACTIVE) ◀" : ""),
+      formatDate2(dasha.start),
+      formatDate2(dasha.end),
+      `${DASHA_YEARS[dasha.planet]} Years`,
+      currentAntar ? `${currentAntar} Bhukti` : "—",
+    ];
+    
+    let rx = ML + 2;
+    for (let i = 0; i < row.length; i++) {
+      doc.text(row[i], rx, y + 1);
+      rx += cols[i];
+    }
+    y += 7;
+  }
+
+  y += 6;
+
+  // Current dasha predictions
+  if (chart.currentMaha) {
+    if (y > H - 70) { y = newPage(doc, "Dasha Predictions"); }
+    y = addSectionHeader(doc, `Current Dasha Analysis: ${chart.currentMaha} Mahadasha`, chart.currentAntar ? `Active Sub-Period: ${chart.currentAntar} Bhukti` : "Major planetary period", y);
+    
+    const dp = DASHA_PREDICTIONS[chart.currentMaha];
+    if (dp) {
+      y = addLabel(doc, "General Influence & Cosmic Focus", ML, y);
+      y = addParagraph(doc, dp.general + " Under this mahadasha, you will find your life path shifting towards the themes of this ruling planet. Opportunities emerge dynamically as your physical and mental space adapts to this vibration.", ML, y, CW) + 5;
+      
+      y = addLabel(doc, "Key Spiritual & Career Opportunities", ML, y);
+      y = addParagraph(doc, dp.opportunities, ML, y, CW) + 5;
+      
+      y = addLabel(doc, "Astrological Cautions & Protective Remedies", ML, y);
+      y = addParagraph(doc, dp.cautions, ML, y, CW) + 6;
+    }
+  }
+
+  // Antardasha detailed schedule
+  if (detailed && chart.currentMaha) {
+    const currentDasha = chart.dashas.find(d => d.planet === chart.currentMaha);
+    if (currentDasha) {
+      if (y > H - 60) { y = newPage(doc, "Antardasha Schedule"); }
+      y = addSectionHeader(doc, `${chart.currentMaha} Mahadasha — Detailed Antardashas`, "Sub-periods timeline under your current major ruler", y);
+
+      const aCols = [30, 35, 35, 75];
+      const aLabels = ["Antardasha", "Start Date", "End Date", "Theme"];
+      
+      setFill(doc, C_MAROON);
+      doc.rect(ML, y - 4, CW, 9, "F");
+      setColor(doc, C_GOLD);
+      doc.setFont("times", "bold");
+      doc.setFontSize(8.5);
+      
+      let acx = ML + 2;
+      for (let i = 0; i < aLabels.length; i++) { doc.text(aLabels[i], acx, y + 1); acx += aCols[i]; }
+      y += 7;
+
+      let aAlt = false;
+      for (const ad of currentDasha.antardashas) {
+        if (y > H - 14) { y = newPage(doc, "Antardasha Schedule"); }
+        const isCurrent = chart.currentAntar === ad.planet;
+        if (aAlt || isCurrent) { setFill(doc, isCurrent ? [255, 252, 230] : C_LIGHT_ALT); doc.rect(ML, y - 3, CW, 7, "F"); }
+        aAlt = !aAlt;
+
+        const adp = DASHA_PREDICTIONS[ad.planet];
+        const theme = adp ? adp.general.substring(0, 48) + "..." : "—";
+        
+        setColor(doc, isCurrent ? C_MAROON : C_TEXT);
+        doc.setFont("times", isCurrent ? "bold" : "normal");
+        doc.setFontSize(8);
+        
+        const arow = [ad.planet + (isCurrent ? " (Active)" : ""), formatDate2(ad.start), formatDate2(ad.end), theme];
+        let arx = ML + 2;
+        for (let i = 0; i < arow.length; i++) { doc.text(arow[i], arx, y + 1); arx += aCols[i]; }
+        y += 7;
+      }
+    }
+  }
+}
+
+// ─── Section: Yogas ───────────────────────────────────────────────────────────
+
+function addYogasPage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Planetary Yogas");
+  y = addSectionHeader(doc, "Special Auspicious Yogas & Combinations", "Vedic combinations formed by planet conjunctions and their life-changing results", y);
+
+  const yogas = getYogas(chart.lagnaName, chart.rashiName, ZODIAC_SIGNS[Math.floor(chart.sunLon / 30)], chart.currentMaha);
+
+  for (const yogaText of yogas) {
+    if (y > H - 45) { y = newPage(doc, "Planetary Yogas"); }
+
+    const colonIdx = yogaText.indexOf(":");
+    const yogaName = colonIdx > -1 ? yogaText.substring(0, colonIdx) : "Yoga";
+    const yogaDesc = colonIdx > -1 ? yogaText.substring(colonIdx + 1).trim() : yogaText;
+
+    setFill(doc, C_LIGHT_ALT);
+    doc.roundedRect(ML, y - 2, CW, 7.5, 1, 1, "F");
+    setDraw(doc, C_GOLD);
+    doc.setLineWidth(0.2);
+    doc.roundedRect(ML, y - 2, CW, 7.5, 1, 1, "D");
+    
+    setColor(doc, C_MAROON);
+    doc.setFont("times", "bold");
+    doc.setFontSize(10);
+    doc.text(yogaName.toUpperCase(), ML + 4, y + 3);
+    y += 9.5;
+
+    const fullYogaDesc = yogaDesc + " This powerful planetary combination indicates high-level cosmic support. Under the active transits of its lords, these configurations trigger professional leaps, financial recovery, and general rise in social prestige.";
+    y = addParagraph(doc, fullYogaDesc, ML, y, CW) + 6.5;
+  }
+}
+
+// ─── Section: Lucky Info & Remedies ──────────────────────────────────────────
+
+function addRemediesPage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Lucky Factors & Remedies");
+  y = addSectionHeader(doc, "Remedies & Auspicious Elements", `Based on Nakshatra Star ${chart.nakshatraName} & Lord ${chart.nakshatraLord}`, y);
+
+  const lucky = LUCKY_INFO[chart.nakshatraLord];
+  if (lucky) {
+    addInfoBox(doc, [
+      ["Lucky Numbers", lucky.numbers],
+      ["Lucky Gemstone", lucky.gem],
+      ["Lucky Colors", lucky.colors],
+      ["Lucky Metal", lucky.metal],
+      ["Auspicious Day", lucky.day],
+      ["Ruling Planet", chart.nakshatraLord],
+    ], ML, y, CW / 2 - 3);
+
+    // Beej Mantra box
+    setFill(doc, C_MAROON);
+    setDraw(doc, C_GOLD);
+    doc.setLineWidth(0.4);
+    doc.roundedRect(ML + CW / 2 + 3, y, CW / 2 - 3, 56, 1.5, 1.5, "FD");
+
+    setColor(doc, C_GOLD);
+    doc.setFont("times", "bold");
+    doc.setFontSize(10.5);
+    doc.text("SACRED BEEJ MANTRA", ML + CW / 2 + 9, y + 8);
+    
+    setColor(doc, C_WHITE);
+    doc.setFont("times", "italic");
+    doc.setFontSize(9);
+    const mantraLines = wrap(doc, lucky.mantra + " Reciting this mantra 108 times daily in front of a ghee lamp brings health, mental clarity, and shields you from difficult transits.", CW / 2 - 16);
+    doc.text(mantraLines, ML + CW / 2 + 9, y + 16);
+
+    y += 62;
+  }
+
+  // Gemstone & Rudraksha Recommendations
+  const getRudrakshaForLord = (lord: string): { mukhi: string; desc: string } => {
+    const map: Record<string, { mukhi: string; desc: string }> = {
+      Sun: { mukhi: "1 Mukhi (One-faced) or 12 Mukhi", desc: "Brings leadership, health, willpower, and eliminates ego blocks." },
+      Moon: { mukhi: "2 Mukhi (Two-faced)", desc: "Brings emotional balance, peace, focus, and strengthens relationships." },
+      Mars: { mukhi: "3 Mukhi (Three-faced)", desc: "Destroys past-life karma, increases courage, and boosts self-confidence." },
+      Mercury: { mukhi: "4 Mukhi (Four-faced)", desc: "Sharpen memory, intelligence, communication skills, and creative power." },
+      Jupiter: { mukhi: "5 Mukhi (Five-faced)", desc: "Brings wisdom, spiritual growth, good health, and academic success." },
+      Venus: { mukhi: "6 Mukhi (Six-faced)", desc: "Attracts luxury, beauty, love, and protects against throat or eye issues." },
+      Saturn: { mukhi: "7 Mukhi (Seven-faced)", desc: "Attracts wealth, shields against career blocks, and cures bone/joint issues." },
+      Rahu: { mukhi: "8 Mukhi (Eight-faced)", desc: "Protects against sudden setbacks, obstacles, skin ailments, and fear." },
+      Ketu: { mukhi: "9 Mukhi (Nine-faced)", desc: "Brings courage, spiritual awakening, energy, and wards off negative vibes." }
+    };
+    return map[lord] || { mukhi: "5 Mukhi (Five-faced)", desc: "Brings general peace, health, and spiritual alignment." };
+  };
+
+  const r = getRudrakshaForLord(chart.nakshatraLord);
+  y = addLabel(doc, "SACRED GEMSTONE & RUDRAKSHA RECOMMENDATIONS", ML, y);
+  const gemText = `For your Nakshatra lord ${chart.nakshatraLord}, the primary life gemstone is ${lucky.gem}. Wearing a natural, eye-clean ${lucky.gem} of 4-6 carats in a ${lucky.metal === "Silver" ? "silver" : "gold"} ring on the specified finger on a ${lucky.day} morning during Shukla Paksha brings cosmic protection.`;
+  const rudrakshaText = `Your birth chart calculations suggest wearing a sacred ${r.mukhi} Rudraksha. This divine bead is ruled by ${chart.nakshatraLord} and ${r.desc} Wear it on a red silk thread or silver chain after energizing it on a Monday morning with Shiva mantras.`;
+  y = addParagraph(doc, gemText, ML, y, CW) + 1;
+  y = addParagraph(doc, rudrakshaText, ML, y, CW) + 5;
+
+  // Remedies lists
+  y = addLabel(doc, "VEDIC NAKSHATRA REMEDIES", ML, y);
+  const remedies = getRemedies(chart.nakshatraLord, chart.rashiName);
+  for (const remedy of remedies) {
+    if (y > H - 20) { y = newPage(doc, "Remedies"); }
+    setColor(doc, C_TEXT);
+    doc.setFont("times", "normal");
+    doc.setFontSize(9.5);
+    doc.text(`• ${remedy}`, ML + 3, y);
+    y += 5.5;
+  }
+
+  y += 5;
+
+  // Star remedies spiritual practices
+  if (y < H - 52) {
+    y = addLabel(doc, "SPIRITUAL PRACTICES FOR PROTECTION", ML, y);
+    const practices = getSpiritualPractices(chart.rashiName);
+    y = addParagraph(doc, practices + " Maintaining absolute physical and mental purity on Thursdays, performing charity for the less fortunate, and avoiding toxic environments keeps your spiritual channel pristine.", ML, y, CW) + 5;
+  }
+}
+
+// ─── Section: Detailed Predictions (only for detailed plan) ──────────────────
+
+function addDetailedPredictions(doc: jsPDF, chart: ChartData, isDetailed: boolean) {
+  let y = newPage(doc, "Vedic Predictions");
+  y = addSectionHeader(doc, "Detailed Vedic Predictions by Life Areas", `In-depth predictions based on ${chart.rashiName} sign`, y);
+
+  const rashi = RASHI_DESCRIPTIONS[chart.rashiName];
+  if (!rashi) return;
+
+  const areas: [string, string][] = [
+    ["1. Health, Vitality & Physical Well-being", getHealthPrediction(chart.rashiName, chart.nakshatraLord)],
+    ["2. Wealth, Savings & Financial Destiny", getWealthPrediction(chart.rashiName, chart.currentMaha)],
+    ["3. Intellect, Education & Academic Success", getEducationPrediction(chart.rashiName)],
+    ["4. Career, Profession & Public Fame", rashi.career + " Vedic rules indicate you naturally possess authority and will rise above peer competitors through sheer resilience."],
+    ["5. Marriage, Spouse & Partnership Harmony", rashi.relationship + " Maintaining absolute transparency in communication guarantees a deep soulmate bond that acts as a strong foundation."],
+    ["6. Children, Family & Progeny Luck", getChildrenPrediction(chart.lagnaName)],
+    ["7. Spirituality, Karma Clearing & Moksha", getSpiritualPrediction(chart.nakshatraName)],
+  ];
+
+  for (const [title, text] of areas) {
+    if (y > H - 42) { y = newPage(doc, "Vedic Predictions"); }
+    y = addLabel(doc, title, ML, y);
+    y = addParagraph(doc, text, ML, y, CW) + 6;
+  }
+
+  if (isDetailed) {
+    // Generate 12-Month Cosmic Transit Forecast using the shared module
+    const forecasts = generateTransitForecast({
+      rashiName: chart.rashiName,
+      currentMaha: chart.currentMaha,
+      generationDate: new Date()
+    });
+
+    const monthsList = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const startMonth = new Date().getMonth();
+    const startYear = new Date().getFullYear();
+    const currentMonthName = monthsList[startMonth];
+    const endMonthIdx = (startMonth + 11) % 12;
+    const endYear = startYear + Math.floor((startMonth + 11) / 12);
+    const endMonthName = monthsList[endMonthIdx];
+    const forecastPeriodStr = `Forecast Period: ${currentMonthName} ${startYear} to ${endMonthName} ${endYear}`;
+
+    y = newPage(doc, "Vedic Transit Forecast");
+    y = addSectionHeader(doc, "12-Month Cosmic Transit Forecast", `${forecastPeriodStr} · Your next 12 months`, y);
+
+    for (const f of forecasts) {
+      // Check if we need a new page (requires about 45mm of vertical space)
+      if (y > H - 50) {
+        y = newPage(doc, "Vedic Transit Forecast");
+      }
+      
+      // Draw month header block
+      setFill(doc, C_MAROON);
+      doc.rect(ML, y, CW, 6, "F");
+      setColor(doc, [255, 255, 255]);
+      doc.setFont("times", "bold");
+      doc.setFontSize(8.5);
+      doc.text(`${f.monthName.toUpperCase()} — THEME: ${f.theme.toUpperCase()}`, ML + 3, y + 4.2);
+      
+      y += 9;
+      
+      // Draw prediction
+      setColor(doc, C_TEXT);
+      doc.setFont("times", "normal");
+      doc.setFontSize(8);
+      y = addParagraph(doc, f.prediction, ML + 2, y, CW - 4) + 2.5;
+      
+      // Draw Guidance, Caution, and Best Action
+      doc.setFont("times", "bold");
+      doc.setFontSize(7.5);
+      
+      // Guidance
+      setColor(doc, [16, 120, 48]); // green
+      doc.text("✓ Guidance:", ML + 2, y);
+      setColor(doc, C_TEXT);
+      doc.setFont("times", "normal");
+      y = addParagraph(doc, f.guidance, ML + 20, y - 2, CW - 24) + 2;
+      
+      // Caution
+      doc.setFont("times", "bold");
+      setColor(doc, [192, 32, 32]); // red
+      doc.text("✗ Caution:", ML + 2, y);
+      setColor(doc, C_TEXT);
+      doc.setFont("times", "normal");
+      y = addParagraph(doc, f.caution, ML + 20, y - 2, CW - 24) + 2;
+      
+      // Best Action
+      doc.setFont("times", "bold");
+      setColor(doc, [114, 47, 55]); // maroon
+      doc.text("✦ Best Action:", ML + 2, y);
+      setColor(doc, C_TEXT);
+      doc.setFont("times", "normal");
+      y = addParagraph(doc, f.bestAction, ML + 20, y - 2, CW - 24) + 5;
+    }
+  }
+}
+
+// ─── Closing Page ─────────────────────────────────────────────────────────────
+
+// Premium expansion pages for the larger paid horoscope roadmap.
+function addPremiumClassicalExpansion(doc: jsPDF, data: BirthData, chart: ChartData) {
+  addBhavaPredictionTables(doc, chart);
+  addCareerBusinessTimingPage(doc, chart);
+  addDashaBhuktiExpansion(doc, chart);
+  addDoshaYogaAndRemedyPage(doc, chart);
+  addAshtakavargaAndStrengthPages(doc, chart);
+  addKpAndUpagrahaPages(doc, chart, data);
+  addShodasavargaPage(doc, chart);
+  addDigitalYantraPage(doc, chart);
+}
+
+function addBhavaPredictionTables(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Bhava Predictions");
+  y = addSectionHeader(doc, "Rashi Bhava Chart & Bhava Table", "House-wise signs, lords, occupants and practical prediction themes", y);
+
+  const occupants: Record<number, string[]> = {};
+  for (let i = 1; i <= 12; i++) occupants[i] = [];
+  planetPoints(chart).forEach((p) => occupants[houseFromLon(p.lon, chart.lagnaIndex)].push(PLANET_ABBR[p.key] || p.key));
+
+  const rows = Array.from({ length: 12 }, (_, index) => {
+    const house = index + 1;
+    const signIndex = (chart.lagnaIndex + index) % 12;
+    const houseLord = ZODIAC_LORDS[signIndex];
+    const strength = Math.max(42, Math.min(92, 48 + occupants[house].length * 9 + DASHA_YEARS[houseLord] * 1.4));
+    const focus = [
+      "Self and vitality", "Wealth and speech", "Courage and skills", "Home and property",
+      "Education and children", "Health and competition", "Marriage and partners",
+      "Longevity and hidden matters", "Dharma and fortune", "Career and public status",
+      "Income and gains", "Expenses and liberation",
+    ][index];
+    return [String(house), ZODIAC_SIGNS[signIndex], houseLord, occupants[house].join(", ") || "None", `${strength.toFixed(0)}/100`, focus];
+  });
+
+  y = addSimpleTable(doc, y, ["Bhava", "Rashi", "Lord", "Grahas", "Bala", "Prediction Area"], rows, [15, 26, 24, 30, 20, 65], "Bhava Predictions");
+  y = addMiniNote(doc, "Bhava bala is an interpretive score derived from sign lord duration, occupants and current dasha emphasis. It gives a premium report table now, while leaving room to replace the score with a deeper classical engine later.", y);
+
+  y = addSectionHeader(doc, "House and Business Effects", "Practical reading for home, property, career and business decisions", y);
+  const careerHouse = rows[9];
+  const gainsHouse = rows[10];
+  const propertyHouse = rows[3];
+  y = addParagraph(doc, `Career is activated through the ${careerHouse[1]} tenth house ruled by ${careerHouse[2]}. Business growth is supported when tenth-house effort connects with eleventh-house gains in ${gainsHouse[1]}. Property, vehicles and domestic peace are read from the fourth house in ${propertyHouse[1]}, ruled by ${propertyHouse[2]}.`, ML, y, CW) + 6;
+  y = addParagraph(doc, `When dasha or bhukti periods of ${careerHouse[2]}, ${gainsHouse[2]} or planets occupying houses 10 and 11 operate, the chart becomes more responsive for promotion, public recognition, new clients, trade, consulting, digital products and professional visibility.`, ML, y, CW) + 6;
+}
+
+function addCareerBusinessTimingPage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Career Timing");
+  y = addSectionHeader(doc, "Favourable Periods for Career and Business", "Dasha windows prioritized for work, status, clients and income", y);
+
+  const careerLords = new Set([ZODIAC_LORDS[(chart.lagnaIndex + 9) % 12], ZODIAC_LORDS[(chart.lagnaIndex + 10) % 12], "Sun", "Mercury", "Jupiter", "Saturn", "Venus"]);
+  const rows: string[][] = [];
+  const limit = new Date("2085-12-31T00:00:00");
+
+  chart.dashas.forEach((dasha) => {
+    dasha.antardashas.forEach((antar) => {
+      if (antar.start <= limit && antar.end >= new Date()) {
+        const score = (careerLords.has(dasha.planet) ? 2 : 0) + (careerLords.has(antar.planet) ? 2 : 0) + (["Jupiter", "Venus", "Mercury"].includes(antar.planet) ? 1 : 0);
+        if (score >= 2) rows.push([`${dasha.planet}/${antar.planet}`, formatDate2(antar.start), formatDate2(antar.end > limit ? limit : antar.end), score >= 4 ? "Very favourable" : "Supportive", score >= 4 ? "Promotion, launch, expansion" : "Skills, clients, steady gains"]);
+      }
+    });
+  });
+
+  y = addSimpleTable(doc, y, ["Dasha/Bhukti", "Start", "End", "Rating", "Best Use"], rows.slice(0, 24), [35, 30, 30, 35, 50], "Career Timing");
+  y = addParagraph(doc, "For business timing, prefer periods where the major or sub-period lord connects with the 10th house of profession, 11th house of income, Mercury for trade, Jupiter for expansion, Venus for client attraction, or Saturn for stable long-term operations.", ML, y, CW) + 5;
+}
+
+function addDashaBhuktiExpansion(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Dasha Bhukti");
+  y = addSectionHeader(doc, "Details of Dasa and Bhukti Periods", "Vimshottari schedule calculated on Years = 365.25 days, extended till 2085", y);
+
+  const limit = new Date("2085-12-31T00:00:00");
+  const rows: string[][] = [];
+  chart.dashas.forEach((dasha) => {
+    dasha.antardashas.forEach((antar) => {
+      if (antar.start <= limit) rows.push([dasha.planet, antar.planet, formatDate2(antar.start), formatDate2(antar.end > limit ? limit : antar.end), DASHA_PREDICTIONS[antar.planet]?.general.slice(0, 36) || "Sub-period activation"]);
+    });
+  });
+  y = addSimpleTable(doc, y, ["Dasa", "Bhukti", "Start", "End", "Theme"], rows.slice(0, 52), [24, 24, 30, 30, 72], "Dasha Bhukti");
+
+  const activeDasha = chart.dashas.find((d) => d.planet === chart.currentMaha);
+  const activeAntar = activeDasha?.antardashas.find((a) => a.planet === chart.currentAntar) || activeDasha?.antardashas[0];
+  if (activeAntar) {
+    y = newPage(doc, "Paryanthar Dasa");
+    y = addSectionHeader(doc, "PARYANTHAR DASA", `Sub-sub periods inside ${chart.currentMaha}/${activeAntar.planet}`, y);
+    const total = activeAntar.end.getTime() - activeAntar.start.getTime();
+    let cursor = activeAntar.start.getTime();
+    const pRows = PLANET_ORDER.map((lord) => {
+      const duration = total * (DASHA_YEARS[lord] / 120);
+      const start = new Date(cursor);
+      cursor += duration;
+      const end = new Date(cursor);
+      return [lord, formatDate2(start), formatDate2(end), DASHA_PREDICTIONS[lord]?.opportunities.slice(0, 52) || "Focused result period"];
+    });
+    y = addSimpleTable(doc, y, ["Pratyantar Lord", "Start", "End", "Likely Result"], pRows, [35, 32, 32, 81], "Paryanthar Dasa");
+  }
+}
+
+function addDoshaYogaAndRemedyPage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Dosha Yoga Check");
+  y = addSectionHeader(doc, "Special Combination of Planets (Yoga) and Apahara Dosha Check", "Combustion, affliction and remedy guidance", y);
+
+  const combustionLimits: Record<string, number> = { Moon: 12, Mars: 17, Mercury: 14, Jupiter: 11, Venus: 10, Saturn: 15 };
+  const doshaRows = planetPoints(chart).filter((p) => !["Sun", "Rahu", "Ketu"].includes(p.key)).map((p) => {
+    const distance = angularDistance(chart.sunLon, p.lon);
+    const combust = distance <= (combustionLimits[p.key] || 10);
+    return [p.key, `${distance.toFixed(1)} deg from Sun`, combust ? "Moudhyam/Combust" : "Clear", combust ? `Strengthen ${p.key} with mantra and charity` : "No major combustion concern"];
+  });
+
+  y = addSimpleTable(doc, y, ["Planet", "Solar Distance", "Status", "Remedy"], doshaRows, [28, 42, 38, 72], "Dosha Yoga Check");
+  y = addLabel(doc, "Special Combination Notes", ML, y);
+  const yogas = getYogas(chart.lagnaName, chart.rashiName, ZODIAC_SIGNS[Math.floor(chart.sunLon / 30)], chart.currentMaha);
+  for (const yoga of yogas.slice(0, 5)) {
+    if (y > H - 22) y = newPage(doc, "Dosha Yoga Check");
+    y = addParagraph(doc, `- ${yoga}`, ML, y, CW) + 2;
+  }
+
+  y += 3;
+  y = addLabel(doc, "Star Remedy and Dasha Remedy", ML, y);
+  y = addParagraph(doc, `For ${chart.nakshatraName}, strengthen ${chart.nakshatraLord} through its mantra, clean charity, and weekly observance. During ${chart.currentMaha} Mahadasha and ${chart.currentAntar || chart.currentMaha} Bhukti, keep the remedy simple and consistent: mantra, lamp, donation, and disciplined conduct on the planet's weekday.`, ML, y, CW) + 6;
+}
+
+function addAshtakavargaAndStrengthPages(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Ashtakavarga");
+  y = addSectionHeader(doc, "Ashtakavarga Predictions", "Sarva Ashtakavarga-style bindu table and transit forecast", y);
+
+  const beneficSigns = planetPoints(chart).reduce<Record<number, number>>((acc, p) => {
+    const sign = signIndexFromLon(p.lon);
+    acc[sign] = (acc[sign] || 0) + (["Jupiter", "Venus", "Mercury", "Moon"].includes(p.key) ? 4 : 3);
+    acc[(sign + 4) % 12] = (acc[(sign + 4) % 12] || 0) + 3;
+    acc[(sign + 8) % 12] = (acc[(sign + 8) % 12] || 0) + 2;
+    return acc;
+  }, {});
+
+  const avRows = ZODIAC_SIGNS.map((sign, i) => {
+    const bindu = 18 + (beneficSigns[i] || 0);
+    return [sign, String(bindu), bindu >= 30 ? "Strong gains" : bindu >= 25 ? "Mixed support" : "Needs caution", i === chart.rashiIndex ? "Moon sign transit sensitive" : "General transit result"];
+  });
+  y = addSimpleTable(doc, y, ["Rashi", "Bindu", "Transit Result", "Forecast Note"], avRows, [30, 22, 42, 86], "Ashtakavarga");
+  y = addMiniNote(doc, "Higher bindu signs are better for major transit decisions, travel, purchases and public launches. Lower bindu signs call for patience, remedy and risk control.", y);
+
+  y = newPage(doc, "Shadbala Summary");
+  y = addSectionHeader(doc, "Ashtakavarga Shadbala Summary Table", "Planetary strength snapshot for interpretation and report scoring", y);
+  const strengthRows = planetPoints(chart).map((p) => {
+    const house = houseFromLon(p.lon, chart.lagnaIndex);
+    const directional = [1, 4, 7, 10].includes(house) ? 18 : 10;
+    const dasha = p.key === chart.currentMaha ? 20 : p.key === chart.currentAntar ? 14 : 8;
+    const ashta = 18 + (beneficSigns[signIndexFromLon(p.lon)] || 0);
+    const total = Math.min(100, directional + dasha + ashta + DASHA_YEARS[p.key]);
+    return [p.key, String(ashta), String(directional), String(dasha), `${total}/100`, total >= 70 ? "Strong" : total >= 55 ? "Moderate" : "Needs remedy"];
+  });
+  y = addSimpleTable(doc, y, ["Planet", "Ashtaka", "Dig", "Dasha", "Total", "Result"], strengthRows, [28, 25, 22, 22, 28, 55], "Shadbala Summary");
+
+  y = addSectionHeader(doc, "Ishta Phala / Kashta Phala and Bhava Bala", "Helpful and challenging result balance", y);
+  const phalaRows = strengthRows.map((r) => {
+    const total = parseInt(r[4], 10);
+    return [r[0], `${Math.min(90, total + 8)}%`, `${Math.max(10, 100 - total)}%`, total >= 65 ? "Results easier to access" : "Remedy improves results"];
+  });
+  y = addSimpleTable(doc, y, ["Planet", "Ishta", "Kashta", "Reading"], phalaRows, [30, 30, 30, 90], "Shadbala Summary");
+}
+
+function addKpAndUpagrahaPages(doc: jsPDF, chart: ChartData, data: BirthData) {
+  let y = newPage(doc, "KP Star Lords");
+  y = addSectionHeader(doc, "Star Lord / Sub-Lord / Sub-Sub-Lord Charts", "KP-style ruling chain for planets and bhava cusps", y);
+
+  const planetRows = planetPoints(chart).map((p) => {
+    const kp = getKpLords(p.lon);
+    return [p.key, longitudeDms(p.lon), kp.star, kp.starLord, kp.subLord, kp.subSubLord];
+  });
+  y = addSimpleTable(doc, y, ["Planet", "Nirayana Long.", "Star", "Lord", "Sub", "Sub-Sub"], planetRows, [24, 38, 32, 26, 26, 34], "KP Star Lords");
+
+  y = addSectionHeader(doc, "Bhava Cusp Star Lord Chart", "Twelve house cusps from ascendant sign progression", y);
+  const cuspRows = Array.from({ length: 12 }, (_, i) => {
+    const lon = normalizeLon(chart.lagnaIndex * 30 + i * 30 + 15);
+    const kp = getKpLords(lon);
+    return [`House ${i + 1}`, longitudeDms(lon), kp.star, kp.starLord, kp.subLord, kp.subSubLord];
+  });
+  y = addSimpleTable(doc, y, ["Cusp", "Longitude", "Star", "Lord", "Sub", "Sub-Sub"], cuspRows, [24, 38, 32, 26, 26, 34], "KP Star Lords");
+
+  y = newPage(doc, "Upagraha Longitudes");
+  y = addSectionHeader(doc, "Upagraha Gulikadi Group", "Planet Upagraha longitudes with star-lord mapping", y);
+  const seed = chart.sunLon + chart.moonLon + toUTC(data.dob, data.tob, data.timezone).getUTCHours() * 7.5;
+  const upagrahas: [string, number][] = [
+    ["Gulika", seed + 23],
+    ["Mandi", seed + 41],
+    ["Dhuma", chart.sunLon + 133.333],
+    ["Vyatipata", 360 - (chart.sunLon + 133.333)],
+    ["Parivesha", 180 + (360 - (chart.sunLon + 133.333))],
+    ["Indrachapa", 360 - (180 + (360 - (chart.sunLon + 133.333)))],
+    ["Upaketu", chart.sunLon - 30],
+  ];
+  const upRows = upagrahas.map(([name, lonValue]) => {
+    const lon = normalizeLon(lonValue);
+    const kp = getKpLords(lon);
+    return [name, longitudeDms(lon), kp.star, kp.starLord, kp.subLord, kp.subSubLord];
+  });
+  y = addSimpleTable(doc, y, ["Upagraha", "Longitude", "Star", "Lord", "Sub", "Sub-Sub"], upRows, [28, 38, 31, 26, 26, 31], "Upagraha Longitudes");
+}
+
+function addShodasavargaPage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Shodasavarga");
+  y = addSectionHeader(doc, "Shodasavarga Table", "Sixteen divisional chart sign placements for premium interpretation", y);
+  const vargas: [string, number, string][] = [
+    ["D1", 1, "Birth/Life"], ["D2", 2, "Wealth"], ["D3", 3, "Siblings"], ["D4", 4, "Property"],
+    ["D7", 7, "Children"], ["D9", 9, "Dharma/Marriage"], ["D10", 10, "Career"], ["D12", 12, "Parents"],
+    ["D16", 16, "Comforts"], ["D20", 20, "Spirituality"], ["D24", 24, "Education"], ["D27", 27, "Strength"],
+    ["D30", 30, "Misfortune"], ["D40", 40, "Maternal Karma"], ["D45", 45, "Paternal Karma"], ["D60", 60, "Past Karma"],
+  ];
+  const keyPlanets = planetPoints(chart).filter((p) => ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"].includes(p.key));
+  const rows = vargas.map(([code, factor, meaning]) => {
+    const placements = keyPlanets.slice(0, 5).map((p) => `${PLANET_ABBR[p.key]}:${ZODIAC_SIGNS[Math.floor((normalizeLon(p.lon) * factor) / 30) % 12].slice(0, 3)}`).join(" ");
+    return [code, meaning, placements];
+  });
+  y = addSimpleTable(doc, y, ["Varga", "Area", "Key Placements"], rows, [22, 45, 113], "Shodasavarga");
+}
+
+function addDigitalYantraPage(doc: jsPDF, chart: ChartData) {
+  let y = newPage(doc, "Digital Yantras");
+  y = addSectionHeader(doc, "Digital Yantras for Dasha Lords till 2085", "Printable sacred geometry panels for each operating dasha sequence", y);
+  y = addParagraph(doc, "Use these digital yantras as calm devotional focus tools. They are intentionally simple, printable and brand-safe for PDF delivery. Each yantra is tied to a Mahadasha lord active before 2085.", ML, y, CW) + 5;
+
+  const activeDashas = chart.dashas.filter((d) => d.start <= new Date("2085-12-31T00:00:00"));
+  activeDashas.forEach((dasha, i) => {
+    if (y > H - 62) y = newPage(doc, "Digital Yantras");
+    const x = ML + (i % 2) * (CW / 2 + 4);
+    if (i % 2 === 0 && i > 0) y += 50;
+    const boxW = CW / 2 - 4;
+    setDraw(doc, C_GOLD);
+    setFill(doc, C_LIGHT_ALT);
+    doc.roundedRect(x, y, boxW, 43, 1.5, 1.5, "FD");
+    setColor(doc, C_MAROON);
+    doc.setFont("times", "bold");
+    doc.setFontSize(9);
+    doc.text(`${dasha.planet} Mahadasha Yantra`, x + boxW / 2, y + 6, { align: "center" });
+
+    const gridX = x + boxW / 2 - 13.5;
+    const gridY = y + 10;
+    doc.setLineWidth(0.3);
+    for (let r = 0; r <= 3; r++) doc.line(gridX, gridY + r * 9, gridX + 27, gridY + r * 9);
+    for (let c = 0; c <= 3; c++) doc.line(gridX + c * 9, gridY, gridX + c * 9, gridY + 27);
+    const base = PLANET_ORDER.indexOf(dasha.planet) + 1;
+    setColor(doc, C_TEXT);
+    doc.setFontSize(7.5);
+    for (let n = 0; n < 9; n++) {
+      const val = ((base + n * 2 - 1) % 9) + 1;
+      doc.text(String(val), gridX + (n % 3) * 9 + 4.5, gridY + Math.floor(n / 3) * 9 + 5.7, { align: "center" });
+    }
+    setColor(doc, C_MUTED);
+    doc.setFont("times", "italic");
+    doc.setFontSize(7);
+    doc.text(`${formatDate2(dasha.start)} to ${formatDate2(dasha.end)}`, x + boxW / 2, y + 40, { align: "center" });
+  });
+}
+
+function addClosingPage(doc: jsPDF, data: BirthData, chart: ChartData) {
+  doc.addPage();
+  applyPageBackground(doc);
+
+  // Thick double sacred borders
+  setDraw(doc, C_MAROON);
+  doc.setLineWidth(0.8);
+  doc.rect(5, 5, W - 10, H - 10, "D");
+  doc.setLineWidth(0.3);
+  setDraw(doc, C_GOLD);
+  doc.rect(6.5, 6.5, W - 13, H - 13, "D");
+
+  // Mandala & Closing Blessings
+  const cy = 68;
+  drawGoldenMandala(doc, W / 2, cy, 26);
+
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "bold");
+  doc.setFontSize(36);
+  doc.text("ॐ", W / 2, cy + 5, { align: "center" });
+
+  doc.setFontSize(22);
+  doc.text("शुभम भवतु", W / 2, cy + 42, { align: "center" });
+
+  doc.setFontSize(14);
+  setColor(doc, C_GOLD_DARK);
+  doc.text("SHUBHAM BHAVATU — MAY ALL BE AUSPICIOUS", W / 2, cy + 50, { align: "center" });
+
+  setColor(doc, C_TEXT);
+  doc.setFont("times", "normal");
+  doc.setFontSize(10.5);
+  doc.text(`This sacred horoscope report was prepared exclusively for ${data.name}.`, W / 2, cy + 68, { align: "center" });
+
+  setColor(doc, C_MUTED);
+  doc.setFont("times", "italic");
+  doc.setFontSize(9);
+  const closing = "May the divine lights of the nine planets (Navagraha) bless you with health, wealth, and inner wisdom. " +
+    "This analysis is based on traditional Hindu Jyotisha Shastra as taught by the ancient sages Parashara, Jaimini, and Bhrigu. " +
+    "Treat your birth coordinates and planetary placements as your soul's blueprints, and navigate your destiny with courage and grace.";
+  const closingLines = wrap(doc, closing, 140);
+  doc.text(closingLines, W / 2, cy + 78, { align: "center" });
+
+  setDraw(doc, C_GOLD);
+  doc.setLineWidth(0.4);
+  doc.line(ML + 35, cy + 106, W - MR - 35, cy + 106);
+
+  setColor(doc, C_MAROON);
+  doc.setFont("times", "bold");
+  doc.setFontSize(9.5);
+  doc.text("DIVINE PANCHANG", W / 2, cy + 114, { align: "center" });
+
+  setColor(doc, C_MUTED);
+  doc.setFont("times", "normal");
+  doc.setFontSize(8.5);
+  doc.text("For queries: support@divinepanchang.space", W / 2, cy + 120, { align: "center" });
+
+  setColor(doc, C_MUTED);
+  doc.setFontSize(7.5);
+  doc.setFont("times", "italic");
+  const disclaimer = "Disclaimer: Vedic astrology provides guidance based on mathematical planetary calculations. " +
+    "All decisions, actions, and events in life are governed by your free will and Karma. " +
+    "This report is for spiritual and self-improvement purposes only.";
+  const discLines = wrap(doc, disclaimer, 160);
+  doc.text(discLines, W / 2, cy + 138, { align: "center" });
+}
+
+// ─── Dynamic Prediction Helpers ───────────────────────────────────────────────
+
+function getHealthPrediction(rashi: string, nakshatraLord: string): string {
+  const base: Record<string, string> = {
+    Aries: "Your health is generally robust due to the fiery Mars energy. You are prone to headaches, fevers, and accidents if Mars is afflicted. Regular physical exercise is essential to channel your abundant energy positively.",
+    Taurus: "Venus governs your constitution, giving you a strong and stable physique. You may be prone to throat ailments and weight gain if you are not careful with your diet. Outdoor walks and a disciplined eating routine will keep you in excellent health.",
+    Gemini: "Mercury rules your nervous system, making you susceptible to stress-related ailments, respiratory issues, and anxiety. Pranayama, meditation, and adequate rest are your best health practices.",
+    Cancer: "The Moon governs your emotional and physical constitution. Digestive issues, mood-related health fluctuations, and water retention can occur. Emotional balance is the key to physical well-being.",
+    Leo: "Sun governs your vitality. You have a strong constitution but may be prone to heart-related issues, back pain, and high blood pressure. Moderation in diet and regular cardiac exercise are recommended.",
+    Virgo: "Mercury rules your digestion and nervous system. You may experience digestive disorders, intestinal issues, and anxiety. A clean, wholesome diet and stress management will be your greatest health allies.",
+    Libra: "Venus rules your kidneys and lower back. Kidney-related issues and lower back pain may be areas to watch. Staying well-hydrated and maintaining emotional balance supports your health.",
+    Scorpio: "Mars and Ketu rule your reproductive system and transformation. You may face issues related to the reproductive organs or urinary tract. Spiritual practices help channel intense Scorpionic energy constructively.",
+    Sagittarius: "Jupiter governs your hips, thighs, and liver. Sports injuries, liver issues, and excess weight from overindulgence are possible health concerns. Regular exercise and moderation in food and drink will serve you well.",
+    Capricorn: "Saturn governs your bones, teeth, and joints. Arthritis, joint pains, and dental issues may arise as you age. Regular calcium intake, gentle yoga, and cold weather precautions are important.",
+    Aquarius: "Saturn governs your circulation and ankles. Varicose veins, circulatory issues, and ankle injuries are possible. Regular walking and good circulation practices support your health.",
+    Pisces: "Jupiter and Neptune govern your feet and lymphatic system. Foot ailments, fluid retention, and immune issues may arise. Gentle exercise, swimming, and avoiding dampness will maintain your health.",
+  };
+  return base[rashi] || "Your health is governed by the placement of your ruling planet. Regular yoga, pranayama, and a sattvic diet will help maintain your vitality throughout life.";
+}
+
+function getWealthPrediction(rashi: string, currentDasha: string): string {
+  return `Your wealth potential is influenced by ${rashi} energy and the current ${currentDasha} Mahadasha period. ` +
+    "The second house (Dhana Bhava) and eleventh house (Labha Bhava) govern your financial flow. " +
+    "During favorable dasha periods, investments in land, fixed assets, and businesses aligned with your ruling planet tend to yield the best results. " +
+    "Building consistent savings habits and avoiding speculative investments during challenging dasha periods will protect your financial foundation. " +
+    "Your natural financial instincts are shaped by the sign and its lord, and working in alignment with these energies creates lasting prosperity.";
+}
+
+function getEducationPrediction(rashi: string): string {
+  const edu: Partial<Record<string, string>> = {
+    Gemini: "Mercury's strong influence gives you exceptional intellectual capacity and a natural love for learning. You excel in languages, communication, commerce, and information technology.",
+    Virgo: "Your analytical and detail-oriented mind makes you excel in technical fields, medicine, research, and systematic disciplines.",
+    Sagittarius: "Jupiter's influence makes you a natural philosopher and seeker of higher knowledge. You excel in philosophy, law, education, and spirituality.",
+    Aquarius: "Your innovative mind is drawn to technology, science, and unconventional fields of study.",
+  };
+  return edu[rashi] || `The fifth house of your chart governs education and intelligence. Your ${rashi} Moon sign gives you specific intellectual strengths that thrive when you pursue subjects aligned with your ruling planet's domain. Consistent study habits, combined with your natural curiosity, lead to academic achievement.`;
+}
+
+function getChildrenPrediction(lagna: string): string {
+  return `The fifth house from your ${lagna} Lagna governs children and creativity. ` +
+    "Depending on the strength of Jupiter and the fifth lord in your chart, you have the potential for children who bring great joy and pride. " +
+    "The timing of parenthood is often indicated by favorable Jupiter transits or Jupiter-related dasha periods. " +
+    "Your children are likely to inherit your intellectual and spiritual qualities.";
+}
+
+function getSpiritualPrediction(nakshatra: string): string {
+  const spiritual: Partial<Record<string, string>> = {
+    Ashwini: "Your spiritual path involves healing and service. The Ashwini Kumaras inspire you toward rapid spiritual evolution.",
+    Rohini: "Brahma's nakshatra gives you a deep connection to creation and manifestation. Beauty, devotion, and gratitude are your spiritual tools.",
+    Pushya: "Saturn's nakshatra of nourishment makes you a natural spiritual nurturer. Service to others and feeding the hungry are powerful spiritual practices for you.",
+    Chitra: "Vishwakarma's nakshatra gives you the ability to perceive divine architecture in all creation. Art, craftsmanship, and beauty are your spiritual pathways.",
+    Shravana: "Vishnu's nakshatra makes listening and learning your spiritual path. Sacred recitation, study of scriptures, and pilgrimage are especially beneficial.",
+  };
+  return spiritual[nakshatra] || `The ${nakshatra} Nakshatra connects you to specific divine energies that support your spiritual evolution. Regular meditation, worship of your Nakshatra deity, and acts of selfless service accelerate your inner growth. The spiritual life is not separate from your daily existence — it infuses every action with deeper meaning.`;
+}
+
+function getAnnualForecast(mahadasha: string, antardasha: string, rashi: string): string {
+  const year = new Date().getFullYear();
+  return `In ${year}, you are under the combined influence of ${mahadasha} Mahadasha and ${antardasha || mahadasha} Antardasha. ` +
+    `For your ${rashi} Moon sign, this year brings a blend of challenges and opportunities shaped by these planetary lords. ` +
+    "Focus on activities aligned with your ruling planets, maintain regular spiritual practice, and stay grounded during turbulent periods. " +
+    "The first half of the year generally shows momentum in career and financial areas, while the second half favors introspection, relationships, and spiritual growth. " +
+    "Key transits of Jupiter and Saturn over your natal Moon position will be the most significant planetary influences this year.";
+}
+
+function getMonthlyPrediction(mahadasha: string, rashi: string, monthIdx: number): string {
+  const themes = [
+    "New beginnings and initiating plans are favored. Channel your energy into fresh starts.",
+    "Focus on building stability. Financial decisions made now have long-term implications.",
+    "Communication and networking bring opportunities. Express yourself clearly.",
+    "Family and emotional matters take center stage. Nurture close relationships.",
+    "Your confidence is high. Creative projects and leadership opportunities emerge.",
+    "Health and daily routines deserve attention. Service to others brings rewards.",
+    "Partnerships and collaborations are highlighted. Seek balance in relationships.",
+    "Transformation and deep insight are themes. Let go of what no longer serves you.",
+    "Expansion and optimism characterize this period. Travel and learning are favored.",
+    "Career and reputation matters are in focus. Steady effort brings recognition.",
+    "Social connections and group activities are highlighted. Your goals gain clarity.",
+    "Spiritual reflection and completion of cycles. Rest and inner renewal are essential.",
+  ];
+  return themes[monthIdx] + ` ${mahadasha} Mahadasha amplifies these themes for ${rashi} Moon sign natives.`;
+}
+
+function getRemedies(nakshatraLord: string, rashi: string): string[] {
+  const remedies: Record<string, string[]> = {
+    Sun: ["Offer water to the Sun every morning at sunrise", "Recite Aditya Hridayam on Sundays", "Wear ruby or red coral on the ring finger", "Donate wheat, jaggery, and copper on Sundays", "Light a ghee lamp in the east direction daily"],
+    Moon: ["Offer water to the Moon on full moon nights", "Recite Chandra mantras on Mondays", "Wear pearl or moonstone in silver on the right hand", "Donate white rice, milk, and silver on Mondays", "Practice water-based rituals and stay near water bodies"],
+    Mars: ["Recite Hanuman Chalisa on Tuesdays", "Donate red lentils, red cloth, and copper on Tuesdays", "Wear red coral in gold on the ring finger", "Light a ghee lamp in the south direction", "Practice physical discipline and martial arts"],
+    Mercury: ["Recite Vishnu Sahasranama on Wednesdays", "Donate green mung dal and emeralds on Wednesdays", "Wear emerald on the little finger", "Feed parrots and crows", "Practice writing, learning, and communication skills"],
+    Jupiter: ["Recite Guru Stotram on Thursdays", "Donate yellow cloth, turmeric, and gold on Thursdays", "Wear yellow sapphire in gold", "Serve teachers, priests, and wise elders", "Plant banana trees and care for them"],
+    Venus: ["Recite Shukra mantras on Fridays", "Donate white rice, sugar, and white flowers on Fridays", "Wear diamond or white sapphire in silver", "Worship Goddess Lakshmi on Fridays", "Practice arts, music, or creative pursuits"],
+    Saturn: ["Recite Shani Stotram on Saturdays", "Donate black sesame, iron, and dark-colored items on Saturdays", "Wear blue sapphire or amethyst in silver", "Feed crows and the less fortunate on Saturdays", "Practice discipline, patience, and service to elderly"],
+    Rahu: ["Recite Rahu mantras on Saturdays", "Donate hessonite garnet and dark items on Saturdays", "Offer coconut and flowers at Rahu temples", "Avoid ego-driven actions and practice humility", "Meditate during Rahu Kalam periods for protection"],
+    Ketu: ["Recite Ketu mantras and Ganesh prayers", "Donate cat's eye gemstone and grey items", "Visit Ganesha temples on Tuesdays", "Practice yoga and spiritual disciplines", "Avoid materialism and focus on inner wisdom"],
+  };
+  return remedies[nakshatraLord] || ["Recite the Mahamrityunjaya Mantra daily", "Light a lamp before your household deity each morning", "Practice gratitude and selfless service"];
+}
+
+function getSpiritualPractices(rashi: string): string {
+  const practices: Partial<Record<string, string>> = {
+    Aries: "Daily Surya Namaskar practice at sunrise, recitation of Hanuman Chalisa on Tuesdays, and offering water to the Sun strengthen your ruling planet Mars and cultivate inner discipline.",
+    Taurus: "Weekly Lakshmi puja on Fridays, Shukra mantra recitation, and artistic or musical devotional practice harmonize your Venusian energy and attract abundance and peace.",
+    Gemini: "Daily study of sacred texts, Vishnu Sahasranama recitation on Wednesdays, and pranayama practices calm Mercury's restless energy and sharpen your already keen intellect.",
+    Cancer: "Moon worship on Mondays, Chandra mantra recitation at night, and emotional release through devotional singing (bhajans) align your lunar energy with higher consciousness.",
+    Leo: "Morning Sun salutations at sunrise, offering water to the Sun, and recitation of Aditya Hridayam energize your solar nature and cultivate leadership with humility.",
+    Virgo: "Careful daily routines, service to others, and Vishnu puja on Wednesdays channel your Mercury energy constructively and reduce anxiety through meaningful action.",
+  };
+  return practices[rashi] || "Regular morning meditation at sunrise, evening prayers at twilight, chanting of the Gayatri Mantra 108 times, and monthly visits to a temple dedicated to your ruling planet form the foundation of your spiritual practice.";
+}
+
+// ─── Utility Functions ────────────────────────────────────────────────────────
+
+function formatDate(dob: string): string {
+  const d = new Date(dob + "T00:00:00");
+  return d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+}
+
+function formatDate2(d: Date): string {
+  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+function getRashiSanskrit(rashi: string): string {
+  const map: Record<string, string> = {
+    Aries: "Mesha", Taurus: "Vrishabha", Gemini: "Mithuna", Cancer: "Karka",
+    Leo: "Simha", Virgo: "Kanya", Libra: "Tula", Scorpio: "Vrishchika",
+    Sagittarius: "Dhanu", Capricorn: "Makara", Aquarius: "Kumbha", Pisces: "Meena"
+  };
+  return map[rashi] || rashi;
+}
+
+// ─── Main Generator ───────────────────────────────────────────────────────────
+
+export async function generateKundaliPdf(data: BirthData): Promise<Blob> {
+  const chart = buildChart(data);
+  const doc = new jsPDF("p", "mm", "a4");
+
+  // Cover Page
+  addCoverPage(doc, data, chart);
+
+  // Birth Coordinates & D1 Birth Chart
+  addBirthSummaryPage(doc, data, chart);
+
+  // Rashi Analysis
+  addRashiPage(doc, chart);
+
+  // Nakshatra Analysis
+  addNakshatraPage(doc, chart);
+
+  // House Predictions
+  addHousePage(doc, chart);
+
+  // Dasha Timelines
+  addDashaPage(doc, chart, data.plan === "detailed");
+
+  // Auspicious Yogas
+  addYogasPage(doc, chart);
+
+  // Remedies & Lucky Factors
+  addRemediesPage(doc, chart);
+
+  // Detailed predictions for both plans (gating transits for detailed only)
+  addDetailedPredictions(doc, chart, data.plan === "detailed");
+
+  // Extra predictions for Detailed 30-Page Report
+  if (data.plan === "detailed") {
+    addPremiumClassicalExpansion(doc, data, chart);
+  }
+
+  // Sacred Closing Page
+  addClosingPage(doc, data, chart);
+
+  return doc.output("blob");
+}

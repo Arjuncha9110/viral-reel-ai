@@ -1,0 +1,66 @@
+{
+  "country": "South Africa",
+  "code": "ZA",
+  "states": [
+    {
+      "name": "Gauteng",
+      "code": "GP",
+      "cities": [
+        {
+          "name": "Johannesburg",
+          "lat": -26.2041,
+          "lon": 28.0473,
+          "timezone": "Africa/Johannesburg"
+        },
+        {
+          "name": "Pretoria",
+          "lat": -25.7479,
+          "lon": 28.2293,
+          "timezone": "Africa/Johannesburg"
+        },
+        {
+          "name": "Soweto",
+          "lat": -26.2677,
+          "lon": 27.8584,
+          "timezone": "Africa/Johannesburg"
+        }
+      ]
+    },
+    {
+      "name": "Western Cape",
+      "code": "WC",
+      "cities": [
+        {
+          "name": "Cape Town",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "timezone": "Africa/Johannesburg"
+        },
+        {
+          "name": "Stellenbosch",
+          "lat": -33.9321,
+          "lon": 18.8602,
+          "timezone": "Africa/Johannesburg"
+        }
+      ]
+    },
+    {
+      "name": "KwaZulu-Natal",
+      "code": "KZN",
+      "cities": [
+        {
+          "name": "Durban",
+          "lat": -29.8587,
+          "lon": 31.0218,
+          "timezone": "Africa/Johannesburg"
+        },
+        {
+          "name": "Pietermaritzburg",
+          "lat": -29.6006,
+          "lon": 30.3794,
+          "timezone": "Africa/Johannesburg"
+        }
+      ]
+    }
+  ]
+}

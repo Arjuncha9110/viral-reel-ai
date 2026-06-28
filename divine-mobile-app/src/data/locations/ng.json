@@ -1,0 +1,48 @@
+{
+  "country": "Nigeria",
+  "code": "NG",
+  "states": [
+    {
+      "name": "Lagos",
+      "code": "LA",
+      "cities": [
+        {
+          "name": "Lagos",
+          "lat": 6.5244,
+          "lon": 3.3792,
+          "timezone": "Africa/Lagos"
+        },
+        {
+          "name": "Ikeja",
+          "lat": 6.5958,
+          "lon": 3.3425,
+          "timezone": "Africa/Lagos"
+        }
+      ]
+    },
+    {
+      "name": "Abuja FCT",
+      "code": "FC",
+      "cities": [
+        {
+          "name": "Abuja",
+          "lat": 9.0579,
+          "lon": 7.4951,
+          "timezone": "Africa/Lagos"
+        }
+      ]
+    },
+    {
+      "name": "Rivers",
+      "code": "RI",
+      "cities": [
+        {
+          "name": "Port Harcourt",
+          "lat": 4.8156,
+          "lon": 7.0498,
+          "timezone": "Africa/Lagos"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "country": "Germany",
+  "code": "DE",
+  "states": [
+    {
+      "name": "Bavaria",
+      "code": "BY",
+      "cities": [
+        {
+          "name": "Munich",
+          "lat": 48.1351,
+          "lon": 11.582,
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "name": "Nuremberg",
+          "lat": 49.4521,
+          "lon": 11.0767,
+          "timezone": "Europe/Berlin"
+        }
+      ]
+    },
+    {
+      "name": "North Rhine-Westphalia",
+      "code": "NW",
+      "cities": [
+        {
+          "name": "Cologne",
+          "lat": 50.9333,
+          "lon": 6.95,
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "name": "Dusseldorf",
+          "lat": 51.2217,
+          "lon": 6.7762,
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "name": "Dortmund",
+          "lat": 51.5136,
+          "lon": 7.4653,
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "name": "Essen",
+          "lat": 51.4556,
+          "lon": 7.0116,
+          "timezone": "Europe/Berlin"
+        }
+      ]
+    },
+    {
+      "name": "Berlin",
+      "code": "BE",
+      "cities": [
+        {
+          "name": "Berlin",
+          "lat": 52.52,
+          "lon": 13.405,
+          "timezone": "Europe/Berlin"
+        }
+      ]
+    },
+    {
+      "name": "Hamburg",
+      "code": "HH",
+      "cities": [
+        {
+          "name": "Hamburg",
+          "lat": 53.5753,
+          "lon": 10.0153,
+          "timezone": "Europe/Berlin"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" width="420" height="420">
+<g transform="translate(210,210)">
+
+  <!-- ── OUTER CIRCLE ── -->
+  <circle r="207" fill="#0b1730"/>
+  <circle r="203" fill="none" stroke="#d8bc7a" stroke-width="4"/>
+  <circle r="197" fill="none" stroke="#d8bc7a" stroke-width="0.8" opacity="0.4"/>
+
+  <!-- ── BHUPURA SQUARE FILL ── -->
+  <rect x="-167" y="-167" width="334" height="334" fill="#0f1e3a"/>
+
+  <!-- Bhupura double border -->
+  <rect x="-167" y="-167" width="334" height="334" fill="none" stroke="#d8bc7a" stroke-width="2.5"/>
+  <rect x="-158" y="-158" width="316" height="316" fill="none" stroke="#d8bc7a" stroke-width="0.9" opacity="0.55"/>
+
+  <!-- ── T-GATE TOP ── -->
+  <polyline points="-44,-167 -44,-182 -30,-182 -30,-196 30,-196 30,-182 44,-182 44,-167"
+            fill="none" stroke="#d8bc7a" stroke-width="2.2" stroke-linejoin="miter"/>
+  <!-- ── T-GATE BOTTOM ── -->
+  <polyline points="-44,167 -44,182 -30,182 -30,196 30,196 30,182 44,182 44,167"
+            fill="none" stroke="#d8bc7a" stroke-width="2.2" stroke-linejoin="miter"/>
+  <!-- ── T-GATE LEFT ── -->
+  <polyline points="-167,-44 -182,-44 -182,-30 -196,-30 -196,30 -182,30 -182,44 -167,44"
+            fill="none" stroke="#d8bc7a" stroke-width="2.2" stroke-linejoin="miter"/>
+  <!-- ── T-GATE RIGHT ── -->
+  <polyline points="167,-44 182,-44 182,-30 196,-30 196,30 182,30 182,44 167,44"
+            fill="none" stroke="#d8bc7a" stroke-width="2.2" stroke-linejoin="miter"/>
+
+  <!-- Cardinal 4-pointed stars -->
+  <polygon points="0,-199 2.5,-205 0,-211 -2.5,-205" fill="#d8bc7a"/>
+  <polygon points="-4,-205 0,-200 4,-205 0,-209"     fill="#d8bc7a"/>
+  <polygon points="0,199 2.5,205 0,211 -2.5,205"     fill="#d8bc7a"/>
+  <polygon points="-4,205 0,200 4,205 0,209"         fill="#d8bc7a"/>
+  <polygon points="-199,0 -205,2.5 -211,0 -205,-2.5" fill="#d8bc7a"/>
+  <polygon points="-205,-4 -200,0 -205,4 -209,0"     fill="#d8bc7a"/>
+  <polygon points="199,0 205,2.5 211,0 205,-2.5"     fill="#d8bc7a"/>
+  <polygon points="205,-4 200,0 205,4 209,0"         fill="#d8bc7a"/>
+
+  <!-- Bhupura side dots -->
+  <circle cx="-173" cy="-7" r="3.5" fill="#d8bc7a"/>
+  <circle cx="-173" cy="7"  r="3.5" fill="#d8bc7a"/>
+  <circle cx="173"  cy="-7" r="3.5" fill="#d8bc7a"/>
+  <circle cx="173"  cy="7"  r="3.5" fill="#d8bc7a"/>
+
+  <!-- ── LOTUS AREA BACKGROUND ── -->
+  <circle r="161" fill="#0c1930"/>
+  <circle r="161" fill="none" stroke="#d8bc7a" stroke-width="1.8"/>
+  <circle r="155" fill="none" stroke="#d8bc7a" stroke-width="0.7" opacity="0.4"/>
+
+  <!-- ── 16 OUTER LOTUS PETALS ── -->
+  <g fill="#d8bc7a1a" stroke="#d8bc7a" stroke-width="1.2">
+    <g transform="rotate(0)">  <ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(22.5)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(45)"> <ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(67.5)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(90)"> <ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(112.5)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(135)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(157.5)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(180)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(202.5)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(225)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(247.5)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(270)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(292.5)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(315)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+    <g transform="rotate(337.5)"><ellipse cx="0" cy="-140" rx="12" ry="19"/></g>
+  </g>
+
+  <!-- ── 8 INNER LOTUS PETALS ── -->
+  <g fill="#d8bc7a15" stroke="#d8bc7a" stroke-width="1">
+    <g transform="rotate(11.25)"> <ellipse cx="0" cy="-125" rx="9" ry="14"/></g>
+    <g transform="rotate(56.25)"> <ellipse cx="0" cy="-125" rx="9" ry="14"/></g>
+    <g transform="rotate(101.25)"><ellipse cx="0" cy="-125" rx="9" ry="14"/></g>
+    <g transform="rotate(146.25)"><ellipse cx="0" cy="-125" rx="9" ry="14"/></g>
+    <g transform="rotate(191.25)"><ellipse cx="0" cy="-125" rx="9" ry="14"/></g>
+    <g transform="rotate(236.25)"><ellipse cx="0" cy="-125" rx="9" ry="14"/></g>
+    <g transform="rotate(281.25)"><ellipse cx="0" cy="-125" rx="9" ry="14"/></g>
+    <g transform="rotate(326.25)"><ellipse cx="0" cy="-125" rx="9" ry="14"/></g>
+  </g>
+
+  <!-- ── INNER YANTRA CIRCLE ── -->
+  <circle r="113" fill="#0b1730"/>
+  <circle r="113" fill="none" stroke="#d8bc7a" stroke-width="2"/>
+  <circle r="108" fill="none" stroke="#d8bc7a" stroke-width="0.6" opacity="0.4"/>
+
+  <!-- ── SRI YANTRA — 9 INTERLOCKED TRIANGLES ──
+       4 upward Shiva triangles  (gold tint fill)
+       5 downward Shakti triangles (slightly darker fill)
+       All outlined in gold.
+       Scale: R=105, placed inside r=113 circle.
+  -->
+
+  <!-- Upward / Shiva triangles -->
+  <g fill="#d8bc7a25" stroke="#d8bc7a" stroke-width="1.4" stroke-linejoin="round">
+    <polygon points="0,-105  91,52.5  -91,52.5"/>
+    <polygon points="0,-65   56.3,32.5  -56.3,32.5"/>
+    <polygon points="0,-36.4  31.5,18.2  -31.5,18.2"/>
+    <polygon points="0,-14.7  12.7,7.4   -12.7,7.4"/>
+  </g>
+
+  <!-- Downward / Shakti triangles -->
+  <g fill="#d8bc7a0e" stroke="#d8bc7a" stroke-width="1.4" stroke-linejoin="round">
+    <polygon points="0,86.1   74.5,-43   -74.5,-43"/>
+    <polygon points="0,59    51.1,-29.5  -51.1,-29.5"/>
+    <polygon points="0,37.6  32.6,-18.8  -32.6,-18.8"/>
+    <polygon points="0,21    18.2,-10.5  -18.2,-10.5"/>
+    <polygon points="0,8.4    7.3,-4.2   -7.3,-4.2"/>
+  </g>
+
+  <!-- ── BINDU (central point) ── -->
+  <circle r="7"   fill="#d8bc7a"/>
+  <circle r="3.5" fill="#fff8e8"/>
+  <circle r="1.2" fill="#d8bc7a"/>
+
+</g>
+</svg>

@@ -1,0 +1,92 @@
+{
+    "Sun": {
+        "name": "Sun (Surya)",
+        "symbol": "☉",
+        "karaka": "Soul, Father, Authority, Government",
+        "themes": "Leadership, vitality, self-expression, ego, power, confidence",
+        "element": "Fire",
+        "nature": "Malefic (when afflicted)",
+        "spiritual": "Represents the Atman (soul) and divine consciousness. The source of life and spiritual illumination.",
+        "color": "text-sacred-amber"
+    },
+    "Moon": {
+        "name": "Moon (Chandra)",
+        "symbol": "☽",
+        "karaka": "Mind, Mother, Emotions, Public",
+        "themes": "Nurturing, intuition, feelings, mental peace, receptivity, imagination",
+        "element": "Water",
+        "nature": "Benefic",
+        "spiritual": "Represents the mind and emotional body. Gateway to inner peace and devotion.",
+        "color": "text-slate-300"
+    },
+    "Mars": {
+        "name": "Mars (Mangal)",
+        "symbol": "♂",
+        "karaka": "Courage, Siblings, Energy, Property",
+        "themes": "Warrior nature, action, leadership, conflict, passion, drive",
+        "element": "Fire",
+        "nature": "Malefic",
+        "spiritual": "Represents willpower and the ability to overcome obstacles. Spiritual warrior energy.",
+        "color": "text-red-500"
+    },
+    "Mercury": {
+        "name": "Mercury (Budha)",
+        "symbol": "☿",
+        "karaka": "Intelligence, Communication, Business",
+        "themes": "Logic, speech, commerce, learning, adaptability, wit",
+        "element": "Earth",
+        "nature": "Neutral (benefic when with benefics)",
+        "spiritual": "Represents discriminative intelligence and the power of the word. Bridge between worlds.",
+        "color": "text-green-500"
+    },
+    "Jupiter": {
+        "name": "Jupiter (Guru)",
+        "symbol": "♃",
+        "karaka": "Wisdom, Children, Wealth, Dharma",
+        "themes": "Expansion, knowledge, teaching, fortune, optimism, grace",
+        "element": "Ether",
+        "nature": "Benefic",
+        "spiritual": "Represents the spiritual teacher and divine grace. Path to higher knowledge and dharma.",
+        "color": "text-yellow-500"
+    },
+    "Venus": {
+        "name": "Venus (Shukra)",
+        "symbol": "♀",
+        "karaka": "Love, Spouse, Luxury, Arts",
+        "themes": "Beauty, harmony, relationships, pleasure, creativity, refinement",
+        "element": "Water",
+        "nature": "Benefic",
+        "spiritual": "Represents devotion and the path of bhakti. Divine love and aesthetic beauty.",
+        "color": "text-pink-400"
+    },
+    "Saturn": {
+        "name": "Saturn (Shani)",
+        "symbol": "♄",
+        "karaka": "Karma, Discipline, Longevity, Service",
+        "themes": "Limitation, responsibility, hard work, patience, detachment, time",
+        "element": "Air",
+        "nature": "Malefic",
+        "spiritual": "Represents karmic lessons and spiritual maturity. The great teacher through challenges.",
+        "color": "text-blue-600"
+    },
+    "Rahu": {
+        "name": "Rahu (North Node)",
+        "symbol": "☊",
+        "karaka": "Worldly Desires, Illusion, Innovation",
+        "themes": "Ambition, obsession, foreign influences, unconventional paths, material desires",
+        "element": "Air",
+        "nature": "Malefic (shadow planet)",
+        "spiritual": "Represents worldly attachments and the path of material experience. Catalyst for growth.",
+        "color": "text-purple-600"
+    },
+    "Ketu": {
+        "name": "Ketu (South Node)",
+        "symbol": "☋",
+        "karaka": "Moksha, Spirituality, Past Life",
+        "themes": "Detachment, mysticism, liberation, past karma, spiritual insight, renunciation",
+        "element": "Fire",
+        "nature": "Malefic (shadow planet)",
+        "spiritual": "Represents spiritual liberation and past life wisdom. Path to moksha and enlightenment.",
+        "color": "text-orange-600"
+    }
+}

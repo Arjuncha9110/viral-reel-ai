@@ -1,0 +1,1110 @@
+{
+  "country": "United States",
+  "code": "US",
+  "states": [
+    {
+      "name": "Alabama",
+      "code": "AL",
+      "cities": [
+        {
+          "name": "Birmingham",
+          "lat": 33.5186,
+          "lon": -86.8104,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Montgomery",
+          "lat": 32.3668,
+          "lon": -86.3,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Huntsville",
+          "lat": 34.7304,
+          "lon": -86.5861,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Mobile",
+          "lat": 30.6954,
+          "lon": -88.0399,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "Alaska",
+      "code": "AK",
+      "cities": [
+        {
+          "name": "Anchorage",
+          "lat": 61.2181,
+          "lon": -149.9003,
+          "timezone": "America/Anchorage"
+        },
+        {
+          "name": "Fairbanks",
+          "lat": 64.8378,
+          "lon": -147.7164,
+          "timezone": "America/Anchorage"
+        },
+        {
+          "name": "Juneau",
+          "lat": 58.3005,
+          "lon": -134.4197,
+          "timezone": "America/Anchorage"
+        }
+      ]
+    },
+    {
+      "name": "Arizona",
+      "code": "AZ",
+      "cities": [
+        {
+          "name": "Phoenix",
+          "lat": 33.4484,
+          "lon": -112.074,
+          "timezone": "America/Phoenix"
+        },
+        {
+          "name": "Tucson",
+          "lat": 32.2226,
+          "lon": -110.9747,
+          "timezone": "America/Phoenix"
+        },
+        {
+          "name": "Mesa",
+          "lat": 33.4152,
+          "lon": -111.8315,
+          "timezone": "America/Phoenix"
+        },
+        {
+          "name": "Scottsdale",
+          "lat": 33.4942,
+          "lon": -111.9261,
+          "timezone": "America/Phoenix"
+        },
+        {
+          "name": "Tempe",
+          "lat": 33.4255,
+          "lon": -111.94,
+          "timezone": "America/Phoenix"
+        }
+      ]
+    },
+    {
+      "name": "Arkansas",
+      "code": "AR",
+      "cities": [
+        {
+          "name": "Little Rock",
+          "lat": 34.7465,
+          "lon": -92.2896,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Fort Smith",
+          "lat": 35.3859,
+          "lon": -94.3985,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "California",
+      "code": "CA",
+      "cities": [
+        {
+          "name": "Los Angeles",
+          "lat": 34.0522,
+          "lon": -118.2437,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "San Francisco",
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "San Diego",
+          "lat": 32.7157,
+          "lon": -117.1611,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "San Jose",
+          "lat": 37.3382,
+          "lon": -121.8863,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Sacramento",
+          "lat": 38.5816,
+          "lon": -121.4944,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Fresno",
+          "lat": 36.7378,
+          "lon": -119.7871,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Long Beach",
+          "lat": 33.7701,
+          "lon": -118.1937,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Oakland",
+          "lat": 37.8044,
+          "lon": -122.2712,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Bakersfield",
+          "lat": 35.3733,
+          "lon": -119.0187,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Anaheim",
+          "lat": 33.8366,
+          "lon": -117.9143,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Santa Ana",
+          "lat": 33.7455,
+          "lon": -117.8677,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Riverside",
+          "lat": 33.9806,
+          "lon": -117.3755,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Fremont",
+          "lat": 37.5485,
+          "lon": -121.9886,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Irvine",
+          "lat": 33.6846,
+          "lon": -117.8265,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Sunnyvale",
+          "lat": 37.3688,
+          "lon": -122.0363,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Santa Clara",
+          "lat": 37.3541,
+          "lon": -121.9552,
+          "timezone": "America/Los_Angeles"
+        }
+      ]
+    },
+    {
+      "name": "Colorado",
+      "code": "CO",
+      "cities": [
+        {
+          "name": "Denver",
+          "lat": 39.7392,
+          "lon": -104.9903,
+          "timezone": "America/Denver"
+        },
+        {
+          "name": "Colorado Springs",
+          "lat": 38.8339,
+          "lon": -104.8214,
+          "timezone": "America/Denver"
+        },
+        {
+          "name": "Aurora",
+          "lat": 39.7294,
+          "lon": -104.8319,
+          "timezone": "America/Denver"
+        },
+        {
+          "name": "Boulder",
+          "lat": 40.015,
+          "lon": -105.2705,
+          "timezone": "America/Denver"
+        }
+      ]
+    },
+    {
+      "name": "Connecticut",
+      "code": "CT",
+      "cities": [
+        {
+          "name": "Bridgeport",
+          "lat": 41.1865,
+          "lon": -73.1952,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "New Haven",
+          "lat": 41.3082,
+          "lon": -72.9282,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Hartford",
+          "lat": 41.7658,
+          "lon": -72.6851,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Stamford",
+          "lat": 41.0534,
+          "lon": -73.5387,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Florida",
+      "code": "FL",
+      "cities": [
+        {
+          "name": "Miami",
+          "lat": 25.7617,
+          "lon": -80.1918,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Orlando",
+          "lat": 28.5383,
+          "lon": -81.3792,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Tampa",
+          "lat": 27.9506,
+          "lon": -82.4572,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Jacksonville",
+          "lat": 30.3322,
+          "lon": -81.6557,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Fort Lauderdale",
+          "lat": 26.1224,
+          "lon": -80.1373,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Tallahassee",
+          "lat": 30.4518,
+          "lon": -84.2807,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "St. Petersburg",
+          "lat": 27.7676,
+          "lon": -82.6403,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Georgia",
+      "code": "GA",
+      "cities": [
+        {
+          "name": "Atlanta",
+          "lat": 33.749,
+          "lon": -84.388,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Augusta",
+          "lat": 33.4735,
+          "lon": -82.0105,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Columbus",
+          "lat": 32.461,
+          "lon": -84.9877,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Savannah",
+          "lat": 32.0835,
+          "lon": -81.0998,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Athens",
+          "lat": 33.9519,
+          "lon": -83.3576,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Hawaii",
+      "code": "HI",
+      "cities": [
+        {
+          "name": "Honolulu",
+          "lat": 21.3069,
+          "lon": -157.8583,
+          "timezone": "Pacific/Honolulu"
+        },
+        {
+          "name": "Hilo",
+          "lat": 19.7297,
+          "lon": -155.09,
+          "timezone": "Pacific/Honolulu"
+        },
+        {
+          "name": "Maui",
+          "lat": 20.7984,
+          "lon": -156.3319,
+          "timezone": "Pacific/Honolulu"
+        }
+      ]
+    },
+    {
+      "name": "Idaho",
+      "code": "ID",
+      "cities": [
+        {
+          "name": "Boise",
+          "lat": 43.615,
+          "lon": -116.2023,
+          "timezone": "America/Boise"
+        },
+        {
+          "name": "Nampa",
+          "lat": 43.5407,
+          "lon": -116.5635,
+          "timezone": "America/Boise"
+        }
+      ]
+    },
+    {
+      "name": "Illinois",
+      "code": "IL",
+      "cities": [
+        {
+          "name": "Chicago",
+          "lat": 41.8781,
+          "lon": -87.6298,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Aurora",
+          "lat": 41.7606,
+          "lon": -88.3201,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Naperville",
+          "lat": 41.7508,
+          "lon": -88.1535,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Rockford",
+          "lat": 42.2711,
+          "lon": -89.094,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Joliet",
+          "lat": 41.525,
+          "lon": -88.0817,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Springfield",
+          "lat": 39.7817,
+          "lon": -89.6501,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "Indiana",
+      "code": "IN",
+      "cities": [
+        {
+          "name": "Indianapolis",
+          "lat": 39.7684,
+          "lon": -86.1581,
+          "timezone": "America/Indiana/Indianapolis"
+        },
+        {
+          "name": "Fort Wayne",
+          "lat": 41.0793,
+          "lon": -85.1394,
+          "timezone": "America/Indiana/Indianapolis"
+        },
+        {
+          "name": "Evansville",
+          "lat": 37.9716,
+          "lon": -87.5711,
+          "timezone": "America/Indiana/Indianapolis"
+        },
+        {
+          "name": "South Bend",
+          "lat": 41.6764,
+          "lon": -86.252,
+          "timezone": "America/Indiana/Indianapolis"
+        }
+      ]
+    },
+    {
+      "name": "Iowa",
+      "code": "IA",
+      "cities": [
+        {
+          "name": "Des Moines",
+          "lat": 41.5868,
+          "lon": -93.625,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Cedar Rapids",
+          "lat": 41.9779,
+          "lon": -91.6656,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "Kansas",
+      "code": "KS",
+      "cities": [
+        {
+          "name": "Wichita",
+          "lat": 37.6872,
+          "lon": -97.3301,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Overland Park",
+          "lat": 38.9822,
+          "lon": -94.6708,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Kansas City",
+          "lat": 39.1155,
+          "lon": -94.6268,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "Kentucky",
+      "code": "KY",
+      "cities": [
+        {
+          "name": "Louisville",
+          "lat": 38.2527,
+          "lon": -85.7585,
+          "timezone": "America/Kentucky/Louisville"
+        },
+        {
+          "name": "Lexington",
+          "lat": 38.0406,
+          "lon": -84.5037,
+          "timezone": "America/Kentucky/Louisville"
+        }
+      ]
+    },
+    {
+      "name": "Louisiana",
+      "code": "LA",
+      "cities": [
+        {
+          "name": "New Orleans",
+          "lat": 29.9511,
+          "lon": -90.0715,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Baton Rouge",
+          "lat": 30.4515,
+          "lon": -91.1871,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Shreveport",
+          "lat": 32.5252,
+          "lon": -93.7502,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "Maryland",
+      "code": "MD",
+      "cities": [
+        {
+          "name": "Baltimore",
+          "lat": 39.2904,
+          "lon": -76.6122,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Frederick",
+          "lat": 39.4143,
+          "lon": -77.4105,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Rockville",
+          "lat": 39.084,
+          "lon": -77.1528,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Massachusetts",
+      "code": "MA",
+      "cities": [
+        {
+          "name": "Boston",
+          "lat": 42.3601,
+          "lon": -71.0589,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Worcester",
+          "lat": 42.2626,
+          "lon": -71.8023,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Cambridge",
+          "lat": 42.3736,
+          "lon": -71.1097,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Springfield",
+          "lat": 42.1015,
+          "lon": -72.5898,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Lowell",
+          "lat": 42.6334,
+          "lon": -71.3162,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Michigan",
+      "code": "MI",
+      "cities": [
+        {
+          "name": "Detroit",
+          "lat": 42.3314,
+          "lon": -83.0458,
+          "timezone": "America/Detroit"
+        },
+        {
+          "name": "Grand Rapids",
+          "lat": 42.9634,
+          "lon": -85.6681,
+          "timezone": "America/Detroit"
+        },
+        {
+          "name": "Ann Arbor",
+          "lat": 42.2808,
+          "lon": -83.743,
+          "timezone": "America/Detroit"
+        },
+        {
+          "name": "Lansing",
+          "lat": 42.7325,
+          "lon": -84.5555,
+          "timezone": "America/Detroit"
+        },
+        {
+          "name": "Dearborn",
+          "lat": 42.3223,
+          "lon": -83.1763,
+          "timezone": "America/Detroit"
+        }
+      ]
+    },
+    {
+      "name": "Minnesota",
+      "code": "MN",
+      "cities": [
+        {
+          "name": "Minneapolis",
+          "lat": 44.9778,
+          "lon": -93.265,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Saint Paul",
+          "lat": 44.9537,
+          "lon": -93.09,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Rochester",
+          "lat": 44.0121,
+          "lon": -92.4802,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "Missouri",
+      "code": "MO",
+      "cities": [
+        {
+          "name": "Kansas City",
+          "lat": 39.0997,
+          "lon": -94.5786,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "St. Louis",
+          "lat": 38.627,
+          "lon": -90.1994,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Springfield",
+          "lat": 37.209,
+          "lon": -93.2923,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "Nevada",
+      "code": "NV",
+      "cities": [
+        {
+          "name": "Las Vegas",
+          "lat": 36.1699,
+          "lon": -115.1398,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Henderson",
+          "lat": 36.0395,
+          "lon": -114.9817,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Reno",
+          "lat": 39.5296,
+          "lon": -119.8138,
+          "timezone": "America/Los_Angeles"
+        }
+      ]
+    },
+    {
+      "name": "New Jersey",
+      "code": "NJ",
+      "cities": [
+        {
+          "name": "Newark",
+          "lat": 40.7357,
+          "lon": -74.1724,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Jersey City",
+          "lat": 40.7178,
+          "lon": -74.0431,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Paterson",
+          "lat": 40.9168,
+          "lon": -74.1718,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Edison",
+          "lat": 40.5187,
+          "lon": -74.4121,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Trenton",
+          "lat": 40.217,
+          "lon": -74.7429,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "New York",
+      "code": "NY",
+      "cities": [
+        {
+          "name": "New York City",
+          "lat": 40.7128,
+          "lon": -74.006,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Buffalo",
+          "lat": 42.8864,
+          "lon": -78.8784,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Rochester",
+          "lat": 43.1566,
+          "lon": -77.6088,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Yonkers",
+          "lat": 40.9312,
+          "lon": -73.8988,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Syracuse",
+          "lat": 43.0481,
+          "lon": -76.1474,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Albany",
+          "lat": 42.6526,
+          "lon": -73.7562,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Queens",
+          "lat": 40.7282,
+          "lon": -73.7949,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Brooklyn",
+          "lat": 40.6782,
+          "lon": -73.9442,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "North Carolina",
+      "code": "NC",
+      "cities": [
+        {
+          "name": "Charlotte",
+          "lat": 35.2271,
+          "lon": -80.8431,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Raleigh",
+          "lat": 35.7796,
+          "lon": -78.6382,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Greensboro",
+          "lat": 36.0726,
+          "lon": -79.792,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Durham",
+          "lat": 35.994,
+          "lon": -78.8986,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Winston-Salem",
+          "lat": 36.0999,
+          "lon": -80.2442,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Ohio",
+      "code": "OH",
+      "cities": [
+        {
+          "name": "Columbus",
+          "lat": 39.9612,
+          "lon": -82.9988,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Cleveland",
+          "lat": 41.4993,
+          "lon": -81.6944,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Cincinnati",
+          "lat": 39.1031,
+          "lon": -84.512,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Toledo",
+          "lat": 41.6639,
+          "lon": -83.5552,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Akron",
+          "lat": 41.0814,
+          "lon": -81.519,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Oregon",
+      "code": "OR",
+      "cities": [
+        {
+          "name": "Portland",
+          "lat": 45.5051,
+          "lon": -122.675,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Salem",
+          "lat": 44.9429,
+          "lon": -123.0351,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Eugene",
+          "lat": 44.0521,
+          "lon": -123.0868,
+          "timezone": "America/Los_Angeles"
+        }
+      ]
+    },
+    {
+      "name": "Pennsylvania",
+      "code": "PA",
+      "cities": [
+        {
+          "name": "Philadelphia",
+          "lat": 39.9526,
+          "lon": -75.1652,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Pittsburgh",
+          "lat": 40.4406,
+          "lon": -79.9959,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Allentown",
+          "lat": 40.6084,
+          "lon": -75.4902,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Erie",
+          "lat": 42.1292,
+          "lon": -80.0851,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Texas",
+      "code": "TX",
+      "cities": [
+        {
+          "name": "Houston",
+          "lat": 29.7604,
+          "lon": -95.3698,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "San Antonio",
+          "lat": 29.4241,
+          "lon": -98.4936,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Dallas",
+          "lat": 32.7767,
+          "lon": -96.797,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Austin",
+          "lat": 30.2672,
+          "lon": -97.7431,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Fort Worth",
+          "lat": 32.7555,
+          "lon": -97.3308,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "El Paso",
+          "lat": 31.7619,
+          "lon": -106.485,
+          "timezone": "America/Denver"
+        },
+        {
+          "name": "Arlington",
+          "lat": 32.7357,
+          "lon": -97.1081,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Plano",
+          "lat": 33.0198,
+          "lon": -96.6989,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Irving",
+          "lat": 32.814,
+          "lon": -96.9489,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Frisco",
+          "lat": 33.1507,
+          "lon": -96.8236,
+          "timezone": "America/Chicago"
+        }
+      ]
+    },
+    {
+      "name": "Virginia",
+      "code": "VA",
+      "cities": [
+        {
+          "name": "Virginia Beach",
+          "lat": 36.8529,
+          "lon": -75.978,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Norfolk",
+          "lat": 36.8508,
+          "lon": -76.2859,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Chesapeake",
+          "lat": 36.7682,
+          "lon": -76.2875,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Richmond",
+          "lat": 37.5407,
+          "lon": -77.436,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Arlington",
+          "lat": 38.8816,
+          "lon": -77.091,
+          "timezone": "America/New_York"
+        },
+        {
+          "name": "Alexandria",
+          "lat": 38.8048,
+          "lon": -77.0469,
+          "timezone": "America/New_York"
+        }
+      ]
+    },
+    {
+      "name": "Washington",
+      "code": "WA",
+      "cities": [
+        {
+          "name": "Seattle",
+          "lat": 47.6062,
+          "lon": -122.3321,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Spokane",
+          "lat": 47.6587,
+          "lon": -117.426,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Tacoma",
+          "lat": 47.2529,
+          "lon": -122.4443,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Bellevue",
+          "lat": 47.6101,
+          "lon": -122.2015,
+          "timezone": "America/Los_Angeles"
+        },
+        {
+          "name": "Redmond",
+          "lat": 47.674,
+          "lon": -122.1215,
+          "timezone": "America/Los_Angeles"
+        }
+      ]
+    },
+    {
+      "name": "Wisconsin",
+      "code": "WI",
+      "cities": [
+        {
+          "name": "Milwaukee",
+          "lat": 43.0389,
+          "lon": -87.9065,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Madison",
+          "lat": 43.0731,
+          "lon": -89.4012,
+          "timezone": "America/Chicago"
+        },
+        {
+          "name": "Green Bay",
+          "lat": 44.5133,
+          "lon": -88.0133,
+          "timezone": "America/Chicago"
+        }
+      ]
+    }
+  ]
+}

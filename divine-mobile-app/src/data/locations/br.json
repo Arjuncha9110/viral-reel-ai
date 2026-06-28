@@ -1,0 +1,48 @@
+{
+  "country": "Brazil",
+  "code": "BR",
+  "states": [
+    {
+      "name": "S\u00e3o Paulo",
+      "code": "SP",
+      "cities": [
+        {
+          "name": "S\u00e3o Paulo",
+          "lat": -23.5505,
+          "lon": -46.6333,
+          "timezone": "America/Sao_Paulo"
+        },
+        {
+          "name": "Campinas",
+          "lat": -22.9056,
+          "lon": -47.0608,
+          "timezone": "America/Sao_Paulo"
+        }
+      ]
+    },
+    {
+      "name": "Rio de Janeiro",
+      "code": "RJ",
+      "cities": [
+        {
+          "name": "Rio de Janeiro",
+          "lat": -22.9068,
+          "lon": -43.1729,
+          "timezone": "America/Sao_Paulo"
+        }
+      ]
+    },
+    {
+      "name": "Minas Gerais",
+      "code": "MG",
+      "cities": [
+        {
+          "name": "Belo Horizonte",
+          "lat": -19.9167,
+          "lon": -43.9345,
+          "timezone": "America/Sao_Paulo"
+        }
+      ]
+    }
+  ]
+}

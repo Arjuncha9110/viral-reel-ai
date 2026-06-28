@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+Kannada:wght@400;500;600;700&family=Noto+Serif+Kannada:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Divine Panchang & Numerology - Spiritual Design System */
+
+@layer base {
+  :root {
+    /* Warm cream background */
+    --background: 40 33% 97%;
+    --foreground: 20 25% 15%;
+
+    /* Card surfaces */
+    --card: 40 30% 99%;
+    --card-foreground: 20 25% 15%;
+
+    /* Popover */
+    --popover: 40 30% 99%;
+    --popover-foreground: 20 25% 15%;
+
+    /* Primary: Saffron Orange */
+    --primary: 24 82% 48%;
+    --primary-foreground: 40 30% 99%;
+
+    /* Secondary: Deep Maroon */
+    --secondary: 0 55% 28%;
+    --secondary-foreground: 40 30% 99%;
+
+    /* Muted: Soft warm gray */
+    --muted: 30 22% 93%;
+    --muted-foreground: 20 18% 42%;
+
+    /* Accent: Vibrant Orange */
+    --accent: 26 90% 55%;
+    --accent-foreground: 20 30% 10%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 40 30% 99%;
+
+    /* Borders */
+    --border: 30 25% 88%;
+    --input: 30 25% 88%;
+    --ring: 24 90% 52%;
+
+    --radius: 0.75rem;
+
+    /* Custom spiritual colors */
+    --saffron: 24 82% 48%;
+    --saffron-light: 26 88% 60%;
+    --maroon: 0 55% 28%;
+    --maroon-light: 0 45% 38%;
+    --gold: 26 90% 55%;
+    --gold-light: 28 95% 65%;
+    --temple-cream: 40 33% 97%;
+    --sacred-amber: 24 85% 52%;
+
+    /* Gradients */
+    --gradient-saffron: linear-gradient(135deg, hsl(24, 82%, 48%), hsl(26, 88%, 58%));
+    --gradient-gold: linear-gradient(135deg, hsl(26, 90%, 55%), hsl(28, 95%, 65%));
+    --gradient-maroon: linear-gradient(135deg, hsl(0, 55%, 28%), hsl(0, 45%, 38%));
+    --gradient-sacred: linear-gradient(180deg, hsl(40, 33%, 97%) 0%, hsl(30, 28%, 93%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsla(24, 82%, 48%, 0.08) 0%, hsla(26, 90%, 55%, 0.08) 50%, hsla(0, 55%, 28%, 0.08) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsla(20, 40%, 20%, 0.07);
+    --shadow-card: 0 8px 30px -8px hsla(20, 40%, 20%, 0.09);
+    --shadow-elevated: 0 16px 48px -12px hsla(20, 40%, 20%, 0.14);
+    --shadow-glow-saffron: 0 0 30px hsla(24, 82%, 48%, 0.28);
+    --shadow-glow-gold: 0 0 24px hsla(26, 90%, 55%, 0.38);
+
+    /* Sidebar */
+    --sidebar-background: 40 30% 99%;
+    --sidebar-foreground: 20 25% 25%;
+    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary-foreground: 40 30% 99%;
+    --sidebar-accent: 30 25% 95%;
+    --sidebar-accent-foreground: 20 25% 25%;
+    --sidebar-border: 30 25% 88%;
+    --sidebar-ring: 24 95% 53%;
+  }
+
+  .dark {
+    --background: 20 25% 8%;
+    --foreground: 40 20% 95%;
+
+    --card: 20 20% 12%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 20 20% 12%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 24 90% 55%;
+    --primary-foreground: 20 25% 8%;
+
+    --secondary: 0 50% 35%;
+    --secondary-foreground: 40 20% 95%;
+
+    --muted: 20 15% 18%;
+    --muted-foreground: 30 15% 60%;
+
+    --accent: 43 90% 50%;
+    --accent-foreground: 20 25% 8%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 40 20% 95%;
+
+    --border: 20 15% 20%;
+    --input: 20 15% 20%;
+    --ring: 24 90% 55%;
+
+    --saffron: 24 90% 55%;
+    --saffron-light: 28 95% 65%;
+    --maroon: 0 50% 35%;
+    --maroon-light: 0 40% 45%;
+    --gold: 43 90% 50%;
+    --gold-light: 45 95% 60%;
+    --temple-cream: 20 25% 8%;
+    --sacred-amber: 35 85% 50%;
+
+    --gradient-saffron: linear-gradient(135deg, hsl(24, 90%, 55%), hsl(35, 85%, 50%));
+    --gradient-gold: linear-gradient(135deg, hsl(43, 90%, 50%), hsl(45, 95%, 60%));
+    --gradient-maroon: linear-gradient(135deg, hsl(0, 50%, 35%), hsl(0, 40%, 45%));
+    --gradient-sacred: linear-gradient(180deg, hsl(20, 25%, 8%) 0%, hsl(20, 20%, 12%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsla(24, 90%, 55%, 0.15) 0%, hsla(43, 90%, 50%, 0.1) 50%, hsla(0, 50%, 35%, 0.15) 100%);
+
+    --shadow-soft: 0 4px 20px -4px hsla(0, 0%, 0%, 0.3);
+    --shadow-card: 0 8px 30px -8px hsla(0, 0%, 0%, 0.4);
+    --shadow-elevated: 0 12px 40px -12px hsla(0, 0%, 0%, 0.5);
+    --shadow-glow-saffron: 0 0 30px hsla(24, 90%, 55%, 0.25);
+    --shadow-glow-gold: 0 0 20px hsla(43, 90%, 50%, 0.3);
+
+    --sidebar-background: 20 20% 10%;
+    --sidebar-foreground: 40 20% 90%;
+    --sidebar-primary: 24 90% 55%;
+    --sidebar-primary-foreground: 20 25% 8%;
+    --sidebar-accent: 20 15% 15%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 20 15% 20%;
+    --sidebar-ring: 24 90% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  .spiritual-card {
+    @apply bg-card rounded-2xl p-6 border border-border/50;
+    box-shadow: var(--shadow-card);
+  }
+
+  .sacred-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .text-gradient-saffron {
+    background: var(--gradient-saffron);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-saffron {
+    box-shadow: var(--shadow-glow-saffron);
+  }
+
+  .glow-gold {
+    box-shadow: var(--shadow-glow-gold);
+  }
+
+  .om-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 15c-3 0-5.5 2-6.5 5-1-1.5-2.8-2.5-4.8-2.5-3 0-5.5 2.5-5.5 5.5 0 2 1 3.8 2.5 4.8-3 1-5 3.5-5 6.5 0 4 3 7 7 7 2.5 0 4.5-1 6-2.8 1.5 1.8 3.5 2.8 6 2.8s4.5-1 6-2.8c1.5 1.8 3.5 2.8 6 2.8 4 0 7-3 7-7 0-3-2-5.5-5-6.5 1.5-1 2.5-2.8 2.5-4.8 0-3-2.5-5.5-5.5-5.5-2 0-3.8 1-4.8 2.5-1-3-3.5-5-6.5-5z' fill='%23f97316' fill-opacity='0.03'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  [data-report-language="kn"] {
+    font-family: "Noto Sans Kannada", "Noto Sans", sans-serif !important;
+    font-synthesis: none;
+  }
+
+  [data-report-language="kn"] .font-serif,
+  [data-report-language="kn"] h1,
+  [data-report-language="kn"] h2,
+  [data-report-language="kn"] h3,
+  [data-report-language="kn"] h4,
+  [data-report-language="kn"] h5,
+  [data-report-language="kn"] h6 {
+    font-family: "Noto Serif Kannada", "Noto Sans Kannada", serif !important;
+  }
+
+  [data-report-language="kn"] text,
+  [data-report-language="kn"] tspan {
+    font-family: "Noto Sans Kannada", "Noto Sans", sans-serif !important;
+    font-synthesis: none;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
+
+/* ──────────────── Premium Print & A4 Export Flow Styles ──────────────── */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  body, html {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .print-hidden,
+  .sticky,
+  header,
+  footer:not(.z-10),
+  .floating-bar {
+    display: none !important;
+  }
+
+  .page-break {
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    break-after: page !important;
+    break-inside: avoid-page !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    height: 297mm !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .page-break-dark {
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    break-after: page !important;
+    break-inside: avoid-page !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    height: 297mm !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  [data-report-page="true"] {
+    padding: 13mm !important;
+  }
+
+  [data-report-page="true"][data-export-mode="true"] > .flex-1 {
+    padding-top: 3mm !important;
+    padding-bottom: 3mm !important;
+  }
+
+  [data-report-page="true"][data-export-mode="true"] .my-auto {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  [data-report-page="true"][data-export-mode="true"] .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 10px !important;
+  }
+
+}

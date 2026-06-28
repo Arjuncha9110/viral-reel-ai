@@ -1,0 +1,36 @@
+{
+  "country": "Kenya",
+  "code": "KE",
+  "states": [
+    {
+      "name": "Nairobi",
+      "code": "NBI",
+      "cities": [
+        {
+          "name": "Nairobi",
+          "lat": -1.2921,
+          "lon": 36.8219,
+          "timezone": "Africa/Nairobi"
+        },
+        {
+          "name": "Westlands",
+          "lat": -1.2669,
+          "lon": 36.8026,
+          "timezone": "Africa/Nairobi"
+        }
+      ]
+    },
+    {
+      "name": "Coast",
+      "code": "CST",
+      "cities": [
+        {
+          "name": "Mombasa",
+          "lat": -4.0435,
+          "lon": 39.6682,
+          "timezone": "Africa/Nairobi"
+        }
+      ]
+    }
+  ]
+}

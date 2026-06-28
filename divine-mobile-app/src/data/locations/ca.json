@@ -1,0 +1,270 @@
+{
+  "country": "Canada",
+  "code": "CA",
+  "states": [
+    {
+      "name": "Ontario",
+      "code": "ON",
+      "cities": [
+        {
+          "name": "Toronto",
+          "lat": 43.6532,
+          "lon": -79.3832,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Ottawa",
+          "lat": 45.4215,
+          "lon": -75.6972,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Mississauga",
+          "lat": 43.589,
+          "lon": -79.6441,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Brampton",
+          "lat": 43.7315,
+          "lon": -79.7624,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Hamilton",
+          "lat": 43.2557,
+          "lon": -79.8711,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "London",
+          "lat": 42.9849,
+          "lon": -81.2453,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Markham",
+          "lat": 43.8561,
+          "lon": -79.337,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Vaughan",
+          "lat": 43.8361,
+          "lon": -79.4985,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Windsor",
+          "lat": 42.3149,
+          "lon": -83.0364,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Kitchener",
+          "lat": 43.4516,
+          "lon": -80.4925,
+          "timezone": "America/Toronto"
+        }
+      ]
+    },
+    {
+      "name": "British Columbia",
+      "code": "BC",
+      "cities": [
+        {
+          "name": "Vancouver",
+          "lat": 49.2827,
+          "lon": -123.1207,
+          "timezone": "America/Vancouver"
+        },
+        {
+          "name": "Surrey",
+          "lat": 49.1913,
+          "lon": -122.849,
+          "timezone": "America/Vancouver"
+        },
+        {
+          "name": "Burnaby",
+          "lat": 49.2488,
+          "lon": -122.9805,
+          "timezone": "America/Vancouver"
+        },
+        {
+          "name": "Richmond",
+          "lat": 49.1666,
+          "lon": -123.1336,
+          "timezone": "America/Vancouver"
+        },
+        {
+          "name": "Victoria",
+          "lat": 48.4284,
+          "lon": -123.3656,
+          "timezone": "America/Vancouver"
+        },
+        {
+          "name": "Kelowna",
+          "lat": 49.888,
+          "lon": -119.496,
+          "timezone": "America/Vancouver"
+        },
+        {
+          "name": "Abbotsford",
+          "lat": 49.0504,
+          "lon": -122.3045,
+          "timezone": "America/Vancouver"
+        }
+      ]
+    },
+    {
+      "name": "Quebec",
+      "code": "QC",
+      "cities": [
+        {
+          "name": "Montreal",
+          "lat": 45.5017,
+          "lon": -73.5673,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Quebec City",
+          "lat": 46.8139,
+          "lon": -71.208,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Laval",
+          "lat": 45.6066,
+          "lon": -73.7124,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Longueuil",
+          "lat": 45.5312,
+          "lon": -73.5185,
+          "timezone": "America/Toronto"
+        },
+        {
+          "name": "Sherbrooke",
+          "lat": 45.4042,
+          "lon": -71.8929,
+          "timezone": "America/Toronto"
+        }
+      ]
+    },
+    {
+      "name": "Alberta",
+      "code": "AB",
+      "cities": [
+        {
+          "name": "Calgary",
+          "lat": 51.0447,
+          "lon": -114.0719,
+          "timezone": "America/Edmonton"
+        },
+        {
+          "name": "Edmonton",
+          "lat": 53.5461,
+          "lon": -113.4938,
+          "timezone": "America/Edmonton"
+        },
+        {
+          "name": "Red Deer",
+          "lat": 52.269,
+          "lon": -113.8112,
+          "timezone": "America/Edmonton"
+        },
+        {
+          "name": "Lethbridge",
+          "lat": 49.6942,
+          "lon": -112.8328,
+          "timezone": "America/Edmonton"
+        },
+        {
+          "name": "Medicine Hat",
+          "lat": 50.0405,
+          "lon": -110.6773,
+          "timezone": "America/Edmonton"
+        }
+      ]
+    },
+    {
+      "name": "Manitoba",
+      "code": "MB",
+      "cities": [
+        {
+          "name": "Winnipeg",
+          "lat": 49.8951,
+          "lon": -97.1384,
+          "timezone": "America/Winnipeg"
+        },
+        {
+          "name": "Brandon",
+          "lat": 49.8483,
+          "lon": -99.95,
+          "timezone": "America/Winnipeg"
+        }
+      ]
+    },
+    {
+      "name": "Saskatchewan",
+      "code": "SK",
+      "cities": [
+        {
+          "name": "Saskatoon",
+          "lat": 52.1332,
+          "lon": -106.67,
+          "timezone": "America/Regina"
+        },
+        {
+          "name": "Regina",
+          "lat": 50.4452,
+          "lon": -104.6189,
+          "timezone": "America/Regina"
+        }
+      ]
+    },
+    {
+      "name": "Nova Scotia",
+      "code": "NS",
+      "cities": [
+        {
+          "name": "Halifax",
+          "lat": 44.6488,
+          "lon": -63.5752,
+          "timezone": "America/Halifax"
+        },
+        {
+          "name": "Sydney",
+          "lat": 46.1368,
+          "lon": -60.1942,
+          "timezone": "America/Halifax"
+        }
+      ]
+    },
+    {
+      "name": "New Brunswick",
+      "code": "NB",
+      "cities": [
+        {
+          "name": "Saint John",
+          "lat": 45.2733,
+          "lon": -66.0633,
+          "timezone": "America/Moncton"
+        },
+        {
+          "name": "Moncton",
+          "lat": 46.0878,
+          "lon": -64.7782,
+          "timezone": "America/Moncton"
+        },
+        {
+          "name": "Fredericton",
+          "lat": 45.9636,
+          "lon": -66.6431,
+          "timezone": "America/Moncton"
+        }
+      ]
+    }
+  ]
+}
