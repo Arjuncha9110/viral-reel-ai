@@ -105,6 +105,32 @@ const SadeSatiPage = () => {
         setPaymentError(null);
         setPurchaseStep("processing");
 
+        const isLocalhost = () => {
+            const hn = window.location.hostname;
+            return hn === "localhost" || hn === "127.0.0.1" || hn === "::1" || hn.endsWith(".local");
+        };
+
+        if (isLocalhost()) {
+            const fakeToken = btoa(JSON.stringify({ plan: "sade-sati", timestamp: Date.now() }));
+            const details = {
+                name,
+                email,
+                dob: birthDate,
+                tob: birthTime,
+                gender,
+                city: location.name,
+                lat: location.lat,
+                lon: location.lon,
+                timezone: location.timezone,
+                token: fakeToken,
+            };
+            localStorage.setItem("sade_sati_report_details", JSON.stringify(details));
+            navigate(
+                `/sade-sati-report-preview?name=${encodeURIComponent(name)}&dob=${birthDate}&tob=${birthTime}&email=${encodeURIComponent(email)}&gender=${gender}&city=${encodeURIComponent(location.name)}&lat=${location.lat}&lon=${location.lon}&tz=${location.timezone}&token=${fakeToken}`
+            );
+            return;
+        }
+
         const ok = await loadRazorpay();
         if (!ok) { setPaymentError("Failed to load payment gateway. Please try again."); setPurchaseStep("form"); return; }
 
@@ -120,7 +146,7 @@ const SadeSatiPage = () => {
             }
 
             const options = {
-                key: "rzp_live_Su2QpyCfiUhFPm",
+                key: "rzp_live_T7VQuiSRQHfoRP",
                 amount: REPORT_PRICE * 100,
                 currency: "INR",
                 order_id: orderData.orderId,

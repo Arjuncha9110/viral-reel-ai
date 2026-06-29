@@ -41,4 +41,4 @@ export const ORIGINAL_PRICES = {
 };
 
 export const PAYPAL_CLIENT_ID = "AYU04DvEk6voO19sHiayJwiMtc0aToBA46lJXHswXrx96cQjI60xzxGe7vhf22KJPD49ixdN4Bsk0qAg";
-export const RAZORPAY_KEY = "rzp_live_Su2QpyCfiUhFPm";
+export const RAZORPAY_KEY = "rzp_live_T7VQuiSRQHfoRP";
