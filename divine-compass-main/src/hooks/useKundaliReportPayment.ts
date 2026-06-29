@@ -148,12 +148,99 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
     if (paypalContainerRef.current) paypalContainerRef.current.innerHTML = "";
   }, [selectedPlan, paymentRegion]);
 
+  const loadRazorpay = (): Promise<boolean> =>
+    new Promise((resolve) => {
+      if ((window as any).Razorpay) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+
   // Razorpay
   const handlePayRazorpay = async () => {
+    setError(null);
     setStep("processing");
-    const fakeToken = btoa(JSON.stringify({ plan: selectedPlan, timestamp: Date.now() }));
-    saveReportDetails(fakeToken);
-    navigate(buildPreviewUrl(fakeToken));
+
+    const ok = await loadRazorpay();
+    if (!ok) {
+      setError("Failed to load payment gateway. Please try again.");
+      setStep("form");
+      return;
+    }
+
+    try {
+      const orderRes = await fetch("/api/payment/razorpay-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: priceINR, currency: "INR", plan: selectedPlan }),
+      });
+      const orderData = await orderRes.json();
+      if (!orderRes.ok || !orderData.orderId) {
+        throw new Error(orderData.message || "Failed to create Razorpay order.");
+      }
+
+      const options = {
+        key: RAZORPAY_KEY,
+        amount: priceINR * 100,
+        currency: "INR",
+        order_id: orderData.orderId,
+        name: "Divine Panchang",
+        description: `Premium Janam Kundali ${selectedPlan === "basic" ? "Basic" : "Detailed"} Report`,
+        image: "/logo-srichakra.png?v=locked",
+        handler: async (response: any) => {
+          try {
+            setStep("processing");
+            const verifyRes = await fetch("/api/payment/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+                signature: response.razorpay_signature,
+                email: email.trim(),
+                name: name.trim(),
+                dob,
+                tob,
+                gender,
+                city: location.name,
+                lat: location.lat,
+                lon: location.lon,
+                timezone: location.timezone,
+                plan: selectedPlan,
+              }),
+            });
+            const verifyData = await verifyRes.json();
+            if (verifyRes.ok && verifyData.status === "success") {
+              saveReportDetails(verifyData.token);
+              navigate(buildPreviewUrl(verifyData.token));
+            } else {
+              throw new Error(verifyData.message || "Payment verification failed on server.");
+            }
+          } catch (e: any) {
+            setError(e.message || "Report generation failed. Please contact support@divinepanchang.space with your payment ID: " + response.razorpay_payment_id);
+            setStep("form");
+          }
+        },
+        prefill: { name, email },
+        theme: { color: "#0b1730" },
+        modal: {
+          ondismiss: () => {
+            setStep("form");
+          }
+        }
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    } catch (err: any) {
+      setError(err.message || "Failed to initiate payment.");
+      setStep("form");
+    }
   };
 
 
