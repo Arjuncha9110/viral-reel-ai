@@ -166,17 +166,7 @@ export const useKundaliReportPayment = ({ defaultLocation }: UseKundaliReportPay
     setError(null);
     setStep("processing");
 
-    const isLocalhost = () => {
-      const hn = window.location.hostname;
-      return hn === "localhost" || hn === "127.0.0.1" || hn === "::1" || hn.endsWith(".local");
-    };
 
-    if (isLocalhost()) {
-      const fakeToken = btoa(JSON.stringify({ plan: selectedPlan, timestamp: Date.now() }));
-      saveReportDetails(fakeToken);
-      navigate(buildPreviewUrl(fakeToken));
-      return;
-    }
 
     const ok = await loadRazorpay();
     if (!ok) {

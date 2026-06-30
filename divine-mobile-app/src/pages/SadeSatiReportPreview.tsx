@@ -93,17 +93,7 @@ const SadeSatiReportPreview: React.FC = () => {
     const sessionIdParam = searchParams.get("session_id");
 
     const verifyAccess = async (token: string | null | undefined, sessionId: string | null | undefined) => {
-      const isLocalhost = () => {
-        const hn = window.location.hostname;
-        return hn === "localhost" || hn === "127.0.0.1" || hn === "::1" || hn.endsWith(".local");
-      };
 
-      if (isLocalhost() && token) {
-        try {
-          const decoded = JSON.parse(atob(token));
-          if (decoded && decoded.plan && typeof decoded.timestamp === "number") return true;
-        } catch (_) {}
-      }
 
       if (!token && !sessionId) return false;
       try {
